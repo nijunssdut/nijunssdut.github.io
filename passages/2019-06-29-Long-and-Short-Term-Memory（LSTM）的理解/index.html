@@ -191,7 +191,25 @@
 <p><img src="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/LSTM-forget-gate.png" alt="LSTM-forget-gate"></p>
 <p>遗忘门会读取$h_{t-1}$和$x_t$，输出一个在 0到 1之间的数值给每个在细胞状态$C_{t-1}$中的数字。1表示“完全保留”，0 表示“完全舍弃”。</p>
 <p>对于语言模型，若已知先前的词汇预测下一词汇，当前一刻细胞状态包括当前主语的性别，这信息需要保留下来帮助我们使用正确的代词。但当我们看到一个新的主语时，我们需要忘记先前的主语。</p>
-<h2 id="2-2-输入门"><a href="#2-2-输入门" class="headerlink" title="2.2 输入门"></a>2.2 输入门</h2><h2 id="2-3-输出门"><a href="#2-3-输出门" class="headerlink" title="2.3 输出门"></a>2.3 输出门</h2>
+<h2 id="2-2-输入门"><a href="#2-2-输入门" class="headerlink" title="2.2 输入门"></a>2.2 输入门</h2><p>下一步是决定让多少新的信息加入到细胞状态中来。实现这个需要包括两个步骤：</p>
+<ul>
+<li><p>一个“输入门”的 sigmoid网络层确定哪些信息需要更新</p>
+</li>
+<li><p>一个 tanh 网络层创建一个新的备选值向量—— $ \hat C_t $可以用来添加到细胞状态</p>
+</li>
+</ul>
+<p>之后，我们把这两部分联合起来，对细胞状态进行一个更新，其过程如下图。</p>
+<p><img src="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/LSTM-input-gate.png" alt="LSTM-input-gate"></p>
+<p>在语言模型的例子中，这就是我们实际根据前面确定的目标，丢弃旧代词的性别信息并添加新的信息的地方。</p>
+<h2 id="2-3-输出门"><a href="#2-3-输出门" class="headerlink" title="2.3 输出门"></a>2.3 输出门</h2><p>现在更新旧的细胞状态 $C_{t-1}$ 更新到 $C_t$。然后，我们对旧的状态乘 $f_t$，用来忘记我们决定忘记的事。然后我们加上 $i_t*\hat C_t$，这是新的候选值，根据我们对每个状态决定的更新值按比例进行缩放。</p>
+<p>最终，我们需要确定输出什么值。这个输出将会基于我们的细胞状态，但是也是一个过滤后的版本。首先，我们运行一个 sigmoid 层来确定细胞状态的哪些部分将输出出去。然后，我们把细胞状态输入 $tanh$处理（把数值调整到 $−1$和 $1$ 之间）再和 sigmoid 网络层的输出相乘，这样我们就可以输出想要输出的部分。</p>
+<p><img src="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/LSTM-output-gate.png" alt="LSTM-output-gate"></p>
+<p>同样，以语言模型为例子，一旦出现一个主语，主语的信息会影响到随后出现的动词。例如，知道主语是单数还是复数，就可以知道随后动词的形式。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li><a href="https://machinelearningmastery.com/stacked-long-short-term-memory-networks/" target="_blank" rel="noopener">Stacked Long Short-Term Memory Networks</a></li>
+<li><a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/" target="_blank" rel="noopener">Understanding LSTM Networks</a></li>
+</ol>
+
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -199,7 +217,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-LSTM网络定义"><span class="toc-text">1. LSTM网络定义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-LSTM的核心思想"><span class="toc-text">2. LSTM的核心思想</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-遗忘门"><span class="toc-text">2.1 遗忘门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-输入门"><span class="toc-text">2.2 输入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-输出门"><span class="toc-text">2.3 输出门</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-LSTM网络定义"><span class="toc-text">1. LSTM网络定义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-LSTM的核心思想"><span class="toc-text">2. LSTM的核心思想</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-遗忘门"><span class="toc-text">2.1 遗忘门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-输入门"><span class="toc-text">2.2 输入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-输出门"><span class="toc-text">2.3 输出门</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li></ol>
   </div>
 </aside>
   
