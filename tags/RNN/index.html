@@ -6,12 +6,12 @@
   <meta name="author" content="NI,JUN">
   
   
-  <title>Long and Short Term Memory（LSTM）的理解 | Jun的个人随笔</title>
+  <title>标签: RNN | Jun的个人随笔</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="深度学习,笔试面试,神经网络,RNN,">
+    <meta name="keywords" content="Hexo, Theme-AD">
   
 
   
@@ -40,7 +40,7 @@
     welcome: {"enable":false,"interval":30},
     start_time: "2019-06-29",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: true,
+    is_post: false,
     lock: false,
     author: "NI,JUN",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
@@ -158,77 +158,18 @@
 </nav>
 <div id="site-process"></div>
     <main>
-      
-  <div class="passage">
-  <div class="passage-meta">
-    <span>
-      <i class="fa fa-calendar"></i>2019-06-29
-    </span>
-    
-      <span>
-        | <a href="/categories/深度学习/"><i class="fa fa-bookmark"></i>深度学习</a>
-      </span>
-    
-    
-      <span>
-        | <i class="fa fa-unlock-alt"></i>UNLOCK
-      </span>
-    
-  </div>
-  <h1 class="passage-title">
-    Long and Short Term Memory（LSTM）的理解
-  </h1>
+      <div class="timeline">
+  <h2 class="timeline-title">标签: RNN</h2>
   
-  <article class="passage-article">
-    <h1 id="1-LSTM网络定义"><a href="#1-LSTM网络定义" class="headerlink" title="1. LSTM网络定义"></a>1. LSTM网络定义</h1><p>长短期记忆网络——通常被称为 LSTM，是一种特殊的 RNN，能够学习长期依赖性。由 Hochreiter 和 Schmidhuber（1997）提出的，并且在接下来的工作中被许多人改进和推广。LSTM 在各种各样的问题上表现非常出色，现在被广泛使用。</p>
-<p>LSTM 被明确设计用来避免长期依赖性问题。长时间记住信息实际上是 LSTM 的默认行为，而不是需要努力学习的东西！</p>
-<p>所有递归神经网络都具有神经网络的链式重复模块。在标准的 RNN 中，这个重复模块具有非常简单的结构，只有单个 tanh 层。</p>
-<p>LSTM 也具有这种类似的链式结构，但重复模块具有不同的结构。不是一个单独的神经网络层，而是四个，并且以非常特殊的方式进行交互。</p>
-<h1 id="2-LSTM的核心思想"><a href="#2-LSTM的核心思想" class="headerlink" title="2. LSTM的核心思想"></a>2. LSTM的核心思想</h1><p>LSTM 的关键是细胞状态（cell state），即图中上方的水平线。它贯穿整个链条，只有一些次要的线性交互作用。信息很容易以不变的方式流过。LSTM可以通过“门”结构实现向细胞状态添加或移除信息的操作。</p>
-<p><img src="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/LSTM-cell.png" alt="LSTM-cell"></p>
-<p>“门”结构通过一个 sigmoid 的神经层和一个逐点相乘的操作来实现信息选择通过。LSTM通过三个这样的门结构来实现信息的保护和控制。这三个门分别输入门（input gate）、遗忘门（forget gate）和输出门（output gate）。</p>
-<h2 id="2-1-遗忘门"><a href="#2-1-遗忘门" class="headerlink" title="2.1 遗忘门"></a>2.1 遗忘门</h2><p>LSTM 中的第一步是决定我们会从细胞状态中丢弃什么信息，这一过程由遗忘门来完成，其过程如下图所示。</p>
-<p><img src="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/LSTM-forget-gate.png" alt="LSTM-forget-gate"></p>
-<p>遗忘门会读取$h_{t-1}$和$x_t$，输出一个在 0到 1之间的数值给每个在细胞状态$C_{t-1}$中的数字。1表示“完全保留”，0 表示“完全舍弃”。</p>
-<p>对于语言模型，若已知先前的词汇预测下一词汇，当前一刻细胞状态包括当前主语的性别，这信息需要保留下来帮助我们使用正确的代词。但当我们看到一个新的主语时，我们需要忘记先前的主语。</p>
-<h2 id="2-2-输入门"><a href="#2-2-输入门" class="headerlink" title="2.2 输入门"></a>2.2 输入门</h2><h2 id="2-3-输出门"><a href="#2-3-输出门" class="headerlink" title="2.3 输出门"></a>2.3 输出门</h2>
-  </article>
-  <aside class="table-content" id="site-toc">
-  <div class="table-content-title">
-    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
-    <span>目录</span>
-  </div>
-  <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-LSTM网络定义"><span class="toc-text">1. LSTM网络定义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-LSTM的核心思想"><span class="toc-text">2. LSTM的核心思想</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-遗忘门"><span class="toc-text">2.1 遗忘门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-输入门"><span class="toc-text">2.2 输入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-输出门"><span class="toc-text">2.3 输出门</span></a></li></ol></li></ol>
-  </div>
-</aside>
-  
-    <aside class="passage-copyright">
-      <div>本文作者: 倪骏</div>
-      
-        <div>
-          原文链接: 
-          <a href="" target="_blank">http://yoursite.com/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/</a>
-        </div>
-      
-      <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
-      </div>
-    </aside>
-  
-  
-    <div class="passage-tags">
-     
-      <a href="/tags/笔试面试/"><i class="fa fa-tags"></i>笔试面试</a>
-     
-      <a href="/tags/神经网络/"><i class="fa fa-tags"></i>神经网络</a>
-     
-      <a href="/tags/RNN/"><i class="fa fa-tags"></i>RNN</a>
     
+      <h3 class="timeline-subtitle">2019</h3>
+    
+    <div class="timeline-item">
+      <time>2019-06-29</time>
+      <a target="_self" href="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/">Long and Short Term Memory（LSTM）的理解</a>
     </div>
   
 </div>
-
     </main>
     
     <div class="site-footer-wrapper">
@@ -328,12 +269,12 @@
     <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/passages/2019-06-29-排序算法比较/" data-enable="true">
+    <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
