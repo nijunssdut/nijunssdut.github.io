@@ -6,12 +6,12 @@
   <meta name="author" content="NI,JUN">
   
   
-  <title>分类 | Jun的个人随笔</title>
+  <title>排序算法比较 | Jun的个人随笔</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="数据结构,笔试面试,排序算法,复杂度,">
   
 
   
@@ -40,12 +40,12 @@
     welcome: {"enable":false,"interval":30},
     start_time: "2019-06-29",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "NI,JUN",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
     mathjax: true,
-    page_type: "categories",
+    page_type: "",
     root: "/"
   };
 </script>
@@ -159,12 +159,147 @@
 <div id="site-process"></div>
     <main>
       
-  <div class="set">
-  <h3 style="text-align: left;">
-    <i class="fa fa-bookmark"></i>
-    共 3 个分类
-  </h3>
-  <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/深度学习/">深度学习</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/环境配置/">环境配置</a><span class="category-list-count">1</span></li></ul>
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-06-29
+    </span>
+    
+      <span>
+        | <a href="/categories/数据结构/"><i class="fa fa-bookmark"></i>数据结构</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    排序算法比较
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="各种排序算法比较"><a href="#各种排序算法比较" class="headerlink" title="各种排序算法比较"></a>各种排序算法比较</h1><table>
+  <tr>
+    <th rowspan="2">类别</th>
+    <th rowspan="2">排序方法</th>
+    <th colspan="3">时间复杂度</th>
+    <th>空间复杂度</th>
+    <th rowspan="2">稳定性</th>
+  </tr>
+  <tr>
+    <td>平均情况</td>
+    <td>最好情况</td>
+    <td>最坏情况</td>
+    <td>辅助空间</td>
+  </tr>
+  <tr>
+    <td rowspan="2">插入排序</td>
+    <td>直接插入</td>
+    <td>O($n^2$)</td>
+    <td>O($n$)</td>
+    <td>O($n^2$)</td>
+    <td>O($1$)</td>
+    <td>稳定</td>
+  </tr>
+  <tr>
+    <td>Shell排序</td>
+    <td>O($n^1.3$)</td>
+    <td>O($n$)</td>
+    <td>O($n^2$)</td>
+    <td>O($1$)</td>
+    <td>不稳定</td>
+  </tr>
+  <tr>
+    <td rowspan="2">选择排序</td>
+    <td>直接选择</td>
+    <td>O($n^2$)</td>
+    <td>O($n^2$)</td>
+    <td>O($n^2$)</td>
+    <td>O($1$)</td>
+    <td>不稳定</td>
+  </tr>
+  <tr>
+    <td>堆排序</td>
+    <td>O($n\log_{2}{n}$)</td>
+    <td>O($n\log_{2}{n}$)</td>
+    <td>O($n\log_{2}{n}$)</td>
+    <td>O($1$)</td>
+    <td>不稳定</td>
+  </tr>
+  <tr>
+    <td rowspan="2">交换排序</td>
+    <td>冒泡排序</td>
+    <td>O($n^2$)</td>
+    <td>O($n$)</td>
+    <td>O($n^2$)</td>
+    <td>O($1$)</td>
+    <td>不稳定</td>
+  </tr>
+  <tr>
+    <td>快速排序</td>
+    <td>O()</td>
+    <td>O($n\log_{2}{n}$)</td>
+    <td>O($n^2$)</td>
+    <td>O($n\log_{2}{n}$)</td>
+    <td>不稳定</td>
+  </tr>
+  <tr>
+    <td colspan="2">归并排序</td>
+    <td>O($n\log_{2}{n}$)</td>
+    <td>O($n\log_{2}{n}$)</td>
+    <td>O($n\log_{2}{n}$)</td>
+    <td>O($n$)</td>
+    <td>稳定</td>
+  </tr>
+  <tr>
+    <td colspan="2">基数排序</td>
+    <td>O($d(r+n)$)</td>
+    <td>O($d(n+rd)$)</td>
+    <td>O($d(r+n)$)</td>
+    <td>O($rd+n$)</td>
+    <td>稳定</td>
+  </tr>
+</table>
+
+<p><strong>Note:</strong>基数排序的复杂度中，r代表关键字的基数，d代表长度，n代表关键字的个数。</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#各种排序算法比较"><span class="toc-text">各种排序算法比较</span></a></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 倪骏</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://yoursite.com/passages/2019-06-29-排序算法比较/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/笔试面试/"><i class="fa fa-tags"></i>笔试面试</a>
+     
+      <a href="/tags/排序算法/"><i class="fa fa-tags"></i>排序算法</a>
+     
+      <a href="/tags/复杂度/"><i class="fa fa-tags"></i>复杂度</a>
+    
+    </div>
+  
 </div>
 
     </main>
@@ -263,15 +398,15 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/hexo/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
