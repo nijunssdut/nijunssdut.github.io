@@ -184,15 +184,23 @@
 <h2 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h2><h3 id="Hexo安装"><a href="#Hexo安装" class="headerlink" title="Hexo安装"></a>Hexo安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 
 <p>第一句是安装<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo</a>，第二句是安装Hexo部署到git page的deployer保证与github关联。</p>
-<h3 id="建站"><a href="#建站" class="headerlink" title="建站"></a>建站</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="主题建站"><a href="#主题建站" class="headerlink" title="主题建站"></a>主题建站</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> your_blog_dir</span><br><span class="line">$ hexo init blog</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/dongyuanxin/theme-ad.git themes/ad</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="配置与测试"><a href="#配置与测试" class="headerlink" title="配置与测试"></a>配置与测试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>安装完成后，根据自己喜好建立目录。Hexo 将会在指定文件夹中新建所需要的文件。之后我们可以在<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo</a>官网上选取主题从Github上clone到本地的themes文件夹下。</p>
+<p>针对于不同的主题，blog下的_config.yml需进行如下操作更换主题、与Github关联：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">主题名</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  repository:</span> <span class="string">git@github.com:nijunssdut/nijunssdut.github.io.git</span></span><br><span class="line"><span class="attr">  branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="模版与Markdown写作"><a href="#模版与Markdown写作" class="headerlink" title="模版与Markdown写作"></a>模版与Markdown写作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>在这里，我们配置Github的SSH密钥可以让本地git项目与远程的github建立联系，让我们在本地写了代码之后直接通过git操作就可以实现本地代码库与Github代码库同步。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/ .ssh</span><br><span class="line">$ ssh-keygen -t rsa -C <span class="string">"your_email@example.com"</span></span><br><span class="line"><span class="comment"># 这将按照你提供的邮箱地址，创建一对密钥</span></span><br><span class="line">$ pbcopy &lt; ~/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># 将公钥的内容复制到系统粘贴板</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p>之后在Github的Account Settings-SSH Keys中粘贴添加密钥即可。</p>
+<p>更多信息详见: <a href="https://blog.csdn.net/grave2015/article/details/79961843" target="_blank" rel="noopener">参考博客</a></p>
+<h3 id="配置与测试"><a href="#配置与测试" class="headerlink" title="配置与测试"></a>配置与测试</h3><p>这部分主要介绍Hexo命令的使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo generate</span><br><span class="line">$ hexo server</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>hexo clean与hexo generate一般一起使用清理并生成编写内容，执行完hexo server后可在本地使用<a href="https://localhost:4000" target="_blank" rel="noopener">https://localhost:4000</a> 查看建站情况，hexo deploy会更新Github端个人博客的内容：<a href="https://nijunssdut.github.io" target="_blank" rel="noopener">Jun的个人主页</a></p>
+<h3 id="Markdown写作"><a href="#Markdown写作" class="headerlink" title="Markdown写作"></a>Markdown写作</h3><p>本人使用Mac OS，推荐Typora软件进行Markdown编写。Typora是一款轻便简洁的Markdown编辑器，支持即时渲染技术。</p>
+<p>Typora语法相对简单，可参考<a href="https://www.jianshu.com/p/b7fd16a44508" target="_blank" rel="noopener">简书typora</a>。</p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -201,7 +209,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建过程"><span class="toc-text">搭建过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo安装"><span class="toc-text">Hexo安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#建站"><span class="toc-text">建站</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置与测试"><span class="toc-text">配置与测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模版与Markdown写作"><span class="toc-text">模版与Markdown写作</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建过程"><span class="toc-text">搭建过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo安装"><span class="toc-text">Hexo安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主题建站"><span class="toc-text">主题建站</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置与测试"><span class="toc-text">配置与测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Markdown写作"><span class="toc-text">Markdown写作</span></a></li></ol></li></ol>
   </div>
 </aside>
   
