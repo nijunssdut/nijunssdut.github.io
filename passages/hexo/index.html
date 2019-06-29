@@ -6,12 +6,12 @@
   <meta name="author" content="NI,JUN">
   
   
-  <title>归档 | Jun的个人随笔</title>
+  <title>Hexo与github搭建个人博客 | Jun的个人随笔</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="环境配置,Hexo,Github,">
   
 
   
@@ -40,7 +40,7 @@
     welcome: {"enable":false,"interval":30},
     start_time: "2019-06-29",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "NI,JUN",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
@@ -158,18 +158,77 @@
 </nav>
 <div id="site-process"></div>
     <main>
-      <div class="timeline">
-  <h2 class="timeline-title">归档: 1篇</h2>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-06-28
+    </span>
+    
+      <span>
+        | <a href="/categories/环境配置/"><i class="fa fa-bookmark"></i>环境配置</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Hexo与github搭建个人博客
+  </h1>
   
+  <article class="passage-article">
+    <p> <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>个人博客搭建主要有两种方法：一是基于Ruby的jekyll+github方法，二是基于Nodejs的Hexo+github方法。这是本人的第一篇个人博客，希望能够坚持写下去。下面我将介绍下Hexo+github方法的具体过程：</p>
+<h2 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h2><h3 id="Hexo安装"><a href="#Hexo安装" class="headerlink" title="Hexo安装"></a>Hexo安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>第一句是安装<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo</a>，第二句是安装Hexo部署到git page的deployer保证与github关联。</p>
+<h3 id="建站"><a href="#建站" class="headerlink" title="建站"></a>建站</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="配置与测试"><a href="#配置与测试" class="headerlink" title="配置与测试"></a>配置与测试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="模版与Markdown写作"><a href="#模版与Markdown写作" class="headerlink" title="模版与Markdown写作"></a>模版与Markdown写作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#搭建过程"><span class="toc-text">搭建过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo安装"><span class="toc-text">Hexo安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#建站"><span class="toc-text">建站</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置与测试"><span class="toc-text">配置与测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模版与Markdown写作"><span class="toc-text">模版与Markdown写作</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 倪骏</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://yoursite.com/passages/hexo/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/Hexo/"><i class="fa fa-tags"></i>Hexo</a>
+     
+      <a href="/tags/Github/"><i class="fa fa-tags"></i>Github</a>
     
-      <h3 class="timeline-subtitle">2019</h3>
-    
-    <div class="timeline-item">
-      <time>2019-06-28</time>
-      <a target="_self" href="/passages/hexo/">Hexo与github搭建个人博客</a>
     </div>
   
 </div>
+
     </main>
     
     <div class="site-footer-wrapper">
@@ -274,7 +333,7 @@
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
