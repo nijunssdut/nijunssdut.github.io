@@ -6,12 +6,12 @@
   <meta name="author" content="NI,JUN">
   
   
-  <title>归档: 2019/6 | Jun的个人随笔</title>
+  <title>快速排序 | Jun的个人随笔</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="数据结构,笔试面试,排序算法,python,">
   
 
   
@@ -40,7 +40,7 @@
     welcome: {"enable":false,"interval":30},
     start_time: "2019-06-29",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "NI,JUN",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
@@ -158,36 +158,76 @@
 </nav>
 <div id="site-process"></div>
     <main>
-      <div class="timeline">
-  <h2 class="timeline-title">归档: 4篇</h2>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-06-30
+    </span>
+    
+      <span>
+        | <a href="/categories/数据结构/"><i class="fa fa-bookmark"></i>数据结构</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    快速排序
+  </h1>
   
-    
-      <h3 class="timeline-subtitle">2019</h3>
-    
-    <div class="timeline-item">
-      <time>2019-06-30</time>
-      <a target="_self" href="/passages/2019-06-30-快速排序/">快速排序</a>
-    </div>
+  <article class="passage-article">
+    <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><p>快速排序是一种高效的排序算法，它采用“分而治之”的思想。其原理是：对于一组给定的记录，通过一趟排序后，将原序列分成两部分，其中前部分的所有记录均比后面部分的所有记录小，然后再依次对前后两部分的记录进行快速排序，递归该过程，直到序列中的所有记录均有序为止。</p>
+<p>具体算法步骤如下：</p>
+<p>(1) 分解: 将输入的序列array[m,…,n]划分成两个非空子序列array[m,…,k]和array[k+1,…,n]，使array[m,..,k]和array[k+1,…,n]，使array[m,…,k]中任一元素的值不大于array[k+1,…,n]中任一元素的值。</p>
+<p>(2) 递归求解：通过递归调用快速排序算法分别对array[m,…,k]和array[k+1,…,n]进行排序。</p>
+<p>(3) 合并: 由于对分解出的两个子序列的排序是就地进行的，所以在array[m,…k]和array[k+1,…,n]都是排好序后，不需要执行任何计算，array[m,…,n]就已排好序。</p>
+<h2 id="2-Python代码实现"><a href="#2-Python代码实现" class="headerlink" title="2. Python代码实现"></a>2. Python代码实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如何进行快速排序</span></span><br><span class="line"><span class="comment"># 整体有序,基准左边或右边样本为空，比较次数多，最坏时间复杂度，例如基准最小，排序递增</span></span><br><span class="line"><span class="comment"># 最坏时间复杂度为O(n^2),最好时间复杂度为O(nlogn),平均时间复杂度为O(nlogn)</span></span><br><span class="line"><span class="comment"># 平均空间复杂度为O(nlogn)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(left,right,lists)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> left &gt; right:</span><br><span class="line">        <span class="keyword">return</span> lists</span><br><span class="line">    key = lists[left]</span><br><span class="line">    low = left</span><br><span class="line">    high = right</span><br><span class="line">    <span class="keyword">while</span> left &lt; right:</span><br><span class="line">        <span class="keyword">while</span> left &lt;right <span class="keyword">and</span> lists[right]&gt;=key:</span><br><span class="line">            right -= <span class="number">1</span></span><br><span class="line">        lists[left] = lists[right]</span><br><span class="line">        <span class="keyword">while</span> left &lt;right <span class="keyword">and</span> lists[left] &lt;= key:</span><br><span class="line">            left += <span class="number">1</span></span><br><span class="line">        lists[right] = lists[left]</span><br><span class="line">    lists[left] = key</span><br><span class="line">    quick_sort(low,left<span class="number">-1</span>,lists)</span><br><span class="line">    quick_sort(left+<span class="number">1</span>,high,lists)</span><br><span class="line">    <span class="keyword">return</span> lists</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    lists = [<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">5</span>,<span class="number">1</span>]</span><br><span class="line">    print(<span class="string">"排序前序列为："</span>,end=<span class="string">""</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> lists:</span><br><span class="line">        print(i,end=<span class="string">" "</span>)</span><br><span class="line">    print(<span class="string">"\n排序后序列为："</span>,end=<span class="string">""</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> (quick_sort(<span class="number">0</span>,len(lists)<span class="number">-1</span>,lists)):</span><br><span class="line">        print(i,end=<span class="string">" "</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3 参考资料"></a>3 参考资料</h2><ol>
+<li>《Python程序员面试算法宝典》</li>
+</ol>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#快速排序"><span class="toc-text">快速排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-介绍"><span class="toc-text">1. 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Python代码实现"><span class="toc-text">2. Python代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-参考资料"><span class="toc-text">3 参考资料</span></a></li></ol></li></ol>
+  </div>
+</aside>
   
-    
-    <div class="timeline-item">
-      <time>2019-06-29</time>
-      <a target="_self" href="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/">Long and Short Term Memory（LSTM）的理解</a>
-    </div>
+    <aside class="passage-copyright">
+      <div>本文作者: 倪骏</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://yoursite.com/passages/2019-06-30-快速排序/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
   
-    
-    <div class="timeline-item">
-      <time>2019-06-29</time>
-      <a target="_self" href="/passages/2019-06-29-排序算法比较/">排序算法比较</a>
-    </div>
   
+    <div class="passage-tags">
+     
+      <a href="/tags/笔试面试/"><i class="fa fa-tags"></i>笔试面试</a>
+     
+      <a href="/tags/排序算法/"><i class="fa fa-tags"></i>排序算法</a>
+     
+      <a href="/tags/python/"><i class="fa fa-tags"></i>python</a>
     
-    <div class="timeline-item">
-      <time>2019-06-28</time>
-      <a target="_self" href="/passages/hexo/">Hexo与github搭建个人博客</a>
     </div>
   
 </div>
+
     </main>
     
     <div class="site-footer-wrapper">
@@ -287,12 +327,12 @@
     <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
