@@ -6,12 +6,12 @@
   <meta name="author" content="NI,JUN">
   
   
-  <title>Jun的个人随笔</title>
+  <title>支持向量机(SVM)原理与推导 | Jun的个人随笔</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Hexo, Theme-AD">
+    <meta name="keywords" content="机器学习,笔试面试,SVM,">
   
 
   
@@ -40,7 +40,7 @@
     welcome: {"enable":false,"interval":30},
     start_time: "2019-06-29",
     passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: false,
+    is_post: true,
     lock: false,
     author: "NI,JUN",
     share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
@@ -158,230 +158,80 @@
 </nav>
 <div id="site-process"></div>
     <main>
-      <div class="home">
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-06-30
+    </span>
+    
+      <span>
+        | <a href="/categories/机器学习/"><i class="fa fa-bookmark"></i>机器学习</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    支持向量机(SVM)原理与推导
+  </h1>
   
-    <div class="home-article-wrapper clearfix">
-      <div class="home-article" data-cover="false">
-        <div class="home-article-inner" data-cover="false">
-          <div class="passage-meta">
-            <span>
-              <i class="fa fa-calendar"></i>2019-06-30
-            </span>
-            
-              <span>
-                | <a href="/categories/机器学习/"><i class="fa fa-bookmark"></i>机器学习</a>
-              </span>
-            
-            
-              <span>
-                | <i class="fa fa-unlock-alt"></i>UNLOCK
-              </span>
-            
-          </div>
-          <h1 class="home-article-title">
-            <a href="/passages/2019-06-30-支持向量机-SVM-原理与推导/">支持向量机(SVM)原理与推导</a>
-          </h1>
-          <div class="home-article-content passage-article">
-            
-              
-            
-          </div>
-          <a class="home-article-read" href="/passages/2019-06-30-支持向量机-SVM-原理与推导/">
-            阅读更多 >>>
-          </a>
-          
-            <div class="passage-tags">
-             
-              <a href="/tags/笔试面试/"><i class="fa fa-tags"></i>笔试面试</a>
-             
-              <a href="/tags/SVM/"><i class="fa fa-tags"></i>SVM</a>
-            
-            </div>
-          
-        </div>
-        
-      </div>
-    </div>
+  <article class="passage-article">
+    <h2 id="1-支持向量机的原理"><a href="#1-支持向量机的原理" class="headerlink" title="1. 支持向量机的原理"></a>1. 支持向量机的原理</h2><p>Support Vector Machine (SVM)是一种二类分类模型。它的基本模型是在特征空间中寻找间隔最大化的分隔超平面的线形分类器。（间隔最大是它有别于感知机），通过该超平面实现对未知样本集的分类。</p>
+<ol>
+<li>当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性可分支持向量机；</li>
+<li>当训练数据近似线性可分时，引入松弛变量，通过软间隔最大化，学习一个线性分类器，即线性支持向量机；</li>
+<li>当训练数据线性不可分时，通过使用核技巧及间隔最大化，学习非线性支持向量机。</li>
+</ol>
+<h1 id="2-SVM推导"><a href="#2-SVM推导" class="headerlink" title="2. SVM推导"></a>2. SVM推导</h1><p>线性分类器是最简单的有效分类器形式，SVM则在线性分类器基础上演化而成。</p>
+<p>所谓线性函数，在一维空间中就是一个点，在二维空间中就是一条直线，三维空间就是一个平面，随着维度不断增加，线性函数也不断改变，被叫做超平面。</p>
+<p>SVM的目标就是找到图中的超平面，在任意维空间中，超平面可以表示为函数：<br>$$<br>G(x)=W^TX+b<br>$$<br>一个样本点到$P(X_i,Y_i)$超平面的几何距离为：<br>$$<br>\frac{\left|W^TX_i+b\right|}{\left|{W}\right|}
+$$<br><strong>Note:</strong>这里的几何距离是距离而非间隔。</p>
+<p>对于正样本$Y_i=1$，意味着该点在超平面正样本一侧：<br>$$<br>W^TX_i+b&gt;0<br>$$<br>对于负样本$Y_i =-1$，意味着该点在超平面负样本一侧：<br>$$<br>W^TX_i+b&lt;0<br>$$<br>所以可用下述公式表示点到超平面的几何距离：<br>$$<br>\frac{Y_i(W^TX_i+b)}{\left|W\right|}
+$$<br>其中，分子部分表示函数间隔。</p>
+<p>几何间隔可以表示点到超平面的距离，在进行分类过程中使分类更加准确，需要优化所有样本中到分类超平面几何间隔最小点的间隔值更大，所以对于SVM公式的求解转换为了一个最优化问题：<br>$$<br>\max_{W,b}[\min_{X_i}\frac{Y_i(W^TX_i+b)}{\left|W\right|}]<br>$$<br>即求解出最优的$W,b$使得到超平面最近的样本几何间隔最大。</p>
+<p>对于一个超平面，如果等比例缩放$W,b$的值其公式表示的超平面不变，我们可以假设到超平面距离最小的样本点到超平面的函数间隔都大于1（通过缩放可$W,b$以实现）：<br>$$<br>Y_i(W^TX_i+b)\ge1<br>$$<br>由此可以将原最优化问题进行改变为带约束条件的最优化问题，优化目标为：<br>$$<br>\max_{W,b}\frac{1}{\left|W\right|}
+$$<br>约束条件为：<br>$$<br>Y_i(W^TX_i+b)\ge1，i=1,2,3…k<br>$$<br>为了便于求解，目标函数等价于：<br>$$<br>\min_{W,b}\frac{1}{2}\left|w\right|^2<br>$$<br>下面便对该式子进行求解。对于没有约束的最优化问题，我们可以采用求导的方式求解出最优解。针对带约束最优化问题，一个比较好的方法是将其转化为没有约束条件的最优化问题，我们将带约束最优化问题泛化为：<br>$$<br>\min_xf(x)\s.t.\g(x)\le0,i=1,2,3…k\h(x)=0,i=1,2,3…l<br>$$<br>泛化问题可以等价于求：<br>$$<br>\min_{x}\max_{\alpha,\beta}f(x)+\sum_{i=1}^k\alpha g_i(x)+\sum_{j=1}^l\beta h_j(x)<br>$$<br>其中$\alpha$大于零，$\beta$不等于零。若$g(x)$大于零，而$\alpha$也大于零，对于可变$\alpha$项则不存在极大值，关于$\beta$同理，其可正可负不为0，若$h(x)$不能满足等于零，在该项上也不存在极大值，通过max求极值实现了对原有约束条件的保留。</p>
+<p>基于此SVM最优化方程转化为：<br>$$<br>\min_{W,b}\max_{\alpha}\frac{1}{2}\left|w\right|^2+\sum_{i=1}^k\alpha_{i}(1-Y_i(W^TX_i+b))\s.t.\\alpha_i\gt0,i=1,2,3…k<br>$$<br>在满足KTT条件的情况下满足拉格朗日对偶性，其等价于优化方程：<br>$$<br>\max_{\alpha}\min_{W,b}\frac{1}{2}\left|w\right|^2+\sum_{i=1}^k\alpha_{i}(1-Y_i(W^TX_i+b))\s.t.\\alpha_i\gt0,i=1,2,3…k\<br>1-Y_i(W^TX_i+b)\le0,i=1,2,3…k\<br>\alpha_{i}(1-Y_i(W^TX_i+b))=0,i=1,2,3…k<br>$$<br>对于该最优化的方程内部进行求导：<br>$$<br>\frac{\partial L}{\partial W} =W-\sum_{i=1}^k\alpha_{i}Y_iX_i\<br>\frac{\partial L}{\partial b} =-\sum_{i=1}^k\alpha_{i}Y_i<br>$$<br>在偏导数为0时取得极值。<br>$$<br>W= \sum_{i=1}^k\alpha_{i}Y_iX_i\<br>\sum_{i=1}^k=0<br>$$<br>将求导后的等式带入原方程可以得到最终关于$\alpha$的最优化方程：<br>$$<br>\max_{\alpha}\sum_{i=1}^k\alpha_i-\frac{1}{2}\sum_{i=1}^k\alpha_{i}Y_iX_i^T\sum_{j=1}^k\alpha_jY_jX_j\<br>s.t.\<br>\alpha_i\gt0,i=1,2,3…k\<br>1-Y_i(W^TX_i+b)\le0,i=1,2,3…k\<br>\alpha_{i}(1-Y_i(W^TX_i+b))=0,i=1,2,3…k\<br>\sum_{i=1}^k\alpha_iY_i=0<br>$$<br>求出该式子中各个$\alpha$的值，由于$W,b$与$\alpha$均有等价关系，便可以得到SVM模型的$W,b$参数。上面式子显然无法通过求导得到最优的$\alpha$值，可以使用Sequential Minimal Optimization(SMO)方法去进行求解。</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-支持向量机的原理"><span class="toc-text">1. 支持向量机的原理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-SVM推导"><span class="toc-text">2. SVM推导</span></a>
+  </div>
+</aside>
   
-    <div class="home-article-wrapper clearfix">
-      <div class="home-article" data-cover="false">
-        <div class="home-article-inner" data-cover="false">
-          <div class="passage-meta">
-            <span>
-              <i class="fa fa-calendar"></i>2019-06-30
-            </span>
-            
-              <span>
-                | <a href="/categories/数据结构/"><i class="fa fa-bookmark"></i>数据结构</a>
-              </span>
-            
-            
-              <span>
-                | <i class="fa fa-unlock-alt"></i>UNLOCK
-              </span>
-            
-          </div>
-          <h1 class="home-article-title">
-            <a href="/passages/2019-06-30-快速排序/">快速排序</a>
-          </h1>
-          <div class="home-article-content passage-article">
-            
-              
-            
-          </div>
-          <a class="home-article-read" href="/passages/2019-06-30-快速排序/">
-            阅读更多 >>>
-          </a>
-          
-            <div class="passage-tags">
-             
-              <a href="/tags/笔试面试/"><i class="fa fa-tags"></i>笔试面试</a>
-             
-              <a href="/tags/排序算法/"><i class="fa fa-tags"></i>排序算法</a>
-             
-              <a href="/tags/python/"><i class="fa fa-tags"></i>python</a>
-            
-            </div>
-          
+    <aside class="passage-copyright">
+      <div>本文作者: 倪骏</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://yoursite.com/passages/2019-06-30-支持向量机-SVM-原理与推导/</a>
         </div>
-        
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
       </div>
-    </div>
+    </aside>
   
-    <div class="home-article-wrapper clearfix">
-      <div class="home-article" data-cover="false">
-        <div class="home-article-inner" data-cover="false">
-          <div class="passage-meta">
-            <span>
-              <i class="fa fa-calendar"></i>2019-06-29
-            </span>
-            
-              <span>
-                | <a href="/categories/深度学习/"><i class="fa fa-bookmark"></i>深度学习</a>
-              </span>
-            
-            
-              <span>
-                | <i class="fa fa-unlock-alt"></i>UNLOCK
-              </span>
-            
-          </div>
-          <h1 class="home-article-title">
-            <a href="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/">Long and Short Term Memory（LSTM）的理解</a>
-          </h1>
-          <div class="home-article-content passage-article">
-            
-              
-            
-          </div>
-          <a class="home-article-read" href="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/">
-            阅读更多 >>>
-          </a>
-          
-            <div class="passage-tags">
-             
-              <a href="/tags/笔试面试/"><i class="fa fa-tags"></i>笔试面试</a>
-             
-              <a href="/tags/神经网络/"><i class="fa fa-tags"></i>神经网络</a>
-             
-              <a href="/tags/RNN/"><i class="fa fa-tags"></i>RNN</a>
-            
-            </div>
-          
-        </div>
-        
-      </div>
-    </div>
   
-    <div class="home-article-wrapper clearfix">
-      <div class="home-article" data-cover="false">
-        <div class="home-article-inner" data-cover="false">
-          <div class="passage-meta">
-            <span>
-              <i class="fa fa-calendar"></i>2019-06-29
-            </span>
-            
-              <span>
-                | <a href="/categories/数据结构/"><i class="fa fa-bookmark"></i>数据结构</a>
-              </span>
-            
-            
-              <span>
-                | <i class="fa fa-unlock-alt"></i>UNLOCK
-              </span>
-            
-          </div>
-          <h1 class="home-article-title">
-            <a href="/passages/2019-06-29-排序算法比较/">排序算法比较</a>
-          </h1>
-          <div class="home-article-content passage-article">
-            
-              
-            
-          </div>
-          <a class="home-article-read" href="/passages/2019-06-29-排序算法比较/">
-            阅读更多 >>>
-          </a>
-          
-            <div class="passage-tags">
-             
-              <a href="/tags/笔试面试/"><i class="fa fa-tags"></i>笔试面试</a>
-             
-              <a href="/tags/排序算法/"><i class="fa fa-tags"></i>排序算法</a>
-             
-              <a href="/tags/复杂度/"><i class="fa fa-tags"></i>复杂度</a>
-            
-            </div>
-          
-        </div>
-        
-      </div>
-    </div>
-  
-    <div class="home-article-wrapper clearfix">
-      <div class="home-article" data-cover="false">
-        <div class="home-article-inner" data-cover="false">
-          <div class="passage-meta">
-            <span>
-              <i class="fa fa-calendar"></i>2019-06-28
-            </span>
-            
-              <span>
-                | <a href="/categories/环境配置/"><i class="fa fa-bookmark"></i>环境配置</a>
-              </span>
-            
-            
-              <span>
-                | <i class="fa fa-unlock-alt"></i>UNLOCK
-              </span>
-            
-          </div>
-          <h1 class="home-article-title">
-            <a href="/passages/hexo/">Hexo与github搭建个人博客</a>
-          </h1>
-          <div class="home-article-content passage-article">
-            
-              
-            
-          </div>
-          <a class="home-article-read" href="/passages/hexo/">
-            阅读更多 >>>
-          </a>
-          
-            <div class="passage-tags">
-             
-              <a href="/tags/Hexo/"><i class="fa fa-tags"></i>Hexo</a>
-             
-              <a href="/tags/Github/"><i class="fa fa-tags"></i>Github</a>
-            
-            </div>
-          
-        </div>
-        
-      </div>
+    <div class="passage-tags">
+     
+      <a href="/tags/笔试面试/"><i class="fa fa-tags"></i>笔试面试</a>
+     
+      <a href="/tags/SVM/"><i class="fa fa-tags"></i>SVM</a>
+    
     </div>
   
 </div>
+
     </main>
     
     <div class="site-footer-wrapper">
@@ -481,12 +331,12 @@
     <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2019-06-30-快速排序/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
   <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="false" id="site-toc-show-btn">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
       <i class="fa fa-bars"></i>
     </a>
     
