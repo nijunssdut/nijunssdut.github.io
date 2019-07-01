@@ -39,7 +39,7 @@
     leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":false,"count":true},
     welcome: {"enable":false,"interval":30},
     start_time: "2019-06-29",
-    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    passwords: [],
     is_post: true,
     lock: false,
     author: "NI,JUN",
@@ -186,7 +186,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[3,2,3,1,2,4,5,5,6] 和 k=4</span><br></pre></td></tr></table></figure>
 
 <p>输出：4</p>
-<h1 id="2-解题思路"><a href="#2-解题思路" class="headerlink" title="2. 解题思路"></a>2. 解题思路</h1><p>类快速排序思想，找到数组中元素的位置，当分界点的索引为k-1的时候，它就是第k大元素，第k小的数只需找<strong>（组数长度+1-k）</strong>大的数即可。</p>
+<h1 id="2-解题思路"><a href="#2-解题思路" class="headerlink" title="2. 解题思路"></a>2. 解题思路</h1><p>类快速排序思想，找到数组中元素的位置，当分界点的索引为k-1的时候，它就是第k大元素，第k小的数只需找<strong>（组数长度+1-k）</strong>大的数即可。其时间复杂度应小于$O(n\log_2n)$。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self,nums,k)</span>:</span></span><br><span class="line">		<span class="keyword">return</span> self.findKthSmallest(nums,len(nums)+<span class="number">1</span>-k)</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">findKthSmallest</span><span class="params">(self,nums,k)</span>:</span>  </span><br><span class="line">		<span class="keyword">if</span> nums:</span><br><span class="line">			pos = self.partition(nums,<span class="number">0</span>,len(nums)<span class="number">-1</span>)</span><br><span class="line">			<span class="keyword">if</span> k&gt;pos+<span class="number">1</span>:</span><br><span class="line">				<span class="keyword">return</span> self.findKthSmallest(nums[pos+<span class="number">1</span>:],k-pos<span class="number">-1</span>)</span><br><span class="line">			<span class="keyword">elif</span> k&lt;pos+<span class="number">1</span>:</span><br><span class="line">				<span class="keyword">return</span> self.findKthSmallest(nums[:pos],k)</span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				<span class="keyword">return</span> nums[pos]</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(self,nums,l,r)</span>:</span></span><br><span class="line">		low = l</span><br><span class="line">		<span class="keyword">while</span> l&lt;r:</span><br><span class="line">			<span class="keyword">if</span> nums[l] &lt; nums[r]:</span><br><span class="line">				nums[l],nums[low] = nums[low],num[l]</span><br><span class="line">				low += <span class="number">1</span></span><br><span class="line">			l += <span class="number">1</span></span><br><span class="line">		nums[low],nums[r] = nums[r],nums[low]</span><br><span class="line">		<span class="keyword">return</span> low</span><br></pre></td></tr></table></figure>
 
 <h1 id="3-其他解法"><a href="#3-其他解法" class="headerlink" title="3. 其他解法"></a>3. 其他解法</h1><p>堆排序方法</p>
@@ -324,7 +324,7 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="javascript:void(0);" data-enable="false">
+    <a href="/passages/2019-07-01-神策数据实习面试/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
     <a href="/passages/2019-06-30-支持向量机-SVM-原理与推导/" data-enable="true">
