@@ -6,12 +6,12 @@
   <meta name="author" content="NI,JUN">
   
   
-  <title>神策数据实习 | Jun的个人随笔</title>
+  <title>MapReduce原理与排序应用 | Jun的个人随笔</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="个人笔经面经,算法岗,">
+    <meta name="keywords" content="分布式,方法优化,Hadoop,">
   
 
   
@@ -39,7 +39,7 @@
     leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":false,"count":true},
     welcome: {"enable":false,"interval":30},
     start_time: "2019-06-29",
-    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    passwords: [],
     is_post: true,
     lock: false,
     author: "NI,JUN",
@@ -165,10 +165,6 @@
       <i class="fa fa-calendar"></i>2019-07-01
     </span>
     
-      <span>
-        | <a href="/categories/个人笔经面经/"><i class="fa fa-bookmark"></i>个人笔经面经</a>
-      </span>
-    
     
       <span>
         | <i class="fa fa-unlock-alt"></i>UNLOCK
@@ -176,18 +172,54 @@
     
   </div>
   <h1 class="passage-title">
-    神策数据实习
+    MapReduce原理与排序应用
   </h1>
   
   <article class="passage-article">
-    <h1 id="1-笔试"><a href="#1-笔试" class="headerlink" title="1. 笔试"></a>1. 笔试</h1><p>拓扑排序：可以实现有向图以及无向图判断是否有环存在。</p>
-<p>稳定排序算法：归并排序、基数排序、冒泡排序和直接插入排序</p>
-<h1 id="2-面试"><a href="#2-面试" class="headerlink" title="2. 面试"></a>2. 面试</h1><p>时间很短，每人只有15分钟，本人大概面试了20分钟左右，面试官不是做算法的，技术能力很强（认识…），效果不理想，主要是自己菜—&gt;.</p>
-<p><strong>问题1：</strong>描述一下过拟合。</p>
-<p><strong>问题2：</strong>给一些数据，如何选取模型去挑选数据，判断与随机取数据的好坏。</p>
-<p><strong>问题3：</strong>分布式了解吗？MR工作机制？</p>
-<p><strong>问题4：</strong>给文章数据让你统计词频，你怎么实现会有哪些问题？大量数据怎么处理？正常字典法请手撕代码。</p>
-<p><strong>问题5：</strong>针对于分词那么换行问题“hell-\nO world”如何处理，文章应当一部分一部分去处理，如果分句针对较长的句子该怎么办？（面试官不看好replace(“-\n”,””)）我也没有合适的解决方案…..</p>
+    <h1 id="1-MapReduce工作机制"><a href="#1-MapReduce工作机制" class="headerlink" title="1. MapReduce工作机制"></a>1. MapReduce工作机制</h1><p><strong>MapReduce执行总流程</strong></p>
+<p><img src="/passages/2019-07-01-MapReduce原理与排序应用/MapReduce-Framework.png" alt="MapReduce-Framework"></p>
+<p>MapReduce Framework如上图所示。</p>
+<p>JobTracker: 初始化作业，分配作业，与TaskManager通信，协调整个作业的执行</p>
+<p>TaskTracker: 保持与JobTracker的通信，执行map或者reduce任务</p>
+<p>HDFS；保存作业的数据，配置信息等，保存作业结果</p>
+<h2 id="具体相关流程"><a href="#具体相关流程" class="headerlink" title="具体相关流程"></a>具体相关流程</h2><h3 id="提交作业"><a href="#提交作业" class="headerlink" title="提交作业"></a>提交作业</h3><p>客户端编写完程序代码后，打成jar，然后通过相关命令向集群提交自己想要跑的MR任务，具体过程如下：</p>
+<ol>
+<li>通过调用JobTracker的getNewJobId()获取当前作业id</li>
+<li>检查作业相关路径</li>
+<li>计算作业的输入划分，并将划分信息写到Job.split文件中</li>
+<li>将运行作业所需要的资源包括作业jar包，配置文件和打算所得的输入划分，复制到作业对应的HDFS上</li>
+<li>调用JobTracker的summitJob()提交，告诉JobTracker作业准备执行</li>
+</ol>
+<h3 id="初始化作业"><a href="#初始化作业" class="headerlink" title="初始化作业"></a>初始化作业</h3><ol>
+<li>从HDFS中读取作业对应的job.split，得到输入数据的划分信息</li>
+<li>创建并且初始化Map任务和Reduce任务：为每个map/reduce task生成一个TaskInProgress去监控和调度该task。例如创建两个初始化task，一个初始化Map，一个初始化Reduce</li>
+</ol>
+<h3 id="分配任务"><a href="#分配任务" class="headerlink" title="分配任务"></a>分配任务</h3><p>JobTracker会将任务分配到TaskTracker去执行，但是怎么判断哪些TaskTracker，怎么分配任务呢？所以，我们要实现JobTracker和TaskTracker中的通信，也就是TaskTracker循环向JobTracker发送心跳，向上级报告自己这边是不是还活着，活干的怎么样了，可以接些新活等。作为JobTracker，接收到心跳信息，如果有待分配任务，就会给这个TaskTracker分配一个任务，然后taskTracker就把这个任务加入到他的任务队列中。我们可以主要看看TaskTracker中的transmitHeartBeart()和JobTracker的heartbeat()方法。</p>
+<h3 id="执行任务"><a href="#执行任务" class="headerlink" title="执行任务"></a>执行任务</h3><p>TaskTracker申请到任务后，在本地执行，主要有以下几个步骤来完成本地的步骤化:</p>
+<ol>
+<li>将job.split复制到本地</li>
+<li>将job.jar复制到本地</li>
+<li>将job的配置信息写入到Job.xml</li>
+<li>创建本地任务目录，解压job.rar</li>
+<li>调用launchTaskForJob()方法发布任务</li>
+</ol>
+<p>发布任务后，TaskRunner会启动新的java虚拟机来运行每个任务，以map任务为例，流程如下：</p>
+<ol>
+<li>配置任务执行参数（获取java程序的执行环境和配置参数等）</li>
+<li>在child临时文件表中添加Map任务信息</li>
+<li>配置log文件夹，配置Map任务的执行环境和配置参数；</li>
+<li>根据input split,生成RecordReader读取数据</li>
+<li>为Map任务生成MapRunnable，一次从RecordReader中接收数据，并调用map函数进行处理</li>
+<li>将Map函数的输出调用collect收集到MapOUtputBuffer中</li>
+</ol>
+<h1 id="2-MapReduce中排序应用"><a href="#2-MapReduce中排序应用" class="headerlink" title="2. MapReduce中排序应用"></a>2. MapReduce中排序应用</h1><h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><h3 id="Map阶段"><a href="#Map阶段" class="headerlink" title="Map阶段"></a>Map阶段</h3><p>Read(读取)      ==&gt;  Collect(生成Key-Value)     ==&gt;  Spill(溢写)</p>
+<p><strong>Read:</strong>从HDFS读取inputSplit（由InputFormat根据文件生成）</p>
+<p><strong>Collect:</strong>分为map过程和partition过程，map根据inputSplit生成Key-Value对，而Partition添加分区标记（辅助排序用），并写入环形缓存区。</p>
+<p><strong>Spill:</strong>分为sort过程、compress过程以及combine过程。数据不断的写入环形缓存区，达到阈值之后开始溢写，在溢写的过程中进行一次Sort，这里使用的排序是快排（QuickSort）；一次溢出生成一个file，并且在生成file的过程中进行压缩（compress）；多个file又会进行一次文件合并，在文件合并的过程中进行排序，这里使用的排序是归并排序（MergeSort）。</p>
+<h3 id="Shuffle阶段"><a href="#Shuffle阶段" class="headerlink" title="Shuffle阶段"></a>Shuffle阶段</h3><p>Shuffle阶段主要就是一个数据拷贝的过程，Map端合成的大文件之后，通过HTTP服务(jetty server)拷贝到Reduce端。拷贝到Reduce端的数据并不是马上写入文件，而是同样放在缓存中，达到阈值则进行溢写。</p>
+<h3 id="Reduce阶段"><a href="#Reduce阶段" class="headerlink" title="Reduce阶段"></a>Reduce阶段</h3><p>合并溢写生成的file，这里使用的排序为归并排序(MegerSort)，生成一些更大的文件(进一步减少文件个数)。在归并之后留下少量的大文件，最后对大文件进行一次最终合并，合并成一个有序的大文件(只有一个)，这里使用的排序算法为堆排序(HeapSort)。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>综上所述，一个MapReduce过程涉及到了一次快排、两次归并以及一次堆排的操作。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://www.cnblogs.com/wangkeustc/p/7338369.html" target="_blank" rel="noopener">Hadoop入门第三篇-MapReduce试手以及MR工作机制</a></p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -196,7 +228,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-笔试"><span class="toc-text">1. 笔试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-面试"><span class="toc-text">2. 面试</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-MapReduce工作机制"><span class="toc-text">1. MapReduce工作机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#具体相关流程"><span class="toc-text">具体相关流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#提交作业"><span class="toc-text">提交作业</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化作业"><span class="toc-text">初始化作业</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分配任务"><span class="toc-text">分配任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行任务"><span class="toc-text">执行任务</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-MapReduce中排序应用"><span class="toc-text">2. MapReduce中排序应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#实现过程"><span class="toc-text">实现过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Map阶段"><span class="toc-text">Map阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shuffle阶段"><span class="toc-text">Shuffle阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reduce阶段"><span class="toc-text">Reduce阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li></ol>
   </div>
 </aside>
   
@@ -205,7 +237,7 @@
       
         <div>
           原文链接: 
-          <a href="" target="_blank">http://yoursite.com/passages/2019-07-01-神策数据实习面试/</a>
+          <a href="" target="_blank">http://yoursite.com/passages/2019-07-01-MapReduce原理与排序应用/</a>
         </div>
       
       <div>
@@ -216,7 +248,11 @@
   
     <div class="passage-tags">
      
-      <a href="/tags/算法岗/"><i class="fa fa-tags"></i>算法岗</a>
+      <a href="/tags/分布式/"><i class="fa fa-tags"></i>分布式</a>
+     
+      <a href="/tags/方法优化/"><i class="fa fa-tags"></i>方法优化</a>
+     
+      <a href="/tags/Hadoop/"><i class="fa fa-tags"></i>Hadoop</a>
     
     </div>
   
@@ -318,10 +354,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/passages/2019-07-01-MapReduce原理与排序应用/" data-enable="true">
+    <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/passages/2019-06-30-找到数组第k大或第k小的数/" data-enable="true">
+    <a href="/passages/2019-07-01-神策数据实习面试/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
