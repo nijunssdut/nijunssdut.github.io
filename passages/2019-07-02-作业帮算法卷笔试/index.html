@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="author" content="NI,JUN">
+  
+  
+  <title>作业帮算法卷笔试 | Jun的个人随笔</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="个人笔经面经,算法岗,">
+  
+
+  
+  <meta name="description" content="Jun的小站">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":false,"count":true},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2019-06-29",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "NI,JUN",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Jun的个人主页</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 兴趣是第一生产力！</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/nijunssdut/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-07-02
+    </span>
+    
+      <span>
+        | <a href="/categories/个人笔经面经/"><i class="fa fa-bookmark"></i>个人笔经面经</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    作业帮算法卷笔试
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="博主问题笔记"><a href="#博主问题笔记" class="headerlink" title="博主问题笔记"></a>博主问题笔记</h1><p>不包含博主经历所有题目只记录典型问题（估计也差不多全部了，因为博主菜…..）</p>
+<p><strong>问题1：</strong>交叉熵公式</p>
+<p><strong>解答：</strong>交叉熵公式如下：<br>$$<br>H(x,y) = -\sum_{i=1}^nx_i\ln{y_i}<br>$$<br>这里公式定义，x、y都是表示概率分布。其中x是正确的概率分布，而y是我们预测出来的概率分布，这个公式算出来的结果，表示y与正确答案x之间的错误程度（即：y错得有多离谱），结果值越小，表示y越准确，与x越接近。</p>
+<p><strong>问题2：</strong>随机森林与GDBT的异同</p>
+<p><strong>解答：</strong></p>
+<h2 id="理论知识"><a href="#理论知识" class="headerlink" title="理论知识"></a>理论知识</h2><h3 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h3><p>随机森林是一个用随机方式建立的，包括多个决策树的集成分类器。其输出的类别由各个树投票而定（如果是回归树则取平均）。假设样本总数为n，每个样本的特征数为a。则随机森林生成过程如下：</p>
+<ol>
+<li>从原始样本中采用有放回抽样的方法选取n个样本;</li>
+<li>对n个样本选取a个特征中的随机k个，用建立决策树的方法获得最佳分割点；</li>
+<li>重复m次，获取m个决策树；</li>
+<li>对输入样例进行预测时，每个子树都产生一个结果，采用多数投票机制输出。</li>
+</ol>
+<p>随机森林的随机性主要体现在两个方面：</p>
+<ol>
+<li>数据集的随机选取：从原始的数据集中采取有放回的抽样(bagging)，构造子数据集，子数据集的数据量是和原始数据集相同的。不同子数据集的元素可以重复，同一个子数据集中的元素也可以重复。</li>
+<li>待选特征的随机选取：与数据集的随机选取类似，随机森林中的子树的每一个分裂过程并未用到所有的待选特征，而是从所有的待选特征中随机选取一定的特征，之后再在随机选取的特征中选择最优的特征。</li>
+</ol>
+<p><strong>随机森林的优点：</strong></p>
+<ul>
+<li>实现简单，训练速度快，泛化能力强，可以并行实现，因为训练时树与树之间是相互独立的；</li>
+<li>相比单一决策树，能学习到特征之间的相互影响，且不容易过拟合；</li>
+<li>能够处理高维数据（即特征很多），并且不用做特征选择，因为特征子集是随机选取的；</li>
+<li>对于不平衡的数据集，可以平衡误差；</li>
+<li>相比SVM，不是很怕特征缺失，因为待选特征也是随机选取；</li>
+<li>训练完成后可以给出哪些特征比较重要。</li>
+</ul>
+<p><strong>随机森林的缺点：</strong></p>
+<ul>
+<li>在噪声过大的分类和回归问题还是容易过拟合；</li>
+<li>相比于单一决策树，它的随机性让我们难以对模型进行解释。</li>
+</ul>
+<h3 id="GBDT"><a href="#GBDT" class="headerlink" title="GBDT"></a>GBDT</h3><p>GBDT （Gradient Boost Decision Tree）是以决策树为学习器迭代算法，注意GDBT里的决策树都是回归树而不是分类树。Boost是“提升”的意思，一般Boosting算法都是一个迭代的过程，每一次新的训练都是为了改进上一次的结果。 </p>
+<p>GBDT的核心就在于：每一棵树学的是之前所有树结果和的残差，这个残差就是一个加预测值后能得真实值的累加量。比如A的真实年龄是18岁，但第一棵树的预测年龄是12岁，差了6岁，即残差为6岁。那么在第二棵树里我们把A的年龄设为6岁去学习，如果第二棵树真的能把A分到6岁的叶子节点，那累加两棵树的结论就是A的真实年龄；如果第二棵树的结论是5岁，则A仍然存在1岁的残差，第三棵树里A的年龄就变成1岁，继续学习。<br>GBDT优点是适用面广，离散或连续的数据都可以处理，几乎可用于所有回归问题（线性/非线性），亦可用于二分类问题（设定阈值，大于阈值为正例，反之为负例）。缺点是由于弱分类器的串行依赖，导致难以并行训练数据。</p>
+<h3 id="随机森林和GBDT的区别"><a href="#随机森林和GBDT的区别" class="headerlink" title="随机森林和GBDT的区别"></a>随机森林和GBDT的区别</h3><ol>
+<li>随机森林采用的bagging思想，而GBDT采用的boosting思想。这两种方法都是Bootstrap思想的应用，Bootstrap是一种有放回的抽样方法思想。虽然都是有放回的抽样，但二者的区别在于：Bagging采用有放回均匀取样，而boosting根据错误率来取样（Boosting 初始化时对每一个训练样例赋相等的权重$\frac{1}{n}$，然后用该算法对训练集训练t轮，每次训练后，对训练失败的样本赋以较大的权重），因此Boosting的分类京都要优于Bagging。Bagging的训练集的选择是随机的，各训练集之间相互独立，弱分类器可并行，而boosting的训练集的选择与前一轮的学习结果有关，是串行的。</li>
+<li>组成随机森林的树可以是分类树，也可以是回归树；而GBDT只能由回归树组成。</li>
+<li>组成随机森林的树可以并行生成；而GBDT只能是串行生成。</li>
+<li>对于最终的输出结果而言，随机森林采用多数投票等；而GBDT则是将所有结果累加起来，或者加权累加起来。</li>
+<li>随机森林对异常值不敏感；GDBT对异常值非常敏感。</li>
+<li>随机森林对训练集一视同仁；GBDT是基于权值的弱分类器的集成。</li>
+<li>随机森林是通过减少模型方差提高性能，GBDT是通过减少模型偏差提高性能。</li>
+</ol>
+<p>参考资料：<a href="https://blog.csdn.net/wfei101/article/details/82531516" target="_blank" rel="noopener">机器学习：随机森林和GDBT的区别</a></p>
+<p><strong>问题3：</strong>对后验概率估计的思考</p>
+<p><strong>解答：</strong>对于很多条件概率问题，可以等价于$P(B) =\frac{P(AB)}{P(A)}$求后验概率问题。</p>
+<p><strong>问题4：</strong>针对归一化问题的数据线性排序思考</p>
+<p><strong>解答：</strong>基数排序是一种针对该问题很好的解决方式，往往因为其平均复杂度为$O(d(r+n))$被忽略其线性。</p>
+<p><strong>问题5：</strong>带有容错的最长公共子串如何实现（动态规划问题）</p>
+<p><strong>解答：</strong> 暂时还没想到。</p>
+<p><strong>问题6：</strong>剑指Offer原题，螺旋遍历</p>
+<p><strong>解答：</strong>主要找规律找出循环条件：$columns \gt startX<em>2$并且$rows \gt startY</em>2$。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="comment"># matrix类型为二维列表，需要返回列表</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printMatrix</span><span class="params">(self, matrix)</span>:</span></span><br><span class="line">        <span class="comment"># write code here</span></span><br><span class="line">        <span class="keyword">if</span> matrix <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        res = []</span><br><span class="line">        start = <span class="number">0</span></span><br><span class="line">        column = len(matrix[<span class="number">0</span>])</span><br><span class="line">        row = len(matrix)</span><br><span class="line">        <span class="keyword">while</span> column &gt; <span class="number">2</span>*start <span class="keyword">and</span> row &gt; start*<span class="number">2</span>:</span><br><span class="line">            self.PrintMatrixIncicle(matrix,column,row,start,res)</span><br><span class="line">            start += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">PrintMatrixIncicle</span><span class="params">(self,matrix,column,row,start,res)</span>:</span></span><br><span class="line">        endX = column<span class="number">-1</span>-start</span><br><span class="line">        endY = row<span class="number">-1</span>-start</span><br><span class="line">        i = start</span><br><span class="line">        <span class="keyword">while</span> i &lt;= endX:</span><br><span class="line">            number = matrix[start][i]</span><br><span class="line">            self.printNumber(number,res)</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> start &lt; endY:</span><br><span class="line">            i = start+<span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> i &lt;= endY:</span><br><span class="line">                number= matrix[i][endX]</span><br><span class="line">                self.printNumber(number,res)</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> start &lt; endX <span class="keyword">and</span> start &lt; endY:</span><br><span class="line">            i = endX<span class="number">-1</span></span><br><span class="line">            <span class="keyword">while</span> i &gt;= start:</span><br><span class="line">                number = matrix[endY][i]</span><br><span class="line">                self.printNumber(number,res)</span><br><span class="line">                i -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span>  start &lt; endX <span class="keyword">and</span> start &lt; endY<span class="number">-1</span>:</span><br><span class="line">            i = endY<span class="number">-1</span></span><br><span class="line">            <span class="keyword">while</span> i &gt;= start+<span class="number">1</span>:</span><br><span class="line">                number = matrix[i][start]</span><br><span class="line">                self.printNumber(number,res)</span><br><span class="line">                i -= <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">printNumber</span><span class="params">(self,number,res)</span>:</span></span><br><span class="line">        res.append(number)</span><br></pre></td></tr></table></figure>
+
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#博主问题笔记"><span class="toc-text">博主问题笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#理论知识"><span class="toc-text">理论知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#随机森林"><span class="toc-text">随机森林</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GBDT"><span class="toc-text">GBDT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#随机森林和GBDT的区别"><span class="toc-text">随机森林和GBDT的区别</span></a></li></ol></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: 倪骏</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">http://yoursite.com/passages/2019-07-02-作业帮算法卷笔试/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/算法岗/"><i class="fa fa-tags"></i>算法岗</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://nijunssdut.github.io/" target="_blank">Jun的小站</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">系列教程</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">Follow Me</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://segmentfault.com/" target="_blank">思否</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: nijun@mail.dlut.edu.cn
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/passages/2019-07-03-Attention机制整理/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/passages/2019-07-01-Line实习面/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
