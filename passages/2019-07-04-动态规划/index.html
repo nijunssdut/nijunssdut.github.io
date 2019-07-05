@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Jun的个人随笔">
 <meta property="og:description" content="定义动态规划与分治方法相似，都是通过组合子问题的解来求解原问题。分治方法将问题划分为互不相交的子问题，递归地求解子问题，再将它们的解组合起来，求出原问题的解。与之相反，动态规划应用于子问题重叠的情况，即不同的子问题具有公共的子子问题（子问题的求解是递归进行的，将其划分为更小的子子问题）。动态规划算法对每个子子问题只求解一次，将其保存在一个表格中，避免了这种不必要的计算工作。 动态规划方法通常用来求">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-05T02:35:07.003Z">
+<meta property="og:updated_time" content="2019-07-05T10:42:29.559Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="动态规划">
 <meta name="twitter:description" content="定义动态规划与分治方法相似，都是通过组合子问题的解来求解原问题。分治方法将问题划分为互不相交的子问题，递归地求解子问题，再将它们的解组合起来，求出原问题的解。与之相反，动态规划应用于子问题重叠的情况，即不同的子问题具有公共的子子问题（子问题的求解是递归进行的，将其划分为更小的子子问题）。动态规划算法对每个子子问题只求解一次，将其保存在一个表格中，避免了这种不必要的计算工作。 动态规划方法通常用来求">
@@ -405,7 +405,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-07-05 10:35:07" itemprop="dateModified" datetime="2019-07-05T10:35:07+08:00">2019-07-05</time>
+                <time title="修改时间：2019-07-05 18:42:29" itemprop="dateModified" datetime="2019-07-05T18:42:29+08:00">2019-07-05</time>
               </span>
             
           
@@ -1281,6 +1281,46 @@
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
   
 
 

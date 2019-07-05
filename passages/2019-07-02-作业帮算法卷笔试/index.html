@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Jun的个人随笔">
 <meta property="og:description" content="博主问题笔记不包含博主经历所有题目只记录典型问题（估计也差不多全部了，因为博主菜…..） 问题1：交叉熵公式 解答：交叉熵公式如下：$$H(x,y) = -\sum_{i=1}^nx_i\ln{y_i}$$这里公式定义，x、y都是表示概率分布。其中x是正确的概率分布，而y是我们预测出来的概率分布，这个公式算出来的结果，表示y与正确答案x之间的错误程度（即：y错得有多离谱），结果值越小，表示y越准确">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-05T02:43:54.811Z">
+<meta property="og:updated_time" content="2019-07-05T10:44:24.390Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="作业帮算法卷笔试">
 <meta name="twitter:description" content="博主问题笔记不包含博主经历所有题目只记录典型问题（估计也差不多全部了，因为博主菜…..） 问题1：交叉熵公式 解答：交叉熵公式如下：$$H(x,y) = -\sum_{i=1}^nx_i\ln{y_i}$$这里公式定义，x、y都是表示概率分布。其中x是正确的概率分布，而y是我们预测出来的概率分布，这个公式算出来的结果，表示y与正确答案x之间的错误程度（即：y错得有多离谱），结果值越小，表示y越准确">
@@ -405,7 +405,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-07-05 10:43:54" itemprop="dateModified" datetime="2019-07-05T10:43:54+08:00">2019-07-05</time>
+                <time title="修改时间：2019-07-05 18:44:24" itemprop="dateModified" datetime="2019-07-05T18:44:24+08:00">2019-07-05</time>
               </span>
             
           
@@ -1300,6 +1300,46 @@
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
   
 
 

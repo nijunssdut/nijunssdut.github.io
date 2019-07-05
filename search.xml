@@ -1,3 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
+  <entry>
+    <title><![CDATA[动态规划]]></title>
+    <url>%2Fpassages%2F2019-07-04-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%2F</url>
+    <content type="text"><![CDATA[定义动态规划与分治方法相似，都是通过组合子问题的解来求解原问题。分治方法将问题划分为互不相交的子问题，递归地求解子问题，再将它们的解组合起来，求出原问题的解。与之相反，动态规划应用于子问题重叠的情况，即不同的子问题具有公共的子子问题（子问题的求解是递归进行的，将其划分为更小的子子问题）。动态规划算法对每个子子问题只求解一次，将其保存在一个表格中，避免了这种不必要的计算工作。 动态规划方法通常用来求解最优化问题。这类问题可以有很多可行解，每个解都有一个值，我们希望寻找具有最优值的解。我们称这样的解为问题的一个最优解，因为可能有多个解都达到最优值。 设计方法通常按如下4个步骤来设计一个动态规划算法： 刻画一个最优解的结构特征。 递归地定义最优解的值。 计算最优解的值，采用自底向上的方法。 利用计算出的信息构造一个最优解。 经典题目——最长公共子序列问题(LCS)与最长公共子串问题最长公共子序列问题（LCS问题）给定两个字符串A和B，长度分别为m和n，要求找出它们最长的公共子序列，并返回其长度。例如： A = "HelloWorld" B="loop" 则A与B的最长公共子序列为 “loo”,返回的长度为3。此处只给出动态规划的解法：定义子问题$dp[i][j]$为字符串A的第一个字符到第 i 个字符串和字符串B的第一个字符到第 j 个字符的最长公共子序列。 为了求解$dp[i][j]$，我们要先判断A的第i个元素B的第j个元素是否相同即判断A[i - 1]和 B[j -1]是否相同，如果相同它就是$dp[i-1][j-1]+ 1$，相当于在两个字符串都去掉一个字符时的最长公共子序列再加 1；否则最长公共子序列取$dp[i][j-1]$和$dp[i-1][j]$中大的那个。 问题的初始状态为：$$dp[i][0] = 0,dp[0][j] = 0$$相应的状态转移方程为：$$dp[i][j] =\begin{cases}\max{(dp[i-1][j],dp[i][j-1])}&amp; A[i-1]!=B[j-1]\\dp[i-1][j-1]+1&amp;A[i-1] == B[j-1]\end{cases}$$ 代码实现如下： 123456789101112131415161718def LongestSubstring(str1,str2): res = 0 str1_len = len(str1) str2_len = len(str2) if str1_len == 0 or str2_len == 0: return res dp = [[0 for j in range(str1_len)] for i in range(str1_len)] for i in range(str1_len): for j in range(str2_len): if str1[i] == str2[j]: if i == 0 or j == 0: dp[i][j] = 1 else: dp[i][j] = dp[i-1][j-1]+1 else: dp[i][j] = max(dp[i-1][j],dp[i][j-1]) return dp[i][j] 该算法的时间复杂度为$O(n*m)$，空间复杂度为$O(n*m)$。 Note：需要考虑空串的判定条件 最长公共子串问题给定两个字符串A和B，长度分别为m和n，要求找出它们最长的公共子串，并返回其长度。例如： A = "HelloWorld" B = "loop" 则A与B的最长公共子串为 "lo",返回的长度为2。我们可以看到子序列和子串的区别：**子序列和子串都是字符集合的子集，但是子序列不一定连续，但是子串一定是连续的**。 整个问题的初始状态为：$$dp[i][0] = 0,dp[0][j] = 0$$相应的状态转移方程为：$$dp[i][j] =\begin{cases}0&amp; A[i-1] !=B[j-1]\\dp[i-1][j-1]+1 &amp; A[i-1] == B[j-1]\end{cases}$$代码实现如下： 1234567891011121314151617def lcsubstr(str1,str2): res = 0 str1_len = len(str1) str2_len = len(str2) if str1_len == 0 or str2_len == 0: return res dp = [[0 for j in range(str1_len)] for i in range(str1_len)] for i in range(str1_len): for j in range(str2_len): if str1[i] == str2[j]: if i == 0 or j == 0: dp[i][j] = 1 else: dp[i][j] = dp[i-1][j-1]+1 if dp[i][j]&gt; res: res = dp[i][j] return res 该算法的时间复杂度为$O(n*m)$ ，空间复杂度为$O(n*m)$。 Note：需要考虑空串的判定条件 参考资料 《算法导论第三版》]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>笔试面试</tag>
+        <tag>经典算法</tag>
+        <tag>动态规划</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Attention机制整理]]></title>
+    <url>%2Fpassages%2F2019-07-03-Attention%E6%9C%BA%E5%88%B6%E6%95%B4%E7%90%86%2F</url>
+    <content type="text"><![CDATA[Attention的定义与作用按照Stanford大学课件上的描述，attention的通用定义如下： 给定一组向量集合values，以及一个向量query，attention机制是一种根据该query计算values的加权求和的机制。 attention的重点就是这个集合values中的每个value的“权值”的计算方法。 有时候也把这种attention的机制叫做query的输出关注了原文的不同部分。（Query attends to the values） 换句话说，attention机制就是一种根据某些规则或者某些额外信息（query）从向量表达集合（values）中抽取特定的向量进行加权组合（attention）的方法。简单来讲，只要我们从部分向量里面搞了加权求和，那就算用了attention。 Attention-based Model其实就是一个相似性的度量，当前的输入与目标状态越相似，那么在当前的输入的权重就会越大，说明当前的输出越依赖于当前的输入。 参考资料 浅谈attention机制 自然语言处理中的Attention机制总结]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>Attention</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[作业帮算法卷笔试]]></title>
+    <url>%2Fpassages%2F2019-07-02-%E4%BD%9C%E4%B8%9A%E5%B8%AE%E7%AE%97%E6%B3%95%E5%8D%B7%E7%AC%94%E8%AF%95%2F</url>
+    <content type="text"><![CDATA[博主问题笔记不包含博主经历所有题目只记录典型问题（估计也差不多全部了，因为博主菜…..） 问题1：交叉熵公式 解答：交叉熵公式如下：$$H(x,y) = -\sum_{i=1}^nx_i\ln{y_i}$$这里公式定义，x、y都是表示概率分布。其中x是正确的概率分布，而y是我们预测出来的概率分布，这个公式算出来的结果，表示y与正确答案x之间的错误程度（即：y错得有多离谱），结果值越小，表示y越准确，与x越接近。 问题2：随机森林与GDBT的异同 解答： 理论知识随机森林随机森林是一个用随机方式建立的，包括多个决策树的集成分类器。其输出的类别由各个树投票而定（如果是回归树则取平均）。假设样本总数为n，每个样本的特征数为a。则随机森林生成过程如下： 从原始样本中采用有放回抽样的方法选取n个样本; 对n个样本选取a个特征中的随机k个，用建立决策树的方法获得最佳分割点； 重复m次，获取m个决策树； 对输入样例进行预测时，每个子树都产生一个结果，采用多数投票机制输出。 随机森林的随机性主要体现在两个方面： 数据集的随机选取：从原始的数据集中采取有放回的抽样(bagging)，构造子数据集，子数据集的数据量是和原始数据集相同的。不同子数据集的元素可以重复，同一个子数据集中的元素也可以重复。 待选特征的随机选取：与数据集的随机选取类似，随机森林中的子树的每一个分裂过程并未用到所有的待选特征，而是从所有的待选特征中随机选取一定的特征，之后再在随机选取的特征中选择最优的特征。 随机森林的优点： 实现简单，训练速度快，泛化能力强，可以并行实现，因为训练时树与树之间是相互独立的； 相比单一决策树，能学习到特征之间的相互影响，且不容易过拟合； 能够处理高维数据（即特征很多），并且不用做特征选择，因为特征子集是随机选取的； 对于不平衡的数据集，可以平衡误差； 相比SVM，不是很怕特征缺失，因为待选特征也是随机选取； 训练完成后可以给出哪些特征比较重要。 随机森林的缺点： 在噪声过大的分类和回归问题还是容易过拟合； 相比于单一决策树，它的随机性让我们难以对模型进行解释。 GBDTGBDT （Gradient Boost Decision Tree）是以决策树为学习器迭代算法，注意GDBT里的决策树都是回归树而不是分类树。Boost是“提升”的意思，一般Boosting算法都是一个迭代的过程，每一次新的训练都是为了改进上一次的结果。 GBDT的核心就在于：每一棵树学的是之前所有树结果和的残差，这个残差就是一个加预测值后能得真实值的累加量。比如A的真实年龄是18岁，但第一棵树的预测年龄是12岁，差了6岁，即残差为6岁。那么在第二棵树里我们把A的年龄设为6岁去学习，如果第二棵树真的能把A分到6岁的叶子节点，那累加两棵树的结论就是A的真实年龄；如果第二棵树的结论是5岁，则A仍然存在1岁的残差，第三棵树里A的年龄就变成1岁，继续学习。GBDT优点是适用面广，离散或连续的数据都可以处理，几乎可用于所有回归问题（线性/非线性），亦可用于二分类问题（设定阈值，大于阈值为正例，反之为负例）。缺点是由于弱分类器的串行依赖，导致难以并行训练数据。 随机森林和GBDT的区别 随机森林采用的bagging思想，而GBDT采用的boosting思想。这两种方法都是Bootstrap思想的应用，Bootstrap是一种有放回的抽样方法思想。虽然都是有放回的抽样，但二者的区别在于：Bagging采用有放回均匀取样，而boosting根据错误率来取样（Boosting 初始化时对每一个训练样例赋相等的权重$\frac{1}{n}$，然后用该算法对训练集训练t轮，每次训练后，对训练失败的样本赋以较大的权重），因此Boosting的分类京都要优于Bagging。Bagging的训练集的选择是随机的，各训练集之间相互独立，弱分类器可并行，而boosting的训练集的选择与前一轮的学习结果有关，是串行的。 组成随机森林的树可以是分类树，也可以是回归树；而GBDT只能由回归树组成。 组成随机森林的树可以并行生成；而GBDT只能是串行生成。 对于最终的输出结果而言，随机森林采用多数投票等；而GBDT则是将所有结果累加起来，或者加权累加起来。 随机森林对异常值不敏感；GDBT对异常值非常敏感。 随机森林对训练集一视同仁；GBDT是基于权值的弱分类器的集成。 随机森林是通过减少模型方差提高性能，GBDT是通过减少模型偏差提高性能。 参考资料：机器学习：随机森林和GDBT的区别 问题3：对后验概率估计的思考 解答：对于很多条件概率问题，可以等价于$P(B) =\frac{P(AB)}{P(A)}$求后验概率问题。 问题4：针对归一化问题的数据线性排序思考 解答：基数排序是一种针对该问题很好的解决方式，往往因为其平均复杂度为$O(d(r+n))$被忽略其线性。 问题5：带有容错的最长公共子串如何实现（动态规划问题） 解答： 暂时还没想到。 问题6：剑指Offer原题，螺旋遍历 解答：主要找规律找出循环条件：$columns \gt startX * 2$并且$rows \gt startY*2$。 12345678910111213141516171819202122232425262728293031323334353637383940414243# -*- coding:utf-8 -*-class Solution: # matrix类型为二维列表，需要返回列表 def printMatrix(self, matrix): # write code here if matrix is None: return res = [] start = 0 column = len(matrix[0]) row = len(matrix) while column &gt; 2*start and row &gt; start*2: self.PrintMatrixIncicle(matrix,column,row,start,res) start += 1 return res def PrintMatrixIncicle(self,matrix,column,row,start,res): endX = column-1-start endY = row-1-start i = start while i &lt;= endX: number = matrix[start][i] self.printNumber(number,res) i += 1 if start &lt; endY: i = start+1 while i &lt;= endY: number= matrix[i][endX] self.printNumber(number,res) i += 1 if start &lt; endX and start &lt; endY: i = endX-1 while i &gt;= start: number = matrix[endY][i] self.printNumber(number,res) i -= 1 if start &lt; endX and start &lt; endY-1: i = endY-1 while i &gt;= start+1: number = matrix[i][start] self.printNumber(number,res) i -= 1 def printNumber(self,number,res): res.append(number)]]></content>
+      <categories>
+        <category>个人笔经面经</category>
+      </categories>
+      <tags>
+        <tag>算法岗</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Line实习面]]></title>
+    <url>%2Fpassages%2F2019-07-01-Line%E5%AE%9E%E4%B9%A0%E9%9D%A2%2F</url>
+    <content type="text"><![CDATA[1. 笔试问题1：平衡二叉树的性质（笔者菜，画蛇添足了…） 正确解答：平衡二叉树或者是棵空树，或者是具有下列性质的二叉树： 它的左子树和右子树都是平衡二叉树，且左子树和右子树的深度之差的绝对值不超过1。 若将二叉树节点的平衡因子（Balance Factor）定义为该节点的左子树的深度减去它的右子树的深度，则平衡二叉树上所有节点的平衡因子只可能为-1，0，1。 只要二叉树上有一个节点的平衡因子的绝对值大于1，那么这颗平衡二叉树就失去平衡了 问题2：在浏览器中输入 www.xxxx.com 后执行的全部过程。 正确解答： 客户端浏览器通过DNS解析到 www.xxxx.com 的IP地址，然后通过TCP进行封装数据包，输入到网络层。 在客户端的传输层，把HTTP会话请求分成报文段，添加源和目的端口，如服务器使用80端口监听客户端的请求，客户端由系统随机选择一个端口如5000，与服务器进行交换，服务器把相应的请求返回给客户端的5000端口。然后使用IP层的IP地址查找目的端。 客户端的网络层不必关心应用层或者传输层的东西，主要做的是通过查找路由表确定如何到达服务器，期间可能经过多个路由器，这些都是由路由器来完成的工作，就是通过查找路由表决定通过哪个路径到达服务器。 客户端的链路层，包通过链路层发送到路由器，通过邻居协议查找给定IP地址的MAC地址，然后发送ARP请求查找目的地址，如果得到回应后就可以使用ARP的请求应答交换IP数据包。现在就可以传输了，然后发送IP数据包到达服务器的地址。 问题3： 设计实现HashTable类。(这题博主见过两次了，都没答对，是真的菜…) HashTable有两个问题需要解决，首先是key值哈希化，我们可以借助Python自带的hash函数解决key的哈希编码问题。其次是Hash 冲突的解决机制，在这里只考虑最简单的一种，即将同一个 hash 值下的不同的 key 存放在数组的同一个位置，以链表形式保存。 123456789101112131415161718192021222324252627282930class MyDict(object): def __init__(self,size = 10000): self.hash_list = [list() for _ in range(size)] self.size = size def __setitem__(self,key,value): # 利用python自带的hash函数，对key哈希并对size取模 # hashed_key位置没有值就追加，否则覆盖 hashed_key = hash(key)%self.size for item in self.hash_list[hashed_key]: if item[0] == key: item[1] = value break else: self.hash_list[hashed_key].append([key,value]) def __getitem__(self,key): # return: key所对应的value # 没有key，就抛出keyError for item in self.hash_list[hash(key)%self.size]: if item[0] == key: return item[1] raise keyError(key) def __repr__(self): # hashtable打印 result = [] for sub_list in self.hash_list: if not sub_list: continue for item in sub_list: result.append(str(item[0])+&quot;:&quot;+str(item[1])) return &quot;&#123;&quot;+&quot;,&quot;.join(result)+&quot;&#125;&quot; 参考答案：不用 Python 自带的 Dict 实现自己的 HashTable 2. 面试主要问博主与简历相关的工作与能力，后续博主会陆续更新自己的研究内容。（博主过了，但不能实习可惜…）]]></content>
+      <categories>
+        <category>个人笔经面经</category>
+      </categories>
+      <tags>
+        <tag>算法岗</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[MapReduce原理与排序应用]]></title>
+    <url>%2Fpassages%2F2019-07-01-MapReduce%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8E%92%E5%BA%8F%E5%BA%94%E7%94%A8%2F</url>
+    <content type="text"><![CDATA[1. MapReduce工作机制MapReduce执行总流程 MapReduce Framework如上图所示。 JobTracker: 初始化作业，分配作业，与TaskManager通信，协调整个作业的执行 TaskTracker: 保持与JobTracker的通信，执行map或者reduce任务 HDFS；保存作业的数据，配置信息等，保存作业结果 具体相关流程提交作业客户端编写完程序代码后，打成jar，然后通过相关命令向集群提交自己想要跑的MR任务，具体过程如下： 通过调用JobTracker的getNewJobId()获取当前作业id 检查作业相关路径 计算作业的输入划分，并将划分信息写到Job.split文件中 将运行作业所需要的资源包括作业jar包，配置文件和打算所得的输入划分，复制到作业对应的HDFS上 调用JobTracker的summitJob()提交，告诉JobTracker作业准备执行 初始化作业 从HDFS中读取作业对应的job.split，得到输入数据的划分信息 创建并且初始化Map任务和Reduce任务：为每个map/reduce task生成一个TaskInProgress去监控和调度该task。例如创建两个初始化task，一个初始化Map，一个初始化Reduce 分配任务JobTracker会将任务分配到TaskTracker去执行，但是怎么判断哪些TaskTracker，怎么分配任务呢？所以，我们要实现JobTracker和TaskTracker中的通信，也就是TaskTracker循环向JobTracker发送心跳，向上级报告自己这边是不是还活着，活干的怎么样了，可以接些新活等。作为JobTracker，接收到心跳信息，如果有待分配任务，就会给这个TaskTracker分配一个任务，然后taskTracker就把这个任务加入到他的任务队列中。我们可以主要看看TaskTracker中的transmitHeartBeart()和JobTracker的heartbeat()方法。 执行任务TaskTracker申请到任务后，在本地执行，主要有以下几个步骤来完成本地的步骤化: 将job.split复制到本地 将job.jar复制到本地 将job的配置信息写入到Job.xml 创建本地任务目录，解压job.rar 调用launchTaskForJob()方法发布任务 发布任务后，TaskRunner会启动新的java虚拟机来运行每个任务，以map任务为例，流程如下： 配置任务执行参数（获取java程序的执行环境和配置参数等） 在child临时文件表中添加Map任务信息 配置log文件夹，配置Map任务的执行环境和配置参数； 根据input split,生成RecordReader读取数据 为Map任务生成MapRunnable，一次从RecordReader中接收数据，并调用map函数进行处理 将Map函数的输出调用collect收集到MapOUtputBuffer中 2. MapReduce中排序应用实现过程Map阶段Read(读取) ==&gt; Collect(生成Key-Value) ==&gt; Spill(溢写) Read:从HDFS读取inputSplit（由InputFormat根据文件生成） Collect:分为map过程和partition过程，map根据inputSplit生成Key-Value对，而Partition添加分区标记（辅助排序用），并写入环形缓存区。 Spill:分为sort过程、compress过程以及combine过程。数据不断的写入环形缓存区，达到阈值之后开始溢写，在溢写的过程中进行一次Sort，这里使用的排序是快排（QuickSort）；一次溢出生成一个file，并且在生成file的过程中进行压缩（compress）；多个file又会进行一次文件合并，在文件合并的过程中进行排序，这里使用的排序是归并排序（MergeSort）。 Shuffle阶段Shuffle阶段主要就是一个数据拷贝的过程，Map端合成的大文件之后，通过HTTP服务(jetty server)拷贝到Reduce端。拷贝到Reduce端的数据并不是马上写入文件，而是同样放在缓存中，达到阈值则进行溢写。 Reduce阶段合并溢写生成的file，这里使用的排序为归并排序(MegerSort)，生成一些更大的文件(进一步减少文件个数)。在归并之后留下少量的大文件，最后对大文件进行一次最终合并，合并成一个有序的大文件(只有一个)，这里使用的排序算法为堆排序(HeapSort)。 总结综上所述，一个MapReduce过程涉及到了一次快排、两次归并以及一次堆排的操作。 参考资料Hadoop入门第三篇-MapReduce试手以及MR工作机制]]></content>
+      <tags>
+        <tag>分布式</tag>
+        <tag>方法优化</tag>
+        <tag>Hadoop</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[神策数据实习]]></title>
+    <url>%2Fpassages%2F2019-07-01-%E7%A5%9E%E7%AD%96%E6%95%B0%E6%8D%AE%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95%2F</url>
+    <content type="text"><![CDATA[1. 笔试拓扑排序：可以实现有向图以及无向图判断是否有环存在。 稳定排序算法：归并排序、基数排序、冒泡排序和直接插入排序 2. 面试时间很短，每人只有15分钟，本人大概面试了20分钟左右，面试官不是做算法的，技术能力很强（认识…），效果不理想，主要是自己菜—&gt;. 问题1：描述一下过拟合。 问题2：给一些数据，如何选取模型去挑选数据，判断与随机取数据的好坏。 问题3：分布式了解吗？MR工作机制？ 问题4：给文章数据让你统计词频，你怎么实现会有哪些问题？大量数据怎么处理？正常字典法请手撕代码。 问题5：针对于分词那么换行问题“hell-\nO world”如何处理，文章应当一部分一部分去处理，如果分句针对较长的句子该怎么办？（面试官不看好replace(“-\n”,””)）我也没有合适的解决方案…..]]></content>
+      <categories>
+        <category>个人笔经面经</category>
+      </categories>
+      <tags>
+        <tag>算法岗</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[经典笔试——找到数组第k大或第k小的数]]></title>
+    <url>%2Fpassages%2F2019-06-30-%E6%89%BE%E5%88%B0%E6%95%B0%E7%BB%84%E7%AC%ACk%E5%A4%A7%E6%88%96%E7%AC%ACk%E5%B0%8F%E7%9A%84%E6%95%B0%2F</url>
+    <content type="text"><![CDATA[1. 问题在未排序的数组中找到第k个最大的元素，找到数组排序后的第k个最大的元素。 示例： 输入： 1[3,2,3,1,2,4,5,5,6] 和 k=4 输出：4 2. 解题思路类快速排序思想，找到数组中元素的位置，当分界点的索引为k-1的时候，它就是第k大元素，第k小的数只需找（组数长度+1-k）大的数即可。其时间复杂度应小于$O(n\log_2n)$。 123456789101112131415161718192021class Solution(object): def findKthLargest(self,nums,k): return self.findKthSmallest(nums,len(nums)+1-k) def findKthSmallest(self,nums,k): if nums: pos = self.partition(nums,0,len(nums)-1) if k&gt;pos+1: return self.findKthSmallest(nums[pos+1:],k-pos-1) elif k&lt;pos+1: return self.findKthSmallest(nums[:pos],k) else: return nums[pos] def partition(self,nums,l,r): low = l while l&lt;r: if nums[l] &lt; nums[r]: nums[l],nums[low] = nums[low],num[l] low += 1 l += 1 nums[low],nums[r] = nums[r],nums[low] return low 3. 其他解法堆排序方法]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>笔试面试</tag>
+        <tag>python</tag>
+        <tag>必会题目</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[支持向量机(SVM)原理与推导]]></title>
+    <url>%2Fpassages%2F2019-06-30-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA-SVM-%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8E%A8%E5%AF%BC%2F</url>
+    <content type="text"><![CDATA[1. 支持向量机的原理Support Vector Machine (SVM)是一种二类分类模型。它的基本模型是在特征空间中寻找间隔最大化的分隔超平面的线形分类器。（间隔最大是它有别于感知机），通过该超平面实现对未知样本集的分类。 当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性可分支持向量机； 当训练数据近似线性可分时，引入松弛变量，通过软间隔最大化，学习一个线性分类器，即线性支持向量机； 当训练数据线性不可分时，通过使用核技巧及间隔最大化，学习非线性支持向量机。 2. SVM推导线性分类器是最简单的有效分类器形式，SVM则在线性分类器基础上演化而成。 所谓线性函数，在一维空间中就是一个点，在二维空间中就是一条直线，三维空间就是一个平面，随着维度不断增加，线性函数也不断改变，被叫做超平面。 SVM的目标就是找到图中的超平面，在任意维空间中，超平面可以表示为函数：$$G(x)=W^TX+b$$一个样本点到$P(X_i,Y_i)$超平面的几何距离为：$$\frac{\left|W^TX_i+b\right|}{\left|{W}\right|}$$Note:这里的几何距离是距离而非间隔。 对于正样本$Y_i=1$，意味着该点在超平面正样本一侧：$$W^TX_i+b&gt;0$$对于负样本$Y_i =-1$，意味着该点在超平面负样本一侧：$$W^TX_i+b&lt;0$$所以可用下述公式表示点到超平面的几何距离：$$\frac{Y_i(W^TX_i+b)}{\left|W\right|}$$其中，分子部分表示函数间隔。 几何间隔可以表示点到超平面的距离，在进行分类过程中使分类更加准确，需要优化所有样本中到分类超平面几何间隔最小点的间隔值更大，所以对于SVM公式的求解转换为了一个最优化问题：$$\max_{W,b}[\min_{X_i}\frac{Y_i(W^TX_i+b)}{\left|W\right|}]$$即求解出最优的$W,b$使得到超平面最近的样本几何间隔最大。 对于一个超平面，如果等比例缩放$W,b$的值其公式表示的超平面不变，我们可以假设到超平面距离最小的样本点到超平面的函数间隔都大于1（通过缩放可$W,b$以实现）：$$Y_i(W^TX_i+b)\ge1$$由此可以将原最优化问题进行改变为带约束条件的最优化问题，优化目标为：$$\max_{W,b}\frac{1}{\left|W\right|}$$约束条件为：$$Y_i(W^TX_i+b)\ge1，i=1,2,3…k$$为了便于求解，目标函数等价于：$$\min_{W,b}\frac{1}{2}\left|w\right|^2$$下面便对该式子进行求解。对于没有约束的最优化问题，我们可以采用求导的方式求解出最优解。针对带约束最优化问题，一个比较好的方法是将其转化为没有约束条件的最优化问题，我们将带约束最优化问题泛化为：$$\min_xf(x)\\s.t.\\g(x)\le0,i=1,2,3…k\\h(x)=0,i=1,2,3…l$$泛化问题可以等价于求：$$\min_{x}\max_{\alpha,\beta}f(x)+\sum_{i=1}^k\alpha g_i(x)+\sum_{j=1}^l\beta h_j(x)$$其中$\alpha$大于零，$\beta$不等于零。若$g(x)$大于零，而$\alpha$也大于零，对于可变$\alpha$项则不存在极大值，关于$\beta$同理，其可正可负不为0，若$h(x)$不能满足等于零，在该项上也不存在极大值，通过max求极值实现了对原有约束条件的保留。 基于此SVM最优化方程转化为：$$\min_{W,b}\max_{\alpha}\frac{1}{2}\left|w\right|^2+\sum_{i=1}^k\alpha_{i}(1-Y_i(W^TX_i+b))\\s.t.\\\alpha_i\gt0,i=1,2,3…k$$在满足KTT条件的情况下满足拉格朗日对偶性，其等价于优化方程：$$\max_{\alpha}\min_{W,b}\frac{1}{2}\left|w\right|^2+\sum_{i=1}^k\alpha_{i}(1-Y_i(W^TX_i+b))\\s.t.\\\alpha_i\gt0,i=1,2,3…k\\1-Y_i(W^TX_i+b)\le0,i=1,2,3…k\\\alpha_{i}(1-Y_i(W^TX_i+b))=0,i=1,2,3…k$$对于该最优化的方程内部进行求导：$$\frac{\partial L}{\partial W} =W-\sum_{i=1}^k\alpha_{i}Y_iX_i\\\frac{\partial L}{\partial b} =-\sum_{i=1}^k\alpha_{i}Y_i$$在偏导数为0时取得极值。$$W= \sum_{i=1}^k\alpha_{i}Y_iX_i\\\sum_{i=1}^k\alpha_{i}Y_i=0$$将求导后的等式带入原方程可以得到最终关于$\alpha$的最优化方程：$$\max_{\alpha}\sum_{i=1}^k\alpha_i-\frac{1}{2}\sum_{i=1}^k\alpha_{i}Y_iX_i^T\sum_{j=1}^k\alpha_jY_jX_j\\s.t.\\\alpha_i\gt0,i=1,2,3…k\\1-Y_i(W^TX_i+b)\le0,i=1,2,3…k\\\alpha_{i}(1-Y_i(W^TX_i+b))=0,i=1,2,3…k\\\sum_{i=1}^k\alpha_iY_i=0$$求出该式子中各个$\alpha$的值，由于$W,b$与$\alpha$均有等价关系，便可以得到SVM模型的$W,b$参数。上面式子显然无法通过求导得到最优的$\alpha$值，可以使用Sequential Minimal Optimization(SMO)方法去进行求解。]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>笔试面试</tag>
+        <tag>SVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[快速排序]]></title>
+    <url>%2Fpassages%2F2019-06-30-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[快速排序1. 介绍快速排序是一种高效的排序算法，它采用“分而治之”的思想。其原理是：对于一组给定的记录，通过一趟排序后，将原序列分成两部分，其中前部分的所有记录均比后面部分的所有记录小，然后再依次对前后两部分的记录进行快速排序，递归该过程，直到序列中的所有记录均有序为止。 具体算法步骤如下： (1) 分解: 将输入的序列array[m,…,n]划分成两个非空子序列array[m,…,k]和array[k+1,…,n]，使array[m,..,k]和array[k+1,…,n]，使array[m,…,k]中任一元素的值不大于array[k+1,…,n]中任一元素的值。 (2) 递归求解：通过递归调用快速排序算法分别对array[m,…,k]和array[k+1,…,n]进行排序。 (3) 合并: 由于对分解出的两个子序列的排序是就地进行的，所以在array[m,…k]和array[k+1,…,n]都是排好序后，不需要执行任何计算，array[m,…,n]就已排好序。 2. Python代码实现123456789101112131415161718192021222324252627282930# 如何进行快速排序# 整体有序,基准左边或右边样本为空，比较次数多，最坏时间复杂度，例如基准最小，排序递增# 最坏时间复杂度为O(n^2),最好时间复杂度为O(nlogn),平均时间复杂度为O(nlogn)# 平均空间复杂度为O(nlogn)def quick_sort(left,right,lists): if left &gt; right: return lists key = lists[left] low = left high = right while left &lt; right: while left &lt;right and lists[right]&gt;=key: right -= 1 lists[left] = lists[right] while left &lt;right and lists[left] &lt;= key: left += 1 lists[right] = lists[left] lists[left] = key quick_sort(low,left-1,lists) quick_sort(left+1,high,lists) return listsif __name__ == "__main__": lists = [3,4,2,8,9,5,1] print("排序前序列为：",end="") for i in lists: print(i,end=" ") print("\n排序后序列为：",end="") for i in (quick_sort(0,len(lists)-1,lists)): print(i,end=" ") 3 参考资料 《Python程序员面试算法宝典》]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>笔试面试</tag>
+        <tag>排序算法</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Long and Short Term Memory（LSTM）的理解]]></title>
+    <url>%2Fpassages%2F2019-06-29-Long-and-Short-Term-Memory%EF%BC%88LSTM%EF%BC%89%E7%9A%84%E7%90%86%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[1. LSTM网络定义长短期记忆网络——通常被称为 LSTM，是一种特殊的 RNN，能够学习长期依赖性。由 Hochreiter 和 Schmidhuber（1997）提出的，并且在接下来的工作中被许多人改进和推广。LSTM 在各种各样的问题上表现非常出色，现在被广泛使用。 LSTM 被明确设计用来避免长期依赖性问题。长时间记住信息实际上是 LSTM 的默认行为，而不是需要努力学习的东西！ 所有递归神经网络都具有神经网络的链式重复模块。在标准的 RNN 中，这个重复模块具有非常简单的结构，只有单个 tanh 层。 LSTM 也具有这种类似的链式结构，但重复模块具有不同的结构。不是一个单独的神经网络层，而是四个，并且以非常特殊的方式进行交互。 2. LSTM的核心思想LSTM 的关键是细胞状态（cell state），即图中上方的水平线。它贯穿整个链条，只有一些次要的线性交互作用。信息很容易以不变的方式流过。LSTM可以通过“门”结构实现向细胞状态添加或移除信息的操作。 “门”结构通过一个 sigmoid 的神经层和一个逐点相乘的操作来实现信息选择通过。LSTM通过三个这样的门结构来实现信息的保护和控制。这三个门分别输入门（input gate）、遗忘门（forget gate）和输出门（output gate）。 2.1 遗忘门LSTM 中的第一步是决定我们会从细胞状态中丢弃什么信息，这一过程由遗忘门来完成，其过程如下图所示。 遗忘门会读取$h_{t-1}$和$x_t$，输出一个在 0到 1之间的数值给每个在细胞状态$C_{t-1}$中的数字。1表示“完全保留”，0 表示“完全舍弃”。 对于语言模型，若已知先前的词汇预测下一词汇，当前一刻细胞状态包括当前主语的性别，这信息需要保留下来帮助我们使用正确的代词。但当我们看到一个新的主语时，我们需要忘记先前的主语。 2.2 输入门下一步是决定让多少新的信息加入到细胞状态中来。实现这个需要包括两个步骤： 一个“输入门”的 sigmoid网络层确定哪些信息需要更新 一个 tanh 网络层创建一个新的备选值向量—— $ \hat C_t $可以用来添加到细胞状态 之后，我们把这两部分联合起来，对细胞状态进行一个更新，其过程如下图。 在语言模型的例子中，这就是我们实际根据前面确定的目标，丢弃旧代词的性别信息并添加新的信息的地方。 2.3 输出门现在更新旧的细胞状态 $C_{t-1}$ 更新到 $C_t$。然后，我们对旧的状态乘 $f_t$，用来忘记我们决定忘记的事。然后我们加上 $i_t*\hat C_t$，这是新的候选值，根据我们对每个状态决定的更新值按比例进行缩放。 最终，我们需要确定输出什么值。这个输出将会基于我们的细胞状态，但是也是一个过滤后的版本。首先，我们运行一个 sigmoid 层来确定细胞状态的哪些部分将输出出去。然后，我们把细胞状态输入 $tanh$处理（把数值调整到 $−1$和 $1$ 之间）再和 sigmoid 网络层的输出相乘，这样我们就可以输出想要输出的部分。 同样，以语言模型为例子，一旦出现一个主语，主语的信息会影响到随后出现的动词。例如，知道主语是单数还是复数，就可以知道随后动词的形式。 参考资料 Stacked Long Short-Term Memory Networks Understanding LSTM Networks]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>笔试面试</tag>
+        <tag>神经网络</tag>
+        <tag>RNN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[排序算法比较]]></title>
+    <url>%2Fpassages%2F2019-06-29-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83%2F</url>
+    <content type="text"><![CDATA[各种排序算法比较 类别 排序方法 时间复杂度 空间复杂度 稳定性 平均情况 最好情况 最坏情况 辅助空间 插入排序 直接插入 O($n^2$) O($n$) O($n^2$) O($1$) 稳定 Shell排序 O($n^{1.3}$) O($n$) O($n^2$) O($1$) 不稳定 选择排序 直接选择 O($n^2$) O($n^2$) O($n^2$) O($1$) 不稳定 堆排序 O($n\log_{2}{n}$) O($n\log_{2}{n}$) O($n\log_{2}{n}$) O($1$) 不稳定 交换排序 冒泡排序 O($n^2$) O($n$) O($n^2$) O($1$) 稳定 快速排序 O($n\log_{2}{n}$) O($n\log_{2}{n}$) O($n^2$) O($n\log_{2}{n}$) 不稳定 归并排序 O($n\log_{2}{n}$) O($n\log_{2}{n}$) O($n\log_{2}{n}$) O($n$) 稳定 基数排序 O($d(r+n)$) O($d(n+rd)$) O($d(r+n)$) O($rd+n$) 稳定 Note:基数排序的复杂度中，r代表关键字的基数，d代表长度，n代表关键字的个数。]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
+      <tags>
+        <tag>笔试面试</tag>
+        <tag>排序算法</tag>
+        <tag>复杂度</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hexo与github搭建个人博客]]></title>
+    <url>%2Fpassages%2Fhexo%2F</url>
+    <content type="text"><![CDATA[GitHub个人博客搭建主要有两种方法：一是基于Ruby的jekyll+github方法，二是基于Nodejs的Hexo+github方法。这是本人的第一篇个人博客，希望能够坚持写下去。下面我将介绍下Hexo+github方法的具体过程： 搭建过程Hexo安装12$ npm install hexo-cli -g$ npm install hexo-deployer-git --save 第一句是安装Hexo，第二句是安装Hexo部署到git page的deployer保证与github关联。 主题建站123$ cd your_blog_dir$ hexo init blog$ git clone https://github.com/dongyuanxin/theme-ad.git themes/ad 安装完成后，根据自己喜好建立目录。Hexo 将会在指定文件夹中新建所需要的文件。之后我们可以在Hexo官网上选取主题从Github上clone到本地的themes文件夹下。 针对于不同的主题，blog下的_config.yml需进行如下操作更换主题、与Github关联： 12345theme: 主题名deploy: type: git repository: git@github.com:nijunssdut/nijunssdut.github.io.git branch: master 在这里，我们配置Github的SSH密钥可以让本地git项目与远程的github建立联系，让我们在本地写了代码之后直接通过git操作就可以实现本地代码库与Github代码库同步。 12345$ cd ~/ .ssh$ ssh-keygen -t rsa -C "your_email@example.com"# 这将按照你提供的邮箱地址，创建一对密钥$ pbcopy &lt; ~/.ssh/id_rsa.pub# 将公钥的内容复制到系统粘贴板 之后在Github的Account Settings-SSH Keys中粘贴添加密钥即可。 更多信息详见: 参考博客 配置与测试这部分主要介绍Hexo命令的使用。 1234$ hexo clean$ hexo generate$ hexo server$ hexo deploy hexo clean与hexo generate一般一起使用清理并生成编写内容，执行完hexo server后可在本地使用https://localhost:4000 查看建站情况，hexo deploy会更新Github端个人博客的内容：Jun的个人主页 Markdown写作本人使用Mac OS，推荐Typora软件进行Markdown编写。Typora是一款轻便简洁的Markdown编辑器，支持即时渲染技术。 Typora语法相对简单，可参考简书typora、博客园typora。 Hexo博客内容图片显示问题12$ npm install eslint$ npm install hexo-asset-image --save 由于缺少eslint依赖直接安装Hexo图片插件会有警告。完成安装后用hexo新建文章的时候会发现_posts目录下面会多出一个和文章名字一样的文件夹。图片就可以放在文件夹下面。插入图片的方式采用Markdown语法即可。 Note:把主页配置文件_config.yml 里的post_asset_folder:这个选项设置为true]]></content>
+      <categories>
+        <category>环境配置</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Github</tag>
+      </tags>
+  </entry>
 </search>
