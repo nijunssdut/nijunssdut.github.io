@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="决策树的构建过程构建步骤如下：  将所有的特征看成一个一个的节点 遍历每个特征的每一种分割方式，找到最好的分割点；将数据划分为不同的子节点，eg:N1，N2…；计算划分之后所有子节点的“纯度”信息； 对第二步产生的分割，选择出最优的特征以及最优的划分方式；得出最终的子节点：N1，N2…Nm； 对子节点N1、N2…Nm分别继续执行2-3步，直到每个最终的子节点都足够‘纯’。  决策树的原理决策树是一">
+<meta name="keywords" content="决策树,ID3,C4.5,CART">
+<meta property="og:type" content="article">
+<meta property="og:title" content="决策树专题">
+<meta property="og:url" content="http://nijunssdut.github.io/passages/2019-07-27-决策树专题/index.html">
+<meta property="og:site_name" content="Jun的个人随笔">
+<meta property="og:description" content="决策树的构建过程构建步骤如下：  将所有的特征看成一个一个的节点 遍历每个特征的每一种分割方式，找到最好的分割点；将数据划分为不同的子节点，eg:N1，N2…；计算划分之后所有子节点的“纯度”信息； 对第二步产生的分割，选择出最优的特征以及最优的划分方式；得出最终的子节点：N1，N2…Nm； 对子节点N1、N2…Nm分别继续执行2-3步，直到每个最终的子节点都足够‘纯’。  决策树的原理决策树是一">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-28T12:50:59.902Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="决策树专题">
+<meta name="twitter:description" content="决策树的构建过程构建步骤如下：  将所有的特征看成一个一个的节点 遍历每个特征的每一种分割方式，找到最好的分割点；将数据划分为不同的子节点，eg:N1，N2…；计算划分之后所有子节点的“纯度”信息； 对第二步产生的分割，选择出最优的特征以及最优的划分方式；得出最终的子节点：N1，N2…Nm； 对子节点N1、N2…Nm分别继续执行2-3步，直到每个最终的子节点都足够‘纯’。  决策树的原理决策树是一">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nijunssdut.github.io/passages/2019-07-27-决策树专题/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>决策树专题 | Jun的个人随笔</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jun的个人随笔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-07-27-决策树专题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="NI,JUN">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jun的个人随笔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">决策树专题
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-27 12:12:53" itemprop="dateCreated datePublished" datetime="2019-07-27T12:12:53+08:00">2019-07-27</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-28 20:50:59" itemprop="dateModified" datetime="2019-07-28T20:50:59+08:00">2019-07-28</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/机器学习/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="决策树的构建过程"><a href="#决策树的构建过程" class="headerlink" title="决策树的构建过程"></a>决策树的构建过程</h1><p>构建步骤如下：</p>
+<ol>
+<li>将所有的特征看成一个一个的节点</li>
+<li>遍历每个特征的每一种分割方式，找到最好的分割点；将数据划分为不同的子节点，eg:N1，N2…；计算划分之后所有子节点的“纯度”信息；</li>
+<li>对第二步产生的分割，选择出最优的特征以及最优的划分方式；得出最终的子节点：N1，N2…Nm；</li>
+<li>对子节点N1、N2…Nm分别继续执行2-3步，直到每个最终的子节点都足够‘纯’。</li>
+</ol>
+<h1 id="决策树的原理"><a href="#决策树的原理" class="headerlink" title="决策树的原理"></a>决策树的原理</h1><p>决策树是一类常见的机器学习方法，它是基于树的结构进行决策的，决策过程通常会进行一系列的判断或者子决策。</p>
+<p>每次做决策时根据哪一个属性呢，即如何选择最优划分属性，一般而言，随着划分过程不断进行，我们希望决策树的分支节点所包含的样本尽可能属于同一个类别，即节点的“纯度（purity）”越来越高。</p>
+<p>决策树学习算法包含特征选择、决策树的生成与剪枝过程。决策树的学习算法通常是递归地选择最优特征，并用最优特征对数据集进行分割。开始时，构建根节点，选择最优特征，该特征有几种值就分割为几个子集，每个子集分别调用此方法，返回结点，返回的结点就是上一层的子结点。直到所有特征都已经用完，或者数据集只有一维特征为止。</p>
+<h2 id="信息熵"><a href="#信息熵" class="headerlink" title="信息熵"></a>信息熵</h2><p>假设当前样本集合D中有n类样本${x_1,x_2,……,x_n}$，第i类样本在样本集合D中所占的比例为$p(x_i)$，则熵定义为信息的期望值，$x_i$的信息定义为：<br>$$<br>l(x_i)= -\log_2p(x_i)<br>$$<br>而样本集合D的信息熵定义为：<br>$$<br>Ent(D) = -\sum_{i=1}^np(x_i)\log_2p(x_i)<br>$$<br>$Ent(D)$的值越小，则D的纯度越高。</p>
+<h2 id="信息增益"><a href="#信息增益" class="headerlink" title="信息增益"></a>信息增益</h2><p>假定离散属性a有k个可能的取值{a1,a2,……,ak}，若使用a来对样本集D进行划分，则会产生k个分支节点，其中第i个分支节点包含了D中所有在属性a上取值ai的样本，记为$D_i$，我们可根据公式求得第i个分支节点的信息熵记为$Ent(D_i)$，第i个分支节点样本集$D_i$占样本集合D总的样本比例记为$p(D_i) = D_i/D$，父节点的信息熵记为$Ent(D)$，则用属性a对样本D进行划分所获得的“信息增益”为：<br>$$<br>Gain(D,a)= Ent(D)-\sum_{i=1}^kp(D_i)Ent(D_i)<br>$$<br>一般而言，信息增益越大，表现使用属性a来进行划分所获得的“纯度提升”越大。</p>
+<h2 id="信息增益率"><a href="#信息增益率" class="headerlink" title="信息增益率"></a>信息增益率</h2><p>如果使用信息增益去对决策树进行划分，可能出现每个分支节点只包含一个样本，这些分支节点的纯度已经达到最大，但是，这样的决策树显然不具备泛化能力，无法对新样本进行有效的预测。</p>
+<p>实际上，信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，因此提出了信息增益率的概念：<br>$$<br>Gain_ration(D,a) = Gain(D,a)/IV(a)\<br>IV(a) = -\sum_{i =1}^kp(D_i)\log_2(D_i)<br>$$<br>属性$a$的可能取值数目越多，则IV(a)的值通常会越大。</p>
+<h2 id="基尼指数"><a href="#基尼指数" class="headerlink" title="基尼指数"></a>基尼指数</h2><p>基尼指数定义：<br>$$<br>Gini(D) = \sum_{k=1}^Kp_k(1-p_k)<br>$$<br>基尼指数反映了从数据集D中随机抽取两个样本，其类别标记不一致的概率，因此Gini(D)越小，则数据集D的纯度越高，属性a的基尼指数定义为：<br>$$<br>Gini_index(D,a) = \sum_{i=1}^kp(D_i)Gini(D_i)<br>$$<br>于是在候选集合中，选择那个使得划分后基尼指数最小的属性作为最优划分属性。</p>
+<h1 id="常用的决策树算法"><a href="#常用的决策树算法" class="headerlink" title="常用的决策树算法"></a>常用的决策树算法</h1><p>常用的决策树算法有ID3，C4.5和CART。</p>
+<p><strong>ID3：</strong>以信息增益为准则来选择划分属性，<strong>多叉树</strong>。</p>
+<p><strong>C4.5：</strong>使用信息增益率来进行属性的选择，<strong>多叉树</strong>。</p>
+<p><strong>CART：</strong>使用基尼指数来选择划分属性，<strong>二叉树</strong>。</p>
+<h2 id="C4-5对ID3做了哪些改进"><a href="#C4-5对ID3做了哪些改进" class="headerlink" title="C4.5对ID3做了哪些改进"></a>C4.5对ID3做了哪些改进</h2><p>ID3算法是采用信息增益作为评价标准进行分支的决策树算法。</p>
+<p><strong>ID3的缺点：</strong></p>
+<ol>
+<li>对于具有很多值的属性它是非常敏感的，例如，如果我们数据集中的某个属性值对不同的样本基本上是不相同的，甚至更极端点，对于每个样本都是唯一的，如果我们用这个属性来划分数据集，它会得到很大的信息增益，但是，这样的结果并不是我们想要的。</li>
+<li><strong>ID3算法不能处理具有连续值的属性。</strong></li>
+<li><strong>ID3算法不能处理属性具有缺失值的样本。</strong></li>
+<li>由于按照该算法会生成很深的树，所以容易产生过拟合现象。</li>
+</ol>
+<p>C4.5算法主要对ID3做出了以下方面的改进。</p>
+<ol>
+<li>用信息增益率来选择属性，克服了用信息增益来选择属性时偏向选择值多的属性的不足。</li>
+<li><strong>可以处理连续数值型属性。</strong></li>
+<li><strong>缺失值处理：</strong>对于某些采样数据，可能会缺少属性值。在这种情况下，处理缺少属性值的通常做法是赋予该属性的常见值，或者属性均值。另外一种比较好的方法是为该属性的每个可能值赋予一个概率，即将该属性以概率形式赋值。这样处理的目的是计算信息增益，使得这种属性值缺失的样本也能处理。</li>
+</ol>
+<p><strong>C4.5的缺点：</strong></p>
+<ol>
+<li>算法低效，在构造树的过程中，需要对数据集进行多次的顺序扫描和排序，因而导致算法的低效。</li>
+<li>内存受限，适合于能够驻留于内存的数据集，当训练集大得无法在内存容纳时程序无法运行。</li>
+</ol>
+<h2 id="C4-5算法处理连续数值型属性"><a href="#C4-5算法处理连续数值型属性" class="headerlink" title="C4.5算法处理连续数值型属性"></a>C4.5算法处理连续数值型属性</h2><p>对于连续分布的特征，其处理方法是：</p>
+<p>先把连续属性转换为离散属性再进行处理。虽然本质上属性的取值是连续的，但对于有限的采样数据它是离散的，如果有N条样本，那么我们有N-1种离散化的方法：$&lt;=v_j$的分到左子树，$&gt;v_j$的分到右子树。计算这N-1种情况下最大的信息增益率。另外，对于连续属性先进行排序（升序），只有在决策属性发生改变的地方（即分类发生了变化）才需要切开，这可以显著减少运算量。<strong>经证明，在决定连续特征的分界点时采用增益这个指标，而选择属性的时候才使用增益率这个指标能选择出最佳分类特征。</strong></p>
+<p>对连续属性的处理如下：</p>
+<ol>
+<li>对特征的取值进行升序排序；</li>
+<li>两个特征取值之间的中点作为可能的分裂点，将数据集分为两部分，计算每个可能的分裂点的信息增益。优化算法就是只计算分类属性发生改变的那些特征取值；</li>
+<li>选择修正后信息增益最大的分裂点作为该特征的最佳分裂点；</li>
+<li>计算最佳分裂点的信息增益率作为特征的信息增益率。注意，此处需对最佳分裂点的信息增益进行修正：减去$\log_2(N-1)/|D|$（N是连续特征的取值个数，D是训练数据数目，此修正的原因在于：当离散属性和连续属性并存时，C4.5算法倾向于选择连续特征做最佳树分裂点）</li>
+</ol>
+<h2 id="C4-5与CART的区别"><a href="#C4-5与CART的区别" class="headerlink" title="C4.5与CART的区别"></a>C4.5与CART的区别</h2><p>两者都是决策树，但CART既可以做分类，又可以做回归，而C4.5只能用于分类。</p>
+<p>C4.5是构造决策树来发现数据中蕴涵的分类规则，是一种通过划分特征空间逼近离散函数值的方法。C4.5是基于ID3的改进算法，使用信息增益率作为划分依据。分类规则是互斥且完备的，所谓互斥即每一条样本记录不会同时匹配上两条分类规则，所谓完备即每条样本记录都在决策树中都能匹配上一条规则。</p>
+<p>CART本质是对特征空间进行二元划分（即CART生成的决策树是一棵二叉树），并能够对标量属性与连续属性进行分裂。在对标量进行划分时，分为等于该属性和不等于该属性；对连续进行划分时，分为大于和小于。<strong>并且在分类的时候是采用GINI作为衡量标准，而不是信息增益了；而在回归时，是使用均方误差作为评价。</strong></p>
+<p><strong>CART对于特征的利用是可以重复的，而作为分类的C4.5则是不能重复利用特征的。</strong></p>
+<h2 id="CART树对离散特征取值数目-gt-3的特征如何处理"><a href="#CART树对离散特征取值数目-gt-3的特征如何处理" class="headerlink" title="CART树对离散特征取值数目&gt;=3的特征如何处理"></a>CART树对离散特征取值数目&gt;=3的特征如何处理</h2><p>因为CART树是二叉树，所以对于样本的有N&gt;=3个取值的离散特征的处理时也只能有两个分支，这就要通过组合人为的创建二取值序列并取GiniGain最小者作为树分叉决策点。</p>
+<p>如某特征值具有[“young”,”middle”,”old”]三个取值，那么二分序列会有如下3种可能性（空集和满集在CART分类中没有意义）:</p>
+<p>[((‘young’,),(‘middle’,’old’)),((‘middle’,),(‘young’,’old’)),((‘old’,),(‘young’,’middle’))]</p>
+<p>采用CART算法，就需要分别计算按照上述List中的二分序列做分叉时的Gini指数，然后选取产生最小的GiniGain的二分序列做该特征的分叉二值序列参与树构建的递归。</p>
+<p>因此CART不适用于离散特征有过多个取值可能的场景。此时，若定要使用CART，则最好预先人为的将离散特征的取值缩减。</p>
+<p>那么对于二分后的左右分支，如果特征取值tuple中的元素多于2个，该特征还可以继续参与当前子数据集的二分。</p>
+<h1 id="决策树的剪枝"><a href="#决策树的剪枝" class="headerlink" title="决策树的剪枝"></a>决策树的剪枝</h1><h2 id="决策树剪枝方法"><a href="#决策树剪枝方法" class="headerlink" title="决策树剪枝方法"></a>决策树剪枝方法</h2><h3 id="预剪枝"><a href="#预剪枝" class="headerlink" title="预剪枝"></a>预剪枝</h3><p>通过提前停止树的构建而对树剪枝，一旦停止，节点就是树叶，该树叶表示子集包含最频繁的类。</p>
+<p><strong>常用剪枝条件：</strong></p>
+<ol>
+<li>定义一个高度，当决策树达到给高度时就停止决策树的生长；</li>
+<li>定义一个阈值，当达到某个节点的实例个数小于阈值时就可以停止决策树的生长；</li>
+<li>定义一个阈值，通过计算每次扩张对系统性能的增益，并比较增益值与该阈值大小来决定是否停止决策树的生长。</li>
+</ol>
+<p><strong>缺点：</strong>这样做决策树无法到最优，也无法得到比较好的效果。</p>
+<h3 id="后剪枝"><a href="#后剪枝" class="headerlink" title="后剪枝"></a>后剪枝</h3><p>它首先构造完整的决策树，允许树过度拟合训练数据，然后对那些置信度不够的结点子树用叶子结点来代替，该叶子的类标号用该结点子树中最频繁的类标记。</p>
+<ol>
+<li>错误率降低剪枝</li>
+<li>悲观错误剪枝</li>
+<li>代价复杂度剪枝</li>
+</ol>
+<p><strong>缺点：</strong>这种方法比较浪费前面的建立过程（计算上）</p>
+<h2 id="决策树需要剪枝的原因"><a href="#决策树需要剪枝的原因" class="headerlink" title="决策树需要剪枝的原因"></a>决策树需要剪枝的原因</h2><p>决策树是充分考虑了所有的数据点而生成的复杂树，有可能出现过拟合的情况，决策树越复杂，过拟合的程度会越来越高。</p>
+<p>考虑极端的情况，如果我们令所有的叶子节点都只含有一个数据点，那么我们能够保证所有的训练数据都能准确分类，但是很有可能得到高的预测误差，原因是将训练数据中所有的噪声数据都“准确划分”了，<strong>强化了噪声数据的作用。（形成决策树的目的是作出合理的预测，尽可能有效的排除噪声数据干扰，影响正确预测的判断）</strong></p>
+<p>剪枝修剪分裂前后分类误差相差不大的子树，能够降低决策树的复杂度，降低过拟合出现的概率。</p>
+<h1 id="决策树特征"><a href="#决策树特征" class="headerlink" title="决策树特征"></a>决策树特征</h1><h2 id="分类树和回归树"><a href="#分类树和回归树" class="headerlink" title="分类树和回归树"></a>分类树和回归树</h2><h3 id="分类树"><a href="#分类树" class="headerlink" title="分类树"></a>分类树</h3><p>以C4.5分类树为例，C4.5分类树在每次分枝时，是穷举每一个feature的每一个阈值，找到使得按照feature&lt;=阈值，和feature&gt;阈值分成的两个分枝的熵最大的阈值，按照该标准分枝得到两个新节点，用同样方法继续分枝得到两个新节点，用同样方法继续分枝直到得到种类唯一的叶子节点，或达到预设的终止条件，若最终叶子节点的种类不唯一，则以占有最多数的种类作为该叶子节点的标识。</p>
+<h3 id="回归树"><a href="#回归树" class="headerlink" title="回归树"></a>回归树</h3><p>回归树总体流程也是类似，区别在于，回归树的每个节点（不一定是叶子节点）都会得一个预测值，以年龄为例，该预测值等于属于这个节点的所有人年龄的平均值。分枝时穷举每一个feature的每个阈值找最好的分割点，但衡量最好的标准不再是最大熵，而是最小化均方差即（每个人的年龄-预测年龄）^ 2的总和/N。也就是被预测出错的人数越多，错的越离谱，均方差就越大，通过最小化均方差能够找到最可靠的分枝依据。分枝直到每个叶子节点上人的年龄不唯一，则以该节点上所有人的平均年龄做为该叶子节点的预测年龄。</p>
+<h2 id="决策树在选择特征进行分类时一个特征被选择过后，之后还会选择到这个特征吗？"><a href="#决策树在选择特征进行分类时一个特征被选择过后，之后还会选择到这个特征吗？" class="headerlink" title="决策树在选择特征进行分类时一个特征被选择过后，之后还会选择到这个特征吗？"></a>决策树在选择特征进行分类时一个特征被选择过后，之后还会选择到这个特征吗？</h2><p>决策树中一个特征被选择过后依然是有可能被选择为分裂特征的。</p>
+<p><strong>若特征为离散特征，如果决策树为二叉树，则可以在分类的子区间继续划分，如果决策树为多叉树，通常进行一次划分。</strong></p>
+<p><strong>若特征为连续特征，则可能在决策树中多次被选择。</strong></p>
+<h2 id="常用的决策树一定是二叉树？二叉决策树与多分支决策树相比有什么特点？"><a href="#常用的决策树一定是二叉树？二叉决策树与多分支决策树相比有什么特点？" class="headerlink" title="常用的决策树一定是二叉树？二叉决策树与多分支决策树相比有什么特点？"></a>常用的决策树一定是二叉树？二叉决策树与多分支决策树相比有什么特点？</h2><p>决策树并非均为二叉树，CART算法要求其所生成的决策树为二叉树，而ID3和C4.5则允许决策树为多分支的。</p>
+<p>二叉决策树不像多叉树那样会形成过多的数据碎片，而二叉决策树可能会得到更深的最终决策树。</p>
+<h2 id="决策树需要进行归一化处理吗？"><a href="#决策树需要进行归一化处理吗？" class="headerlink" title="决策树需要进行归一化处理吗？"></a>决策树需要进行归一化处理吗？</h2><p>概率模型不需要归一化，因为它们不关心变量的值，而是关心变量的分布和变量之间的条件概率，决策树是一种概率模型，数值缩放，不影响分裂点位置。所以一般可以不对其进行归一化处理。</p>
+<h2 id="一棵决策树构建过程耗时的步骤是？"><a href="#一棵决策树构建过程耗时的步骤是？" class="headerlink" title="一棵决策树构建过程耗时的步骤是？"></a>一棵决策树构建过程耗时的步骤是？</h2><p>决策树的构建最耗时的步骤是确定最佳分割点，在该步骤中需要对特征的值进行排序，这个过程时间损耗较多。</p>
+<h2 id="如果决策树属性用完了仍未对决策树完成划分应该怎么办？"><a href="#如果决策树属性用完了仍未对决策树完成划分应该怎么办？" class="headerlink" title="如果决策树属性用完了仍未对决策树完成划分应该怎么办？"></a>如果决策树属性用完了仍未对决策树完成划分应该怎么办？</h2><p>在决策树构造过程中可能会出现这种情况：所有属性都作为分裂属性用光了，但有的子集还不是纯净集，即集合内的元素不属于同一类别。在这种情况下，由于没有更多信息可以使用了，一般对这些子集进行“多数表决”，即使用此子集中出现次数最多的类别作为此节点类别，然后将此节点作为叶子节点。</p>
+<h2 id="存在时间序列回归模型效果比决策树模型有更高的精度的原因"><a href="#存在时间序列回归模型效果比决策树模型有更高的精度的原因" class="headerlink" title="存在时间序列回归模型效果比决策树模型有更高的精度的原因"></a>存在时间序列回归模型效果比决策树模型有更高的精度的原因</h2><p>时间序列数据有线性关系，而决策树算法是已知的检测非线性交互最好的算法。<strong>为什么决策树没能提供好的预测的原因是它不能像回归模型一样做到对线性关系那么好的映射。</strong>因此，我们知道了如果我们有一个满足线性回归模型能提供强大的预测。</p>
+<h2 id="决策树的优缺点"><a href="#决策树的优缺点" class="headerlink" title="决策树的优缺点"></a>决策树的优缺点</h2><p><strong>优点：</strong></p>
+<ol>
+<li>易于理解，决策树易于理解和实现。人们在通过解释后都有能力去理解决策树所表达的意义。</li>
+<li>数据处理简单，对于决策树，数据的准备往往是简单或者是不必要的。其他的技术往往要求先把数据一般化，比如去掉多余的或者空白的属性。</li>
+<li>能够同时处理数据型和常规型属性。其他的技术往往要求数据属性的单一。</li>
+<li>是一个白盒模型如果给定一个观察的模型，那么根据所产生的决策树很容易推出相应的逻辑表达式。</li>
+<li>易于通过静态测试来对模型进行评测。表示有可能测量该模型的可信度。</li>
+<li>在相对短的时间内能够对大型数据源做出可行且效果良好的结果。</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>很容易在训练数据中生成复杂的树结构，造成过拟合(overfitting)。剪枝可以缓解过拟合的负作用，常用方法是限制树的高度、叶子节点中的最少样本数量。</li>
+<li>不适合处理高维数据，当属性数量过大的时候，部分决策树就不太适用了。</li>
+<li><strong>对异常值(Outlier)过于敏感，很容易导致树的结构的巨大的变换。</strong></li>
+<li>泛化(Generalization)能力太差，对于没有出现过的值几乎没有办法。</li>
+</ol>
+<h2 id="决策树对缺失值的处理"><a href="#决策树对缺失值的处理" class="headerlink" title="决策树对缺失值的处理"></a>决策树对缺失值的处理</h2><p>决策树缺失值需要考虑3个问题：</p>
+<ol>
+<li>当开始决定选择哪个属性用来进行分支时，如果有些训练样本缺失了某些属性值时该怎么办？</li>
+</ol>
+<ul>
+<li><strong>忽略</strong>这些缺失属性a的样本。</li>
+<li><strong>填充缺失值</strong>，例如给缺失属性a的样本赋予属性a一个均值或者最常用的值或者根据其他未知的属性想办法把这些样本缺失的属性补全。</li>
+<li><strong>计算信息增益或者信息增益率时根据缺失属性样本个数所占的比率对增益/增益率进行相应的“打折”</strong>，例如我们对10个样本进行分类，一个样本数据在a属性具有缺失值，我们使用其中九个完全样本计算a属性的信息增益，并将其乘以0.9作为最终信息增益。</li>
+</ul>
+<ol start="2">
+<li>一个属性已被选择，那么在决定分支的时候如果有些样本缺失了该属性如何处理？</li>
+</ol>
+<ul>
+<li>忽略这些样本</li>
+<li>填充缺失值再进行分类，例如给缺失属性a的样本赋予属性a一个均值或者最常用的值者根据其他未知的属性想办法把这些样本缺失的属性补全。</li>
+<li>把这些属性缺失样本，按照具有属性a的样本被划分成的子集样本个数的相对比率，分配到各个子集中去。至于哪些缺失的样本被划分到子集1，哪些被划分到子集2，这个没有一定的准则，可以随机而动。</li>
+<li>把属性缺失样本分配给所有的子集，也就是说每个子集都有这些属性缺失样本。</li>
+<li>单独为属性缺失的样本划分一个分支子集。</li>
+</ul>
+<ol start="3">
+<li>当决策树已经生成，但待分类的样本缺失了某些属性，这些属性该如何处理？</li>
+</ol>
+<ul>
+<li>如果有单独的缺失值分支，依据此分支预测。</li>
+<li>把待分类的样本的属性a值分配一个最常出现的a的属性值，然后进行分支预测。</li>
+<li>根据其他属性为该待分类样本填充一个属性a值，然后进行分支处理。</li>
+<li>待分类样本在到达属性a节点时就终止分类，然后根据此时a节点所覆盖的叶子节点类别状况为其分配一个发生概率最高的类。</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechat.png" alt="NI,JUN 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="NI,JUN 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/决策树/" rel="tag"># 决策树</a>
+          
+            <a href="/tags/ID3/" rel="tag"># ID3</a>
+          
+            <a href="/tags/C4-5/" rel="tag"># C4.5</a>
+          
+            <a href="/tags/CART/" rel="tag"># CART</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/passages/2019-07-26-马尔可夫模型/" rel="next" title="2019-07-26-马尔可夫模型">
+                <i class="fa fa-chevron-left"></i> 2019-07-26-马尔可夫模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">NI,JUN</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/nijunssdut" title="GitHub &rarr; https://github.com/nijunssdut" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:nijun@mail.dlut.edu.com" title="E-Mail &rarr; mailto:nijun@mail.dlut.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#决策树的构建过程"><span class="nav-number">1.</span> <span class="nav-text">决策树的构建过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#决策树的原理"><span class="nav-number">2.</span> <span class="nav-text">决策树的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息熵"><span class="nav-number">2.1.</span> <span class="nav-text">信息熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息增益"><span class="nav-number">2.2.</span> <span class="nav-text">信息增益</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息增益率"><span class="nav-number">2.3.</span> <span class="nav-text">信息增益率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基尼指数"><span class="nav-number">2.4.</span> <span class="nav-text">基尼指数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用的决策树算法"><span class="nav-number">3.</span> <span class="nav-text">常用的决策树算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#C4-5对ID3做了哪些改进"><span class="nav-number">3.1.</span> <span class="nav-text">C4.5对ID3做了哪些改进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C4-5算法处理连续数值型属性"><span class="nav-number">3.2.</span> <span class="nav-text">C4.5算法处理连续数值型属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C4-5与CART的区别"><span class="nav-number">3.3.</span> <span class="nav-text">C4.5与CART的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CART树对离散特征取值数目-gt-3的特征如何处理"><span class="nav-number">3.4.</span> <span class="nav-text">CART树对离散特征取值数目&gt;=3的特征如何处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#决策树的剪枝"><span class="nav-number">4.</span> <span class="nav-text">决策树的剪枝</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树剪枝方法"><span class="nav-number">4.1.</span> <span class="nav-text">决策树剪枝方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预剪枝"><span class="nav-number">4.1.1.</span> <span class="nav-text">预剪枝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后剪枝"><span class="nav-number">4.1.2.</span> <span class="nav-text">后剪枝</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树需要剪枝的原因"><span class="nav-number">4.2.</span> <span class="nav-text">决策树需要剪枝的原因</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#决策树特征"><span class="nav-number">5.</span> <span class="nav-text">决策树特征</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分类树和回归树"><span class="nav-number">5.1.</span> <span class="nav-text">分类树和回归树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分类树"><span class="nav-number">5.1.1.</span> <span class="nav-text">分类树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回归树"><span class="nav-number">5.1.2.</span> <span class="nav-text">回归树</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树在选择特征进行分类时一个特征被选择过后，之后还会选择到这个特征吗？"><span class="nav-number">5.2.</span> <span class="nav-text">决策树在选择特征进行分类时一个特征被选择过后，之后还会选择到这个特征吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的决策树一定是二叉树？二叉决策树与多分支决策树相比有什么特点？"><span class="nav-number">5.3.</span> <span class="nav-text">常用的决策树一定是二叉树？二叉决策树与多分支决策树相比有什么特点？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树需要进行归一化处理吗？"><span class="nav-number">5.4.</span> <span class="nav-text">决策树需要进行归一化处理吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一棵决策树构建过程耗时的步骤是？"><span class="nav-number">5.5.</span> <span class="nav-text">一棵决策树构建过程耗时的步骤是？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如果决策树属性用完了仍未对决策树完成划分应该怎么办？"><span class="nav-number">5.6.</span> <span class="nav-text">如果决策树属性用完了仍未对决策树完成划分应该怎么办？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存在时间序列回归模型效果比决策树模型有更高的精度的原因"><span class="nav-number">5.7.</span> <span class="nav-text">存在时间序列回归模型效果比决策树模型有更高的精度的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树的优缺点"><span class="nav-number">5.8.</span> <span class="nav-text">决策树的优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树对缺失值的处理"><span class="nav-number">5.9.</span> <span class="nav-text">决策树对缺失值的处理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">NI,JUN</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.8" zindex="-1" count="199" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+  <script id="ribbon" size="300" alpha="0.1" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
