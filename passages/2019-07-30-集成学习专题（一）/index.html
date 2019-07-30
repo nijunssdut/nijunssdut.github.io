@@ -94,13 +94,18 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Jun的个人随笔">
-<meta property="og:url" content="http://nijunssdut.github.io/page/3/index.html">
+  <meta name="description" content="集成学习算法严格意义上来说，集成学习算法不算是一种机器学习算法，而更像是一种优化手段或者策略，它通常是结合多个简单的弱机器学习算法，去做更可靠的决策。 集成方法是由多个较弱的模型集成模型组，一般的弱分类器可以是决策树，SVM，KNN等构成。其中的模型可以单独进行训练，并且它们的预测能以某种方式结合起来去做出一个总体预测。该算法主要的问题是要找出哪些较弱的模型可以结合起来，以及如何结合的方法。 集成">
+<meta name="keywords" content="集成学习,随机森林,AdaBoost">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集成学习专题（一）">
+<meta property="og:url" content="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（一）/index.html">
 <meta property="og:site_name" content="Jun的个人随笔">
+<meta property="og:description" content="集成学习算法严格意义上来说，集成学习算法不算是一种机器学习算法，而更像是一种优化手段或者策略，它通常是结合多个简单的弱机器学习算法，去做更可靠的决策。 集成方法是由多个较弱的模型集成模型组，一般的弱分类器可以是决策树，SVM，KNN等构成。其中的模型可以单独进行训练，并且它们的预测能以某种方式结合起来去做出一个总体预测。该算法主要的问题是要找出哪些较弱的模型可以结合起来，以及如何结合的方法。 集成">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-30T09:02:48.631Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jun的个人随笔">
+<meta name="twitter:title" content="集成学习专题（一）">
+<meta name="twitter:description" content="集成学习算法严格意义上来说，集成学习算法不算是一种机器学习算法，而更像是一种优化手段或者策略，它通常是结合多个简单的弱机器学习算法，去做更可靠的决策。 集成方法是由多个较弱的模型集成模型组，一般的弱分类器可以是决策树，SVM，KNN等构成。其中的模型可以单独进行训练，并且它们的预测能以某种方式结合起来去做出一个总体预测。该算法主要的问题是要找出哪些较弱的模型可以结合起来，以及如何结合的方法。 集成">
 
 
 
@@ -108,7 +113,7 @@
 
   
   
-  <link rel="canonical" href="http://nijunssdut.github.io/page/3/">
+  <link rel="canonical" href="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（一）/">
 
 
 
@@ -118,7 +123,7 @@
   };
 </script>
 
-  <title>Jun的个人随笔</title>
+  <title>集成学习专题（一） | Jun的个人随笔</title>
   
 
 
@@ -166,8 +171,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -326,9 +330,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -343,7 +347,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-06-30-支持向量机-SVM-原理与推导/">
+    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（一）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="NI,JUN">
@@ -360,10 +364,8 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/passages/2019-06-30-支持向量机-SVM-原理与推导/" class="post-title-link" itemprop="url">支持向量机(SVM)原理与推导</a>
+          <h1 class="post-title" itemprop="name headline">集成学习专题（一）
+
               
             
           </h1>
@@ -388,23 +390,13 @@
                 
               
 
-              <time title="创建时间：2019-06-30 14:24:53" itemprop="dateCreated datePublished" datetime="2019-06-30T14:24:53+08:00">2019-06-30</time>
+              <time title="创建时间：2019-07-30 08:43:23 / 修改时间：17:02:48" itemprop="dateCreated datePublished" datetime="2019-07-30T08:43:23+08:00">2019-07-30</time>
             </span>
           
 
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-07-05 18:40:53" itemprop="dateModified" datetime="2019-07-05T18:40:53+08:00">2019-07-05</time>
-              </span>
             
           
 
@@ -455,24 +447,141 @@
       
 
       
-        
-          
-            <p>
-              1. 支持向量机的原理Support Vector Machine (SVM)是一种二类分类模型。它的基本模型是在特征空间中寻找间隔最大化的分隔超平面的线形分类器。（间隔最大是它有别于感知机），通过该超平面实现对未知样本集的分类。
+        <h1 id="集成学习算法"><a href="#集成学习算法" class="headerlink" title="集成学习算法"></a>集成学习算法</h1><p>严格意义上来说，集成学习算法不算是一种机器学习算法，而更像是一种优化手段或者策略，它通常是结合多个简单的弱机器学习算法，去做更可靠的决策。</p>
+<p>集成方法是由多个较弱的模型集成模型组，一般的弱分类器可以是决策树，SVM，KNN等构成。其中的模型可以单独进行训练，并且它们的预测能以某种方式结合起来去做出一个总体预测。该算法主要的问题是要找出哪些较弱的模型可以结合起来，以及如何结合的方法。</p>
+<h1 id="集成学习主要三种框架"><a href="#集成学习主要三种框架" class="headerlink" title="集成学习主要三种框架"></a>集成学习主要三种框架</h1><p>集成学习从集成思想的架构分为Bagging，Boosting，Stacking三种。</p>
+<p><strong>Bagging：</strong>基于数据随机重抽样的分类器构建方法。从训练集中进行子抽样组成每个基模型所需要的子训练集，对所有基模型预测的结果进行综合产生最终的预测结果。</p>
+<p><strong>Boosting：</strong>训练过程为阶梯状，基模型按次序一一进行训练（实际上可以做到并行），基模型的训练集按照某种策略每次都进行一定的转化，每次都是提高前一次分错了的数据集的权值，最后对所有基模型预测的结果进行线性组合产生最终的预测结果。</p>
+<p><strong>Stacking：</strong>将训练好的所有基模型对训练集进行预测，第j个基模型对第i个训练样本的预测值将作为新的训练集中第i个样本的第j个特征值，最后基于新的训练集进行训练。同理，预测的过程也要先经过所有基模型的预测形成新的测试集，最后再对测试集进行预测。</p>
+<h2 id="Bagging算法流程"><a href="#Bagging算法流程" class="headerlink" title="Bagging算法流程"></a>Bagging算法流程</h2><p>输入为样本集D={(x1,y1),(x2,x2),…,(xm,ym)}，弱学习器算法，弱分类器迭代次数T</p>
+<p>输出为最终的强分类器f(x)</p>
+<p>（1）对于t = 1,2,…,T：</p>
+<ul>
+<li>对训练集进行第t次随机采样，共采集T次，得到包含T个样本的采样集$D_t$</li>
+<li>用采样集$D_t$训练第t个弱学习器$G_t(x)$</li>
+</ul>
+<p>（2）如果是分类算法预测，则T个弱学习器投出最多票数的类别或者类别之一为最终类别。如果是回归算法，T个弱学习器得到的回归结果进行算术平均得到的值为最终的模型输出。</p>
+<p><strong>常用bagging算法：</strong>随机森林算法</p>
+<h2 id="Boosting算法流程"><a href="#Boosting算法流程" class="headerlink" title="Boosting算法流程"></a>Boosting算法流程</h2><ol>
+<li>给定初始训练数据，由此训练出第一个基学习器；</li>
+<li>根据基学习器的表现对样本进行调整，在之前学习器做错的样本上投入更多关注；</li>
+<li>用调整后的样本，训练下一个基学习器；</li>
+<li>重复上述过程T次，将T个学习器加权结合。</li>
+</ol>
+<p>$$<br>f(x) = w_0 + \sum_{m = 1}^Mw_m\Psi_m(x)<br>$$</p>
+<p>其中w是权重，$\Psi$是弱分类器的集合，可以看出最终就是基函数的线形组合。</p>
+<p><strong>常用boosting算法：</strong>Adaboost，GBDT，XGBoost</p>
+<h2 id="stacking的使用"><a href="#stacking的使用" class="headerlink" title="stacking的使用"></a>stacking的使用</h2><p>stacking常见的使用方式：由KNN、随机森林和朴素贝叶斯基础分类器组成，它的预测结果由作为元分类器的Logistic回归组合。</p>
+<h1 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h1><p>随机森林是Bagging算法的代表，它的核心思想就是将多个不同的决策树进行组合，利用这种组合降低单一决策树有可能带来的片面性和判断不准确性。</p>
+<p>随机森林使用了CART决策树作为弱学习器，并对决策树的建立做了改进，对于普通的决策树，会在节点上所有的n个样本特征中选择一个最优的特征来做决策树的左右子树划分，但是随机森林通过随机选择节点上的一部分样本特征，这个数字小于n，假设为nsub，然后在这些随机选择的nsub个样本特征中，选择一个最优的特征来做决策树的左右子树划分。这样进一步增强模型的泛化能力。</p>
+<p>如果nsub=n，则此时随机森林的CART决策树和普通的CART决策树没有区别。nsub越小，则模型越健壮，当然此时对于训练集的拟合程度会变差。也就是说nsub越小，模型的方差会减小，但偏差会增大。在实际案例中，一般会通过交叉验证调参获取一个合适的nsub的值。</p>
+<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><p>输入为样本集D ={(x1,y1),(x2,y2),…,(xm,ym)}，弱分类器迭代次数T。</p>
+<p>输出为最终的强分类器f(x)</p>
+<p>(1) 对于t=1,2,…,T：</p>
+<ul>
+<li>对训练集进行第t次随机采样，共采集m次，得到包含m个样本的采样集$D_t$</li>
+<li>用采样集$D_t$训练第t个决策树模型$G_t(x)$，在训练决策树模型的节点的时候，在节点上所有的样本特征中选择一部分样本特征，在这些随机选择的部分样本特征中选择一个最优的特征来做决策树的左右子树划分</li>
+</ul>
+<p>(2) 如果是分类算法预测，则T个弱学习器投出最多票数的类别或者类别之一为最终类别。如果是回归算法，T个弱学习器得到的回归结果进行算术平均得到的值为最终的模型输出。</p>
+<h2 id="随机森林的随机性"><a href="#随机森林的随机性" class="headerlink" title="随机森林的随机性"></a>随机森林的随机性</h2><ol>
+<li>随机森林的随机性体现在每棵树的训练样本是随机的。</li>
+<li>随机森林的树中每个节点的分裂属性集合也是随机选择确定的。</li>
+</ol>
+<h2 id="随机森林不易过拟合原因"><a href="#随机森林不易过拟合原因" class="headerlink" title="随机森林不易过拟合原因"></a>随机森林不易过拟合原因</h2><p>随机森林由很多棵树组合在一起，单看每一颗树都可以是过拟合的，但是，既然是过拟合，就会拟合到非常小的细节上，因此随机森林通过引入随机性，让每一颗树拟合的细节不同，这时再把这些树组合在一起，过拟合的部分就会自动被消除掉。</p>
+<p>所以随机森林不容易过拟合，但这不是绝对的，随机森林也是有可能出现过拟合的现象，只是出现的概率相对低。</p>
+<h2 id="如何使用随机森林去弥补特征向量中的缺失值"><a href="#如何使用随机森林去弥补特征向量中的缺失值" class="headerlink" title="如何使用随机森林去弥补特征向量中的缺失值"></a>如何使用随机森林去弥补特征向量中的缺失值</h2><p>对于训练集中的缺失值，可以使用均值，0等方式进行预填充，然后使用随机森林分类，同一个分类下的数据，更新缺失值，<strong>如果是分类变量缺失，用众数补上，如果是连续型变量缺失，用中位数补，</strong>然后再次使用随机森林分类更新缺失值，4-6轮后可以达到一个比较好的效果。</p>
+<h2 id="随机森林对特征重要性的评估"><a href="#随机森林对特征重要性的评估" class="headerlink" title="随机森林对特征重要性的评估"></a>随机森林对特征重要性的评估</h2><p>首先要了解随机森林的袋外数据（oob）误差的计算方法。</p>
+<p>随机森林的袋外数据指每次随机抽取未被抽到的数据。</p>
+<p><strong>袋外数据（oob）误差的计算方式如下：</strong></p>
+<p>对于已经生成的随机森林，用袋外数据测试其性能，假设袋外数据总数为O，用这O个袋外数据作为输入，带进之前已经生成的随机森林分类器，分类器会给出O个数据相应的分类，因为这O条数据的类型是已知的，则用正确的分类与随机森林分类器的结果进行比较，统计随机森林分类器分类错误的数目，设为X，则袋外数据误差大小 = X/O；<strong>这已经经过证明是无偏估计的，所以在随机森林算法中不需要再进行交叉验证或者单独的测试集来获取测试集误差的无偏估计。</strong></p>
+<p><strong>在随机森林中某个特征X的重要性的计算方法如下：</strong></p>
+<ol>
+<li>对于随机森林中的每一颗决策树，使用相应的OOB（袋外数据）来计算它的袋外数据误差，记为$errOOB_1$。</li>
+<li>随机地对袋外数据OOB所有样本的特征X加入噪声干扰（可以随机的改变样本在特征X处的值），再次计算它的袋外数据误差，记为$errOOB_2$。</li>
+<li>假设随机森林中有Ntree棵树，那么对于特征X的重要性=$\sum(errOOB_2-errOOB_1)/Ntree$，之所以可以用这个表达式来作为相应特征的重要性的度量是因为：若给某个特征随机加入噪声后，袋外的准确率大幅度降低，则说明这个特征对于样本的分类结果影响很大，也就是说它的重要程度比较高。</li>
+</ol>
+<h2 id="随机森林训练需要调整的参数"><a href="#随机森林训练需要调整的参数" class="headerlink" title="随机森林训练需要调整的参数"></a>随机森林训练需要调整的参数</h2><p>随机森林中主要需要调整参数：</p>
+<ol>
+<li>n_estimators 随机森林建立子树的数量。</li>
+</ol>
+<p>较多的子树一般可以让模型有更好的性能，但同时让你的代码变慢。需要选择最佳的随机森林子树数量。</p>
+<ol start="2">
+<li>max_feature随机森林允许单个决策树使用特征的最大数量。</li>
+</ol>
+<p>增加max_features一般能提高模型的性能，因为在每个节点上，我们有更多的选择可以考虑。然而，这未必完全是对的，因为它降低了单个树的多样性，而这正是随机森林独特的优点。但是，可以肯定，<strong>通过增加max_features会降低算法的速度。</strong>因此，你需要适当的平衡和选择最佳max_features。</p>
+<ol start="3">
+<li>max_depth 决策树最大深度</li>
+</ol>
+<p>默认决策树在建立子树的时候不会限制子树的深度。</p>
+<ol start="4">
+<li>min_samples_split 内部节点再划分所需最小样本数</li>
+</ol>
+<p>内部节点再划分所需最小样本数，如果某节点的样本数少于min_samples_split，则不会继续再尝试选择最优特征来进行划分。</p>
+<ol start="5">
+<li>min_samples_leaf 叶子节点最少样本数</li>
+</ol>
+<p>这个值限制了叶子节点最少的样本数，如果某叶子节点数目小于样本数，则会和兄弟节点一起被剪枝。</p>
+<ol start="6">
+<li>max_leaf_nodes 最大叶子节点数</li>
+</ol>
+<p>通过限制最大叶子节点数，可以防止过拟合，默认是“None”，即不限制最大的叶子节点数。如果加了限制，算法会建立在最大叶子节点数内最优的决策树。</p>
+<ol start="7">
+<li>min_impurity_split 节点划分最小不纯度</li>
+</ol>
+<p>这个值限制了决策树的增长，如果某节点的不纯度（基于基尼系数，均方差）小于这个阈值，则该节点不再生成子节点。即为叶子节点。一般不推荐改动默认值1e-7。</p>
+<h2 id="随机森林不用全样本训练m棵决策树"><a href="#随机森林不用全样本训练m棵决策树" class="headerlink" title="随机森林不用全样本训练m棵决策树"></a>随机森林不用全样本训练m棵决策树</h2><p>全样本训练忽视了局部样本的规律（各个决策树趋于相同），对于模型的泛化能力是有害的，使随机森林算法在样本层面失去了随机性。</p>
+<h2 id="随机森林算法优缺点"><a href="#随机森林算法优缺点" class="headerlink" title="随机森林算法优缺点"></a>随机森林算法优缺点</h2><p><strong>优点：</strong></p>
+<p>（1）训练可以高度并行化，对于大数据时代的大样本训练速度有优势。</p>
+<p>（2）随机森林对于高维数据集的处理能力令人兴奋，<strong>它可以处理成千上万的输入变量，并确定最重要的变量</strong>，因此被认为是一个不错的降维方法。此外，该模型能够输出变量的重要性程度，这是一个非常便利的功能。</p>
+<p>（3） 在对缺失数据进行评估时，随机森林是一个十分有效的方法。就算存在大量的数据缺失，随机森林也能较好地保持精确性，一方面因为随机森林随机选取样本和特征，另一方面因为它可以继承决策树对缺失数据的处理方式。</p>
+<p>（4）由于采用了随机采样，<strong>训练出的模型的方差小，</strong>泛化能力强。</p>
+<p>（5）当存在分类不平衡时，随机森林是能够提供平衡数据集误差的有效方法。</p>
+<p><strong>缺点：</strong></p>
+<p>（1）随机森林对回归问题的解决并没有像它在分类中表现那么好。它并不能给出一个连续的输出，而且不能够做出超出训练集数据范围的预测，当进行回归时，随机森林不能够做出超越训练集数据范围的预测，这可能导致某些特定噪声的数据进行建模时出现过度拟合，随机森林已经被证明在某些噪音较大的分类或者回归问题上会过拟合。</p>
+<p>（2） 对于很多统计建模者来说，随机森林给人的感觉就像一个黑盒子，你无法控制模型内部的运行，只能在不同的参数和随机种子之间进行尝试，可能有很多相似的决策树，掩盖了真实的结果。</p>
+<p>（3） 对于小数据或者低维数据（特征较少的数据），可能不能产生很好的分类。</p>
+<h1 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h1><p>AdaBoost分类器就是一种元算法分类器，Adaboost分类器利用同一种基分类器（弱分类器），基于分类器的错误率分配不同的权重参数，最后累加加权的预测结果作为输出。</p>
+<h2 id="AdaBoost算法流程"><a href="#AdaBoost算法流程" class="headerlink" title="AdaBoost算法流程"></a>AdaBoost算法流程</h2><p>Adaboost算法流程如下：</p>
+<p>（1） 给数据中的每一个样本一个权重，权重的起始值是相同的，若有n个训练样本，其权重均为1/n；</p>
+<p>（2）训练数据中的每一个样本，得到第一个分类器；</p>
+<p>（3）计算该分类器的错误率，根据错误率计算要给分类器分配的权重<strong>（这里是分类器的权重，不是样本的权重）</strong><br>$$<br>错误率\varepsilon = \sum_{i \in 错分类样本}W_i, W_i为样本权重<br>$$</p>
+<p>$$<br>分类器权重\alpha = \frac{1}{2}In(\frac{1-\varepsilon}{\varepsilon})<br>$$</p>
+<p>（4）将第一个分类器分错误的样本权重增加，分对的样本权重减小<strong>（这里是样本的权重，不是分类器的权重）</strong><br>$$<br>错误样本权重更新公式D_i^{t+1} = \frac{D_i^te^{\alpha}}{sum(D_i^t)}<br>$$</p>
+<p>$$<br>正确样本权重更新公式D_i^{t+1} = \frac{D_i^te^{-\alpha}}{sum(D_i^t)}<br>$$</p>
+<p>t指当前分类器，i指第i个样本</p>
+<p>（5）然后再用新的样本权重训练数据，得到新的分类器，到步骤3</p>
+<p>（6）直到步骤3中分类器错误率为0或者整体弱分类器为0，或者到达迭代次数</p>
+<p>（7）将所有弱分类器加权求和，得到分类结果（注意是分类器权重），错误率低的分类器获得更高的决定系数，从而在对数据进行预测时起关键作用。<br>$$<br>f(x) = \sum\alpha h_i(x),h_i(x)为各个弱分类器<br>$$</p>
+<h2 id="AdaBoost优缺点"><a href="#AdaBoost优缺点" class="headerlink" title="AdaBoost优缺点"></a>AdaBoost优缺点</h2><p><strong>优点：</strong></p>
+<ol>
+<li><p>Adaboost提供一种框架，在框架内可以使用各种方法构建子分类器。可以使用简单的弱分类器，不用对特征进行筛选，也不存在过拟合的现象。</p>
+</li>
+<li><p>Adaboost算法不需要弱分类器的先验知识，最后得到的强分类器的分类精度依赖于所有弱分类器。无论是应用于人造数据还是真实数据，Adaboost都能显著的提高学习精度。</p>
+</li>
+<li><p>Adaboost算法不需要预先知道弱分类器的错误率上限，且最后得到的强分类器的分类精度依赖于所有弱分类器的分类精度，可以深挖分类器的能力。</p>
+<p>Adaboost可以根据弱分类器的反馈，自适应地调整假定的错误率，执行的效率高。</p>
+</li>
+<li><p>Adaboost对同一个训练样本集训练不同的弱分类器，按照一定的方法把这些弱分类器集合起来，构造一个分类能力很强的强分类器。</p>
+</li>
+</ol>
+<p><strong>缺点：</strong></p>
+<p>在Adaboost训练过程中，Adaboost会使得难于分类样本的权值呈指数增长，训练将会过于偏向这类困难的样本，导致Adaboost算法易受噪声干扰。</p>
+<p>Adaboost依赖于弱分类器，而弱分类器的训练时间往往很长。</p>
+<h2 id="AdaBoost对噪声敏感的原因"><a href="#AdaBoost对噪声敏感的原因" class="headerlink" title="AdaBoost对噪声敏感的原因"></a>AdaBoost对噪声敏感的原因</h2><p>在Adaboost训练过程中，Adaboost会使得难于分类样本权值呈指数增长，训练将会过于偏向这类困难的样本，导致Adaboost算法易受噪声干扰。</p>
+<h2 id="AdaBoost与随机森林的异同"><a href="#AdaBoost与随机森林的异同" class="headerlink" title="AdaBoost与随机森林的异同"></a>AdaBoost与随机森林的异同</h2><p>随机森林和Adaboost算法都可以用来分类，它们都是优秀的基于决策树的组合算法。</p>
+<p><strong>这两种分类方法的相同之处：</strong></p>
+<ol>
+<li>二者都是bootstrap自助法选取样本。</li>
+<li>二者都要训练很多棵决策树。</li>
+</ol>
+<p><strong>两种分类方法的不同之处：</strong></p>
+<ol>
+<li>Adaboost是基于boosting的算法，随机森林是基于bagging的算法。</li>
+<li>Adaboost后面树的训练，其在变量抽样选取的时候，对于上一棵树分错的样本，抽中的概率会加大。</li>
+<li>随机森林在训练每一棵树的时候，随机挑选了部分特征作为拆分特征，而不是所有的特征都去作为拆分特征。</li>
+<li>在观测新数据时，adaboost中所有的树加权投票来决定因变量的预测值，每棵树的权重和错误率有关；随机森林按照所有树中少数服从多数树的分类值来决定因变量的预测值（或者求取树预测的平均值）。</li>
+</ol>
 
-当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/passages/2019-06-30-支持向量机-SVM-原理与推导/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
       
     </div>
 
@@ -488,364 +597,81 @@
       
     
     
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechat.png" alt="NI,JUN 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="NI,JUN 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
 
     
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-06-30-快速排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="NI,JUN">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jun的个人随笔">
-    </span>
-
-    
-      <header class="post-header">
-
         
+          
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/passages/2019-06-30-快速排序/" class="post-title-link" itemprop="url">快速排序</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
+        <div class="post-tags">
           
+            <a href="/tags/集成学习/" rel="tag"># 集成学习</a>
           
+            <a href="/tags/随机森林/" rel="tag"># 随机森林</a>
           
-
+            <a href="/tags/AdaBoost/" rel="tag"># AdaBoost</a>
           
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-30 13:27:32 / 修改时间：14:17:19" itemprop="dateCreated datePublished" datetime="2019-06-30T13:27:32+08:00">2019-06-30</time>
-            </span>
-          
-
-          
-            
-
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          
-            <p>
-              快速排序1. 介绍快速排序是一种高效的排序算法，它采用“分而治之”的思想。其原理是：对于一组给定的记录，通过一趟排序后，将原序列分成两部分，其中前部分的所有记录均比后面部分的所有记录小，然后再依次对前后两部分的记录进行快速排序，递归该过程，直到序列中的所有记录均有序为止。
-具体算法步骤如下：
-(1)
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/passages/2019-06-30-快速排序/#more" rel="contents">
-                阅读全文 &raquo;
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/passages/2019-07-29-K邻近（KNN）专题/" rel="next" title="K邻近（KNN）专题">
+                <i class="fa fa-chevron-left"></i> K邻近（KNN）专题
               </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="NI,JUN">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jun的个人随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/" class="post-title-link" itemprop="url">Long and Short Term Memory（LSTM）的理解</a>
-              
             
-          </h1>
-        
+          </div>
 
-        <div class="post-meta">
+          <span class="post-nav-divider"></span>
 
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-29 16:50:06 / 修改时间：20:37:33" itemprop="dateCreated datePublished" datetime="2019-06-29T16:50:06+08:00">2019-06-29</time>
-            </span>
-          
-
-          
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>
-              1. LSTM网络定义长短期记忆网络——通常被称为 LSTM，是一种特殊的 RNN，能够学习长期依赖性。由 Hochreiter 和 Schmidhuber（1997）提出的，并且在接下来的工作中被许多人改进和推广。LSTM 在各种各样的问题上表现非常出色，现在被广泛使用。
-LSTM 被明确设计用来
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -855,390 +681,15 @@ LSTM 被明确设计用来
   </article>
 
 
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-06-29-排序算法比较/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="NI,JUN">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jun的个人随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/passages/2019-06-29-排序算法比较/" class="post-title-link" itemprop="url">排序算法比较</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-29 15:30:54 / 修改时间：22:37:19" itemprop="dateCreated datePublished" datetime="2019-06-29T15:30:54+08:00">2019-06-29</time>
-            </span>
-          
-
-          
-            
-
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              各种排序算法比较
-  
-    类别
-    排序方法
-    时间复杂度
-    空间复杂度
-    稳定性
-  
-  
-    平均情况
-    最好情况
-    最坏情况
-    辅助空间
-  
-  
-    插入排序
-    直接插入
-    O($n^2$)
-    O($n$)
-    
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/passages/2019-06-29-排序算法比较/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/hexo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="NI,JUN">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jun的个人随笔">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/passages/hexo/" class="post-title-link" itemprop="url">Hexo与github搭建个人博客</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-06-28 23:41:25" itemprop="dateCreated datePublished" datetime="2019-06-28T23:41:25+08:00">2019-06-28</time>
-            </span>
-          
-
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-06-29 21:13:59" itemprop="dateModified" datetime="2019-06-29T21:13:59+08:00">2019-06-29</time>
-              </span>
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/环境配置/" itemprop="url" rel="index"><span itemprop="name">环境配置</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-               GitHub个人博客搭建主要有两种方法：一是基于Ruby的jekyll+github方法，二是基于Nodejs的Hexo+github方法。这是本人的第一篇个人博客，希望能够坚持写下去。下面我将介绍下Hexo+github方法的具体过程：
-搭建过程Hexo安装$ npm install hexo-
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/passages/hexo/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
-  </nav>
-
 
 
           </div>
           
+
+  
+
+
 
         </div>
         
@@ -1258,8 +709,17 @@ LSTM 被明确设计用来
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1454,6 +914,23 @@ LSTM 被明确设计用来
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#集成学习算法"><span class="nav-number">1.</span> <span class="nav-text">集成学习算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#集成学习主要三种框架"><span class="nav-number">2.</span> <span class="nav-text">集成学习主要三种框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bagging算法流程"><span class="nav-number">2.1.</span> <span class="nav-text">Bagging算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Boosting算法流程"><span class="nav-number">2.2.</span> <span class="nav-text">Boosting算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stacking的使用"><span class="nav-number">2.3.</span> <span class="nav-text">stacking的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#随机森林"><span class="nav-number">3.</span> <span class="nav-text">随机森林</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法流程"><span class="nav-number">3.1.</span> <span class="nav-text">算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机森林的随机性"><span class="nav-number">3.2.</span> <span class="nav-text">随机森林的随机性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机森林不易过拟合原因"><span class="nav-number">3.3.</span> <span class="nav-text">随机森林不易过拟合原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用随机森林去弥补特征向量中的缺失值"><span class="nav-number">3.4.</span> <span class="nav-text">如何使用随机森林去弥补特征向量中的缺失值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机森林对特征重要性的评估"><span class="nav-number">3.5.</span> <span class="nav-text">随机森林对特征重要性的评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机森林训练需要调整的参数"><span class="nav-number">3.6.</span> <span class="nav-text">随机森林训练需要调整的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机森林不用全样本训练m棵决策树"><span class="nav-number">3.7.</span> <span class="nav-text">随机森林不用全样本训练m棵决策树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机森林算法优缺点"><span class="nav-number">3.8.</span> <span class="nav-text">随机森林算法优缺点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AdaBoost"><span class="nav-number">4.</span> <span class="nav-text">AdaBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AdaBoost算法流程"><span class="nav-number">4.1.</span> <span class="nav-text">AdaBoost算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AdaBoost优缺点"><span class="nav-number">4.2.</span> <span class="nav-text">AdaBoost优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AdaBoost对噪声敏感的原因"><span class="nav-number">4.3.</span> <span class="nav-text">AdaBoost对噪声敏感的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AdaBoost与随机森林的异同"><span class="nav-number">4.4.</span> <span class="nav-text">AdaBoost与随机森林的异同</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -1609,6 +1086,10 @@ LSTM 被明确设计用来
 
 
   
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
 
   
 
@@ -1624,6 +1105,8 @@ LSTM 被明确设计用来
 
   
 
+
+  
 
 
   
@@ -1959,20 +1442,6 @@ LSTM 被明确设计用来
   
 
   
-  
-    
-      
-        
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
   
 
   
