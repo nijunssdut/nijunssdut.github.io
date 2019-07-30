@@ -94,18 +94,18 @@
 
 
 
-  <meta name="description" content="知识背景马尔可夫链马尔可夫过程是满足无后效性的随机过程。假设一个随机过程中，$t_n$时刻的状态$x_n$的条件分布，仅仅与其前一个状态$x_{n-1}$有关，即$P(x_n|x_1,x_2,…x_{n-1})=P(x_n|x_{n-1})$，则将其称为马尔可夫过程，时间和状态的取值都是离散的马尔可夫过程也称为马尔可夫链。 隐马尔可夫模型（HMM）隐马尔可夫模型是对含有未知参数(隐状态)的马尔可夫">
-<meta name="keywords" content="概率图模型,无向图">
+  <meta name="description" content="GBDTGBDT是集成学习Boosting的一种。Gradient Boosting的主要的思想是，每一次建立单个学习器时，是在之前建立的模型的损失函数的梯度下降方向。损失函数越大，说明模型越容易出错，如果我们的模型能够让损失函数持续下降，则说明我们的模型在不停的改进，而最好的方式就是让损失函数在其梯度的方向上下降。 GBDT的核心就在于，每一棵树学的是之前所有树结论和的残差，这个残差就是一个加预">
+<meta name="keywords" content="集成学习,GBDT,XGBoost">
 <meta property="og:type" content="article">
-<meta property="og:title" content="马尔可夫模型">
-<meta property="og:url" content="http://nijunssdut.github.io/passages/2019-07-26-马尔可夫模型/index.html">
+<meta property="og:title" content="集成学习专题（二）">
+<meta property="og:url" content="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（二）/index.html">
 <meta property="og:site_name" content="Jun的个人随笔">
-<meta property="og:description" content="知识背景马尔可夫链马尔可夫过程是满足无后效性的随机过程。假设一个随机过程中，$t_n$时刻的状态$x_n$的条件分布，仅仅与其前一个状态$x_{n-1}$有关，即$P(x_n|x_1,x_2,…x_{n-1})=P(x_n|x_{n-1})$，则将其称为马尔可夫过程，时间和状态的取值都是离散的马尔可夫过程也称为马尔可夫链。 隐马尔可夫模型（HMM）隐马尔可夫模型是对含有未知参数(隐状态)的马尔可夫">
+<meta property="og:description" content="GBDTGBDT是集成学习Boosting的一种。Gradient Boosting的主要的思想是，每一次建立单个学习器时，是在之前建立的模型的损失函数的梯度下降方向。损失函数越大，说明模型越容易出错，如果我们的模型能够让损失函数持续下降，则说明我们的模型在不停的改进，而最好的方式就是让损失函数在其梯度的方向上下降。 GBDT的核心就在于，每一棵树学的是之前所有树结论和的残差，这个残差就是一个加预">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-29T11:24:12.735Z">
+<meta property="og:updated_time" content="2019-07-30T12:48:57.978Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="马尔可夫模型">
-<meta name="twitter:description" content="知识背景马尔可夫链马尔可夫过程是满足无后效性的随机过程。假设一个随机过程中，$t_n$时刻的状态$x_n$的条件分布，仅仅与其前一个状态$x_{n-1}$有关，即$P(x_n|x_1,x_2,…x_{n-1})=P(x_n|x_{n-1})$，则将其称为马尔可夫过程，时间和状态的取值都是离散的马尔可夫过程也称为马尔可夫链。 隐马尔可夫模型（HMM）隐马尔可夫模型是对含有未知参数(隐状态)的马尔可夫">
+<meta name="twitter:title" content="集成学习专题（二）">
+<meta name="twitter:description" content="GBDTGBDT是集成学习Boosting的一种。Gradient Boosting的主要的思想是，每一次建立单个学习器时，是在之前建立的模型的损失函数的梯度下降方向。损失函数越大，说明模型越容易出错，如果我们的模型能够让损失函数持续下降，则说明我们的模型在不停的改进，而最好的方式就是让损失函数在其梯度的方向上下降。 GBDT的核心就在于，每一棵树学的是之前所有树结论和的残差，这个残差就是一个加预">
 
 
 
@@ -113,7 +113,7 @@
 
   
   
-  <link rel="canonical" href="http://nijunssdut.github.io/passages/2019-07-26-马尔可夫模型/">
+  <link rel="canonical" href="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（二）/">
 
 
 
@@ -123,7 +123,7 @@
   };
 </script>
 
-  <title>马尔可夫模型 | Jun的个人随笔</title>
+  <title>集成学习专题（二） | Jun的个人随笔</title>
   
 
 
@@ -347,7 +347,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-07-26-马尔可夫模型/">
+    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（二）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="NI,JUN">
@@ -364,7 +364,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">马尔可夫模型
+          <h1 class="post-title" itemprop="name headline">集成学习专题（二）
 
               
             
@@ -390,23 +390,13 @@
                 
               
 
-              <time title="创建时间：2019-07-26 09:57:43" itemprop="dateCreated datePublished" datetime="2019-07-26T09:57:43+08:00">2019-07-26</time>
+              <time title="创建时间：2019-07-30 18:34:00 / 修改时间：20:48:57" itemprop="dateCreated datePublished" datetime="2019-07-30T18:34:00+08:00">2019-07-30</time>
             </span>
           
 
           
             
 
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-07-29 19:24:12" itemprop="dateModified" datetime="2019-07-29T19:24:12+08:00">2019-07-29</time>
-              </span>
             
           
 
@@ -457,23 +447,68 @@
       
 
       
-        <h1 id="知识背景"><a href="#知识背景" class="headerlink" title="知识背景"></a>知识背景</h1><h2 id="马尔可夫链"><a href="#马尔可夫链" class="headerlink" title="马尔可夫链"></a>马尔可夫链</h2><p>马尔可夫过程是满足无后效性的随机过程。假设一个随机过程中，$t_n$时刻的状态$x_n$的条件分布，仅仅与其前一个状态$x_{n-1}$有关，即$P(x_n|x_1,x_2,…x_{n-1})=P(x_n|x_{n-1})$，则将其称为马尔可夫过程，时间和状态的取值都是离散的马尔可夫过程也称为马尔可夫链。</p>
-<h2 id="隐马尔可夫模型（HMM）"><a href="#隐马尔可夫模型（HMM）" class="headerlink" title="隐马尔可夫模型（HMM）"></a>隐马尔可夫模型（HMM）</h2><p>隐马尔可夫模型是对含有未知参数(隐状态)的马尔可夫链进行建模的生成模型，概率图模型如下图所示。</p>
-<p>![Hidden Markov Model](2019-07-26-马尔可夫模型/Hidden Markov Model.png)</p>
-<p>在简单的马尔可夫模型中，所有状态对于观测者都是可见的，因此在马尔可夫模型中仅仅包括状态间的转移概率。而在隐马尔可夫模型中，隐状态$x_i$对于观测者而言是不可见的，观测者能观测到的只有每个隐状态$x_i$对应的输出$o_i$，而观测状态$o_i$的概率分布仅仅取决于对应的隐状态$x_i$。在隐马尔可夫模型中，参数包含了<strong>隐状态间的转移概率、隐状态到观测状态的输出概率、隐状态$x$的取值空间、观测状态$o$的取值空间以及初始状态的概率分布。</strong></p>
-<h3 id="隐马尔可夫模型三个基本问题与相应的算法"><a href="#隐马尔可夫模型三个基本问题与相应的算法" class="headerlink" title="隐马尔可夫模型三个基本问题与相应的算法"></a>隐马尔可夫模型三个基本问题与相应的算法</h3><p>前向、后向算法解决的是评估问题，即给定一个模型，求某特定观测序列的概率，用于评估该序列最匹配的模型。<strong>（概率计算问题）</strong></p>
-<p>Baum-Welch算法解决的是模型训练问题，求解使得该观测序列概率最大的模型参数，即参数估计，是一种无监督的训练方法，主要通过EM迭代实现。<strong>（学习问题）</strong></p>
-<p>维特比（Viterbi）算法解决的是给定一个模型和某个特定的输出序列，求最可能产生这个输出的状态序列。例如，通过海藻变化（输出序列）来观测天气（状态序列），<strong>是预测问题，通信中的解码问题。</strong></p>
-<h1 id="隐马尔可夫对中文分词问题建模与训练"><a href="#隐马尔可夫对中文分词问题建模与训练" class="headerlink" title="隐马尔可夫对中文分词问题建模与训练"></a>隐马尔可夫对中文分词问题建模与训练</h1><p>例如有3个不同的葫芦，每个葫芦里有好药和坏药若干，现在从3个葫芦中按照以下规则倒出药来。</p>
-<p>（1）随机挑选一个葫芦。</p>
-<p>（2）从葫芦里倒出一颗药，记录是好药还是坏药后将药放回。</p>
-<p>（3）从当前葫芦依照一定的概率转移到下一个葫芦。</p>
-<p>（4）重复步骤（2）和（3）。</p>
-<p>在整个过程中，我们并不知道每次拿到得是哪一个葫芦。用隐马尔可夫模型来描述以上过程，隐状态就是当前是哪一个葫芦，隐状态的取值空间为{葫芦1，葫芦2，葫芦3}，观测状态的取值空间为{好药，坏药}，初始状态的概率分布就是第（1）步随机挑选葫芦的概率分布，隐状态间的转移概率就是从当前葫芦转移到下一个葫芦的概率，而隐状态到观测状态的输出概率就是每个葫芦里好药和坏药的概率。记录下来药的顺序就是观测状态的序列，而每次拿到的葫芦的顺序就是隐状态的序列。</p>
-<p>隐马尔可夫模型通常用来解决序列标注问题，因此也可以将分词问题转化为一个序列标注问题来进行建模。例如可以对中文句子中每个字做以下标注：B表示一个词开头的第一个字，E表示一个词结尾的最后一个字，M表示一个词中间的字，S表示一个单字词，则隐状态的取值空间为{B,E,M,S}。同时对隐状态的转移概率可以给出一些先验知识，B和M后面只能是M或者E，S和E后面只能是B或者S。而每个字就是模型中观测状态，取值空间为语料中的所有中文字。完成建模之后，使用语料进行训练可以分有监督训练和无监督训练。有监督训练即对语料进行标注，相当于根据经验得到了语料的所有隐状态信息，然后就可以用简单的计数法来对模型中的概率分布进行极大似然估计。无监督训练可以用Baum-Welch算法，同时优化隐状态序列和模型对应的概率分布。</p>
-<h1 id="因子图与马尔可夫逻辑网"><a href="#因子图与马尔可夫逻辑网" class="headerlink" title="因子图与马尔可夫逻辑网"></a>因子图与马尔可夫逻辑网</h1><h2 id="马尔可夫逻辑网"><a href="#马尔可夫逻辑网" class="headerlink" title="马尔可夫逻辑网"></a>马尔可夫逻辑网</h2><p>一个马尔可夫逻辑网就是一个每个准则都有权重的一阶逻辑知识库，可看成是构建马尔可夫逻辑网络的模板。从概率的视角看，马尔可夫逻辑网提供一种简洁的语言来定义大型马尔可夫网，能灵活地、模块化地与大量知识合并；从一阶逻辑的视角看，马尔可夫逻辑网能健全地处理不确定性、容许有瑕疵甚至矛盾的知识库，降低脆弱性。有许多统计关系学习领域的重要任务，如集合分类、链接预测、链接聚合、社会网络建模和对象识别，都自然而然地成为运用马尔科夫逻辑网推理和学习的实例。</p>
-<p>马尔可夫网（也叫马尔可夫随机场）是随机变量集$x=x_1,x_2,…,x_n$的联合分布模型，它由一个无向图G和一个势函数$\Psi_k$集合组成，每个随机变量是图上的节点，<strong>图的每个团在模型中都有一个势函数，势函数是一个非负实函数，它代表了相应的团的状态。</strong>马尔可夫网的联合分布如下：<br>$$<br>P(X= x) =\frac{1}{Z}\prod_k\Psi_k(x_)<br>$$<br>其中$x_$是团中随机变量的状态，Z也叫配分函数（态和），定义为$\sum_{x\in X}\prod_k\Psi_k(x_)$。将马尔可夫网络中每个团的势状态的所有特征值加权后求和再取幂，就可方便地表示成对数线性模式<br>$$<br>P(X=x) = \frac{1}{Z}\exp(\sum_jw_jf_j(x))<br>$$<br>特征函数可以是表示状态的任何实函数。公式是势最直接的表示，其中每个团每个可能的状态都有一个对应的特征值 $f_j(x)$，它的权重是$w_j$，这种表示方法与团数量的幂相关。可是，我们可以自由地运用一些方法比如状态的逻辑函数等减少特征值数量，特别在团数量很大时能相比势函数方式提供一种更简洁的表示形式。马尔可夫逻辑网络就是利用了这一方式。</p>
-<h2 id="因子图"><a href="#因子图" class="headerlink" title="因子图"></a>因子图</h2>
+        <h1 id="GBDT"><a href="#GBDT" class="headerlink" title="GBDT"></a>GBDT</h1><p>GBDT是集成学习Boosting的一种。Gradient Boosting的主要的思想是，每一次建立单个学习器时，是在之前建立的模型的损失函数的梯度下降方向。损失函数越大，说明模型越容易出错，如果我们的模型能够让损失函数持续下降，则说明我们的模型在不停的改进，而<strong>最好的方式就是让损失函数在其梯度的方向上下降</strong>。</p>
+<p>GBDT的核心就在于，每一棵树学的是之前所有树结论和的残差，这个残差就是一个加预测值后能得真实值的累加量。所以为了得到残差，<strong>GBDT中的树都是回归树，不是分类树。</strong></p>
+<h2 id="GBDT的算法流程"><a href="#GBDT的算法流程" class="headerlink" title="GBDT的算法流程"></a>GBDT的算法流程</h2><p>输入是训练集样本，最大迭代次数T，每轮迭代输入数据是训练集<strong>无放回采样样本</strong>，损失函数L。</p>
+<ol>
+<li>初始化弱学习器。</li>
+</ol>
+<p>$$<br>T(x;\theta_m)<br>$$</p>
+<p>T表示决策树，x为输入样本，$\theta_m$为树分裂参数。</p>
+<ol start="2">
+<li>对迭代轮数m = 1,2,…,T有：</li>
+</ol>
+<p>（a）计算各个叶子区域损失函数L的负梯度值，将它作为残差的估计<br>$$<br>r_{mi} = -[\frac{\partial L(y,f(x_i))}{\partial f(x_i)}]<em>{f(x)=f</em>{m-1}(x)}<br>$$<br>（b）对$r_{mi}$拟合为一颗新的回归树，根据新的回归树得到m轮产生的叶子节点区域</p>
+<p>（c）遍历回归树所有叶子节点区域，在各个区域使损失函数极小化找到残差</p>
+<p>（d）更新强学习器</p>
+<ol start="3">
+<li>得到输出的最终模型</li>
+</ol>
+<p>$$<br>f_M(x) = \sum_{m =1}^M T(x;\theta_m)<br>$$</p>
+<h2 id="GBDT常用的损失函数"><a href="#GBDT常用的损失函数" class="headerlink" title="GBDT常用的损失函数"></a>GBDT常用的损失函数</h2><h2 id="GBDT中为什么用负梯度来拟合残差计算"><a href="#GBDT中为什么用负梯度来拟合残差计算" class="headerlink" title="GBDT中为什么用负梯度来拟合残差计算"></a>GBDT中为什么用负梯度来拟合残差计算</h2><p>其实除了均方误差的情况一阶导是残差外，其他的情况没有残差的概念，GBDT每一轮拟合的都是损失函数负梯度。</p>
+<p><strong>使用梯度计算代替的主要原因是为了将GBDT扩展到更复杂的损失函数中。</strong></p>
+<p>当损失函数形式简单，可以认为$y^{‘}（模型输出值）= y（实际值）$时损失函数最小，但当损失函数加入了正则项后，并非$y^{‘}=y$时损失函数取得最小值，所以我们需要计算损失函数的梯度，而不能直接使用模型来计算残差。</p>
+<h2 id="GBDT不适合使用高维稀疏特征的原因"><a href="#GBDT不适合使用高维稀疏特征的原因" class="headerlink" title="GBDT不适合使用高维稀疏特征的原因"></a>GBDT不适合使用高维稀疏特征的原因</h2><ol>
+<li>特征太多，GBDT不一定跑的动，即使可以跑也会耗费时间，因为在每一次分割时需要比较大量的特征。</li>
+<li>树的分割往往只考虑了少量特征，大部分特征用不到，少量的特征在多次分裂时被重复用到，剩余的长尾基本用不到，所有高维稀疏特征会造成大量特征的浪费。</li>
+</ol>
+<h2 id="GBDT减少误差的方式"><a href="#GBDT减少误差的方式" class="headerlink" title="GBDT减少误差的方式"></a>GBDT减少误差的方式</h2><p>机器学习算法的误差分为偏差和方差两个部分。</p>
+<p>GBDT迭代每一步都在拟合当前模型预测值和真实值之间的偏差，通过不断的迭代使偏差减小，所以只要选取方差较小的模型作为基分类器，GBDT就可以很好的减小预测误差。</p>
+<h2 id="GBDT的优缺点"><a href="#GBDT的优缺点" class="headerlink" title="GBDT的优缺点"></a>GBDT的优缺点</h2><p><strong>GBDT主要的优点有：</strong></p>
+<p>（1）可以灵活处理各种类型的数据，包括连续值和离散值。</p>
+<p>（2）在相对少的调参时间情况下，预测的准确率也可以比较高</p>
+<p>（3）使用一些健壮的损失函数，对异常值的鲁棒性非常强，比如Huber损失函数和Quantile损失函数</p>
+<p><strong>GBDT的主要缺点有：</strong></p>
+<p>（1）由于弱学习器之间存在依赖关系，难以并行训练数据。</p>
+<h2 id="GBDT如何进行正则化"><a href="#GBDT如何进行正则化" class="headerlink" title="GBDT如何进行正则化"></a>GBDT如何进行正则化</h2><p>第一种正则化方式为步长（learning rate）。定义为v，对于前面的弱学习器的迭代<br>$$<br>f_k{x} = f_{k-1}(x)+h_k(x)<br>$$<br>如果我们加上了正则化项，则有<br>$$<br>f_k(x) = f_{k-1}(x)+ vh_k(x)<br>$$<br>v的取值范围为$0\lt v \le 1$。对于同样的训练集学习效果，较小的v意味着我们需要更多的弱学习器的迭代次数，通常我们用步长和迭代最大次数一起来决定算法的拟合效果。</p>
+<p>第二种正则化的方式是通过子采样比例（subsample）。取值为(0,1]。<strong>注意这里的子采样和随机森林不一样，随机森林使用的是放回抽样，而这里是不放回抽样。</strong>如果取值为1，则全部样本都使用，等于没有使用子采样。如果取值小于1，则只有一部分样本会去做GBDT的决策树拟合。选择小于1的比例可以减少方差，即防止过拟合，但是会增加样本拟合的偏差，因此取值不能太低。推荐在[0.5,0.8]之间。</p>
+<p>第三种是对于弱学习器即CART回归树进行正则化剪枝。</p>
+<h2 id="GBDT如何构建特征"><a href="#GBDT如何构建特征" class="headerlink" title="GBDT如何构建特征"></a>GBDT如何构建特征</h2><h2 id="GBDT如何用于分类"><a href="#GBDT如何用于分类" class="headerlink" title="GBDT如何用于分类"></a>GBDT如何用于分类</h2><h2 id="GBDT需要调试的参数"><a href="#GBDT需要调试的参数" class="headerlink" title="GBDT需要调试的参数"></a>GBDT需要调试的参数</h2><p>GBDT训练中需要调试的参数如下：</p>
+<ol>
+<li>n_estimators：也就是弱学习器的最大迭代次数，或者说<strong>最大弱学习器的个数</strong>。一般来说n_estimators太小，容易欠拟合，n_estimators太大，容易过拟合，一般选择一个适中的数值。</li>
+<li>learning_rate：即每个弱学习器的权重缩减系数v，也称步长。</li>
+<li>subsample：不放回抽样。如果取值为1，则全部样本都使用，等于没有使用子采样。如果取值小于1，则只有一部分样本会去做GBDT的决策树拟合。</li>
+<li>max_features允许单个决策树使用特征的最大数量。</li>
+<li>max_depth决策树最大深度</li>
+</ol>
+<p>默认决策树在建立子树的时候不会限制子树的深度</p>
+<ol start="6">
+<li>min_sample_split 内部节点再划分所需最小样本数</li>
+</ol>
+<p>内部节点再划分所需最小样本数，如果某节点的样本数少于min_samples_split，则不会继续再尝试选择最优特征来进行划分。</p>
+<ol start="7">
+<li>min_samples_leaf 叶子节点最少样本数</li>
+</ol>
+<p>这个值限制了叶子节点最少的样本数，如果某叶子节点数目小于样本数，则会和兄弟节点一起被剪枝。</p>
+<ol start="8">
+<li>max_leaf_nodes 最大叶子节点数</li>
+</ol>
+<p>通过限制最大叶子节点数，可以防止过拟合，默认是“None”，即不限制最大的叶子节点数。如果加了限制，算法会建立在最大叶子节点数内的最优的决策树。</p>
+<ol start="9">
+<li>min_impurity_split 节点划分最小不纯度</li>
+</ol>
+<p>这个值限制了决策树的增长，如果某节点的不纯度（基于基尼系数，均方差）小于这个阈值，则该节点不再生成子节点。即为叶子节点。一般不推荐改动默认值1e-7。</p>
+
       
     </div>
 
@@ -532,9 +567,11 @@
         
         <div class="post-tags">
           
-            <a href="/tags/概率图模型/" rel="tag"># 概率图模型</a>
+            <a href="/tags/集成学习/" rel="tag"># 集成学习</a>
           
-            <a href="/tags/无向图/" rel="tag"># 无向图</a>
+            <a href="/tags/GBDT/" rel="tag"># GBDT</a>
+          
+            <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
           
         </div>
       
@@ -547,8 +584,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/passages/2019-07-25-主题模型专题/" rel="next" title="主题模型专题">
-                <i class="fa fa-chevron-left"></i> 主题模型专题
+              <a href="/passages/2019-07-30-集成学习专题（一）/" rel="next" title="集成学习专题（一）">
+                <i class="fa fa-chevron-left"></i> 集成学习专题（一）
               </a>
             
           </div>
@@ -556,10 +593,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/passages/2019-07-27-决策树专题/" rel="prev" title="决策树专题">
-                决策树专题 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -822,7 +855,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#知识背景"><span class="nav-number">1.</span> <span class="nav-text">知识背景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#马尔可夫链"><span class="nav-number">1.1.</span> <span class="nav-text">马尔可夫链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐马尔可夫模型（HMM）"><span class="nav-number">1.2.</span> <span class="nav-text">隐马尔可夫模型（HMM）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#隐马尔可夫模型三个基本问题与相应的算法"><span class="nav-number">1.2.1.</span> <span class="nav-text">隐马尔可夫模型三个基本问题与相应的算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#隐马尔可夫对中文分词问题建模与训练"><span class="nav-number">2.</span> <span class="nav-text">隐马尔可夫对中文分词问题建模与训练</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#因子图与马尔可夫逻辑网"><span class="nav-number">3.</span> <span class="nav-text">因子图与马尔可夫逻辑网</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#马尔可夫逻辑网"><span class="nav-number">3.1.</span> <span class="nav-text">马尔可夫逻辑网</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#因子图"><span class="nav-number">3.2.</span> <span class="nav-text">因子图</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GBDT"><span class="nav-number">1.</span> <span class="nav-text">GBDT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT的算法流程"><span class="nav-number">1.1.</span> <span class="nav-text">GBDT的算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT常用的损失函数"><span class="nav-number">1.2.</span> <span class="nav-text">GBDT常用的损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT中为什么用负梯度来拟合残差计算"><span class="nav-number">1.3.</span> <span class="nav-text">GBDT中为什么用负梯度来拟合残差计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT不适合使用高维稀疏特征的原因"><span class="nav-number">1.4.</span> <span class="nav-text">GBDT不适合使用高维稀疏特征的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT减少误差的方式"><span class="nav-number">1.5.</span> <span class="nav-text">GBDT减少误差的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT的优缺点"><span class="nav-number">1.6.</span> <span class="nav-text">GBDT的优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT如何进行正则化"><span class="nav-number">1.7.</span> <span class="nav-text">GBDT如何进行正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT如何构建特征"><span class="nav-number">1.8.</span> <span class="nav-text">GBDT如何构建特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT如何用于分类"><span class="nav-number">1.9.</span> <span class="nav-text">GBDT如何用于分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT需要调试的参数"><span class="nav-number">1.10.</span> <span class="nav-text">GBDT需要调试的参数</span></a></li></ol></li></ol></div>
             
 
           </div>
