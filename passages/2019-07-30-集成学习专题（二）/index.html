@@ -95,17 +95,21 @@
 
 
   <meta name="description" content="GBDTGBDT是集成学习Boosting的一种。Gradient Boosting的主要的思想是，每一次建立单个学习器时，是在之前建立的模型的损失函数的梯度下降方向。损失函数越大，说明模型越容易出错，如果我们的模型能够让损失函数持续下降，则说明我们的模型在不停的改进，而最好的方式就是让损失函数在其梯度的方向上下降。 GBDT的核心就在于，每一棵树学的是之前所有树结论和的残差，这个残差就是一个加预">
-<meta name="keywords" content="集成学习,GBDT,XGBoost">
+<meta name="keywords" content="集成学习,监督学习,GBDT,XGBoost">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集成学习专题（二）">
 <meta property="og:url" content="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（二）/index.html">
 <meta property="og:site_name" content="Jun的个人随笔">
 <meta property="og:description" content="GBDTGBDT是集成学习Boosting的一种。Gradient Boosting的主要的思想是，每一次建立单个学习器时，是在之前建立的模型的损失函数的梯度下降方向。损失函数越大，说明模型越容易出错，如果我们的模型能够让损失函数持续下降，则说明我们的模型在不停的改进，而最好的方式就是让损失函数在其梯度的方向上下降。 GBDT的核心就在于，每一棵树学的是之前所有树结论和的残差，这个残差就是一个加预">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-30T12:48:57.978Z">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（二）/GBDT-Feature.jpg">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（二）/XGBoost.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（二）/XGBoost%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86.png">
+<meta property="og:updated_time" content="2019-07-31T08:50:57.282Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="集成学习专题（二）">
 <meta name="twitter:description" content="GBDTGBDT是集成学习Boosting的一种。Gradient Boosting的主要的思想是，每一次建立单个学习器时，是在之前建立的模型的损失函数的梯度下降方向。损失函数越大，说明模型越容易出错，如果我们的模型能够让损失函数持续下降，则说明我们的模型在不停的改进，而最好的方式就是让损失函数在其梯度的方向上下降。 GBDT的核心就在于，每一棵树学的是之前所有树结论和的残差，这个残差就是一个加预">
+<meta name="twitter:image" content="http://nijunssdut.github.io/passages/2019-07-30-集成学习专题（二）/GBDT-Feature.jpg">
 
 
 
@@ -390,13 +394,23 @@
                 
               
 
-              <time title="创建时间：2019-07-30 18:34:00 / 修改时间：20:48:57" itemprop="dateCreated datePublished" datetime="2019-07-30T18:34:00+08:00">2019-07-30</time>
+              <time title="创建时间：2019-07-30 18:34:00" itemprop="dateCreated datePublished" datetime="2019-07-30T18:34:00+08:00">2019-07-30</time>
             </span>
           
 
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-31 16:50:57" itemprop="dateModified" datetime="2019-07-31T16:50:57+08:00">2019-07-31</time>
+              </span>
             
           
 
@@ -465,7 +479,26 @@
 <li>得到输出的最终模型</li>
 </ol>
 <p>$$<br>f_M(x) = \sum_{m =1}^M T(x;\theta_m)<br>$$</p>
-<h2 id="GBDT常用的损失函数"><a href="#GBDT常用的损失函数" class="headerlink" title="GBDT常用的损失函数"></a>GBDT常用的损失函数</h2><h2 id="GBDT中为什么用负梯度来拟合残差计算"><a href="#GBDT中为什么用负梯度来拟合残差计算" class="headerlink" title="GBDT中为什么用负梯度来拟合残差计算"></a>GBDT中为什么用负梯度来拟合残差计算</h2><p>其实除了均方误差的情况一阶导是残差外，其他的情况没有残差的概念，GBDT每一轮拟合的都是损失函数负梯度。</p>
+<h2 id="GBDT常用的损失函数"><a href="#GBDT常用的损失函数" class="headerlink" title="GBDT常用的损失函数"></a>GBDT常用的损失函数</h2><p>对于分类算法，其损失函数一般有两种：</p>
+<p>（1） 指数损失函数：$L(y,h(x)) = \exp(-yh(x))$</p>
+<p>（2） 对数损失函数：分为二元分类和多元分类两种。</p>
+<ul>
+<li>对于二元分类：$L(y,h(x)) = \log(1+\exp(-yh(x)))$</li>
+<li>对于多元分类：设类别数为k， $L(y_k,h(x)) = -\sum_{k=1}^Ky_k\log(p_k(x))$，$y_k$为样本数据估计值，当一个样本x属于k时，$y_k=1$，否则$y_k=0$</li>
+</ul>
+<p>对于回归算法，常用损失函数有4种：</p>
+<ol>
+<li><p>均方差：$L(y,h(x)) =(y-h(x))^2$</p>
+</li>
+<li><p>绝对损失：$L(y,h(x)) = |y-h(x)|$</p>
+</li>
+<li><p>Huber损失：它是均方差和绝对损失的折衷产物，对于远离中心的异常点，采用绝对损失，而中心附近的点采用均方差。这个界限一般用分位数点度量<br>$$<br>L(y,f(x))= \begin{cases}<br> \frac{1}{2}(y-f(x))^2&amp;|y-f(x)|\le \delta\<br> \delta(|y-f(x)|-\frac{\delta}{2})&amp;|y-f(x)|\gt \delta<br>\end{cases}<br>$$</p>
+</li>
+<li><p>分位树损失：它对应的是分位数回归的损失函数。</p>
+</li>
+</ol>
+<p>$$<br>L(y,f(x)) = \sum_{y\ge f(x)}\theta|y-f(x)|+\sum_{y\lt f(x)}(1-\theta)|y-f(x)|<br>$$</p>
+<h2 id="GBDT中为什么用负梯度来拟合残差计算"><a href="#GBDT中为什么用负梯度来拟合残差计算" class="headerlink" title="GBDT中为什么用负梯度来拟合残差计算"></a>GBDT中为什么用负梯度来拟合残差计算</h2><p>其实除了均方误差的情况一阶导是残差外，其他的情况没有残差的概念，GBDT每一轮拟合的都是损失函数负梯度。</p>
 <p><strong>使用梯度计算代替的主要原因是为了将GBDT扩展到更复杂的损失函数中。</strong></p>
 <p>当损失函数形式简单，可以认为$y^{‘}（模型输出值）= y（实际值）$时损失函数最小，但当损失函数加入了正则项后，并非$y^{‘}=y$时损失函数取得最小值，所以我们需要计算损失函数的梯度，而不能直接使用模型来计算残差。</p>
 <h2 id="GBDT不适合使用高维稀疏特征的原因"><a href="#GBDT不适合使用高维稀疏特征的原因" class="headerlink" title="GBDT不适合使用高维稀疏特征的原因"></a>GBDT不适合使用高维稀疏特征的原因</h2><ol>
@@ -483,7 +516,18 @@
 <h2 id="GBDT如何进行正则化"><a href="#GBDT如何进行正则化" class="headerlink" title="GBDT如何进行正则化"></a>GBDT如何进行正则化</h2><p>第一种正则化方式为步长（learning rate）。定义为v，对于前面的弱学习器的迭代<br>$$<br>f_k{x} = f_{k-1}(x)+h_k(x)<br>$$<br>如果我们加上了正则化项，则有<br>$$<br>f_k(x) = f_{k-1}(x)+ vh_k(x)<br>$$<br>v的取值范围为$0\lt v \le 1$。对于同样的训练集学习效果，较小的v意味着我们需要更多的弱学习器的迭代次数，通常我们用步长和迭代最大次数一起来决定算法的拟合效果。</p>
 <p>第二种正则化的方式是通过子采样比例（subsample）。取值为(0,1]。<strong>注意这里的子采样和随机森林不一样，随机森林使用的是放回抽样，而这里是不放回抽样。</strong>如果取值为1，则全部样本都使用，等于没有使用子采样。如果取值小于1，则只有一部分样本会去做GBDT的决策树拟合。选择小于1的比例可以减少方差，即防止过拟合，但是会增加样本拟合的偏差，因此取值不能太低。推荐在[0.5,0.8]之间。</p>
 <p>第三种是对于弱学习器即CART回归树进行正则化剪枝。</p>
-<h2 id="GBDT如何构建特征"><a href="#GBDT如何构建特征" class="headerlink" title="GBDT如何构建特征"></a>GBDT如何构建特征</h2><h2 id="GBDT如何用于分类"><a href="#GBDT如何用于分类" class="headerlink" title="GBDT如何用于分类"></a>GBDT如何用于分类</h2><h2 id="GBDT需要调试的参数"><a href="#GBDT需要调试的参数" class="headerlink" title="GBDT需要调试的参数"></a>GBDT需要调试的参数</h2><p>GBDT训练中需要调试的参数如下：</p>
+<h2 id="GBDT如何构建特征"><a href="#GBDT如何构建特征" class="headerlink" title="GBDT如何构建特征"></a>GBDT如何构建特征</h2><p>GBDT本身是不能产生特征的，但是我们可以利用GBDT去产生特征的组合，其主要思想是<strong>GBDT每棵树的路径直接作为其他模型的输入特征使用</strong>，例如输入逻辑回归模型。</p>
+<p>用已有特征训练GBDT模型，然后利用GBDT模型学习到的树来构造新特征，最后把这些新特征加入原有特征一起训练模型。构造的新特征向量是取值0/1的，向量的每个元素对应于GBDT模型中树的叶子结点。<strong>当一个样本点通过某棵树最终落在这棵树的一个叶子结点上，那么在新特征向量中这个叶子结点对应的元素值为1</strong>，而这棵树的其他叶子结点对应的元素值为0。新特征向量的长度等于GBDT模型里所有树包含的叶子结点数之和。</p>
+<p><img src="/passages/2019-07-30-集成学习专题（二）/GBDT-Feature.jpg" alt="GBDT-Feature"></p>
+<p>上图的两棵树是GBDT学习到的，第一棵树有3个叶子结点，而第二棵树有2个叶子结点。对于一个输入样本点x，如果它在第一棵树最后落在其中第二个叶子结点，而在第二棵树里最后落在其中的第一个叶子结点。那么通过GBDT获得的新特征向量为[0,1,0,1,0]，其中向量中的前三位对应第一棵树的3个叶子结点，后两位对应第二棵树的2个叶子结点，原来的特征一起组合成为新的组合特征进行训练。实验证明这样会得到比较显著的提升模型效果。</p>
+<p>经验证，树的数量最多500棵（500以上就没有提升了），每棵树的节点不多于12。</p>
+<h2 id="GBDT如何用于分类"><a href="#GBDT如何用于分类" class="headerlink" title="GBDT如何用于分类"></a>GBDT如何用于分类</h2><p>GBDT无论用于分类还是回归一直都是使用的CART回归树。不会因为我们所选择的任务是分类任务就选用分类树。由于GBDT每轮的训练是在上一轮的训练的残差基础之上进行训练的。这里的残差就是当前模型的负梯度值。这个要求每轮迭代的时候，弱分类器的输出结果相减是有意义的，即残差相减是有意义的。</p>
+<p>如果选用的弱分类器是分类树，类别相减是没有意义的。上一轮输出的是样本x属于A类，本一轮训练输出的是样本x属于B类。A和B很多时候甚至都没有比较的意义，A类-B类是没有意义的。</p>
+<p>首先，我们在训练的时候，是针对样本X每个可能的类都训练一个分类回归树。举例说明，目前样本有三类，也就是K = 3。样本x属于第二类。那么针对该样本x的分类结果，其实我们可以用一个三维向量[0,1,0]来表示。0表示样本不属于该类，1表示样本属于该类。由于样本已经属于第二类了，所以第二类对应的向量维度为1，其他位置为0。</p>
+<p><strong>针对样本有三类的情况，我们实质上是在每轮的训练的时候是同时训练三棵树。</strong>第一棵树针对样本x的第一类，输入为(x,0)。第二棵树输入针对样本x的第二类，输入为(x,1)。第三棵树针对样本x的第三类，输入为(x,0)。</p>
+<p>在这里每棵树的训练过程其实就是CART TREE的生成过程。按照生成树的流程可以解出三棵树，以及三棵树对x类别的预测$f_1(x),f_2(x),f_3(x)$。那么在此类训练中，我们仿照多分类的逻辑回归，使用softmax来产生概率，则属于类别1的概率：<br>$$<br>p_1 = exp(f_1(x))/\sum_{k=1}^3\exp(f_k(x))<br>$$<br>并且我们可以针对类别1求出残差$y_{11}(x) =0-p_1(x)$;类别2求出残差$y_{22} =1-p_2(x)$;类别3求出残差$y_{33}(x) = 0-p_3(x)$。</p>
+<p>然后开始第二轮训练 针对第一类输入为$(x,y_{11}(x))$，针对第二类输入为$(x,y_{22}(x))$，针对第三类输入为$(x,y_{33}(x))$，继续训练出三棵树。一直迭代M轮。每轮构建3棵树，进行T轮迭代后，生成3*T棵树，样本属于某个类别的概率为：<br>$$<br>p_c = \exp(f_c(x))/\sum_{k=1}^3exp(f_k(x))<br>$$</p>
+<h2 id="GBDT需要调试的参数"><a href="#GBDT需要调试的参数" class="headerlink" title="GBDT需要调试的参数"></a>GBDT需要调试的参数</h2><p>GBDT训练中需要调试的参数如下：</p>
 <ol>
 <li>n_estimators：也就是弱学习器的最大迭代次数，或者说<strong>最大弱学习器的个数</strong>。一般来说n_estimators太小，容易欠拟合，n_estimators太大，容易过拟合，一般选择一个适中的数值。</li>
 <li>learning_rate：即每个弱学习器的权重缩减系数v，也称步长。</li>
@@ -508,6 +552,51 @@
 <li>min_impurity_split 节点划分最小不纯度</li>
 </ol>
 <p>这个值限制了决策树的增长，如果某节点的不纯度（基于基尼系数，均方差）小于这个阈值，则该节点不再生成子节点。即为叶子节点。一般不推荐改动默认值1e-7。</p>
+<h1 id="XGBoost"><a href="#XGBoost" class="headerlink" title="XGBoost"></a>XGBoost</h1><h2 id="Xgboost算法思想"><a href="#Xgboost算法思想" class="headerlink" title="Xgboost算法思想"></a>Xgboost算法思想</h2><p><strong>该算法就是不断地添加树，不断地进行特征分裂来生长一棵树，每次添加一个树，其实是学习一个新函数，去拟合上次预测的残差。</strong>当我们训练完成得到k棵树，我们要预测一个样本的分数，其实就是根据这个样本的特征，在每棵树中会落到对应的一个叶子节点，每个叶子节点就对应一个分数，最后只需要将每棵树对应的分数加起来就是该样本的预测值。</p>
+<p>如下图例子，训练出了2棵决策树，小孩的预测分数就是两棵树中小孩所落到的结点的分数相加。爷爷的预测分数同理。</p>
+<p><img src="/passages/2019-07-30-集成学习专题（二）/XGBoost.png" alt="XGBoost"></p>
+<p><strong>分裂结点问题上，XGBoost使用了和CART回归树一样的想法，利用贪婪算法，遍历所有特征的所有特征划分点，不同的是评价函数（分裂后的目标函数值比单子叶子节点的目标函数的增益，CART是MSE），同时限制树生长过深，还加了阈值，当增益大于阈值才能进行分裂。</strong></p>
+<h2 id="Xgboost使用泰勒展开的优势"><a href="#Xgboost使用泰勒展开的优势" class="headerlink" title="Xgboost使用泰勒展开的优势"></a>Xgboost使用泰勒展开的优势</h2><p>Xgboost使用了一阶和二阶偏导，二阶导数有利于梯度下降的更快更准，使用泰勒展开取得函数做自变量的二阶导数形式，可以在不选定损失函数具体形式的情况下，仅仅依靠输入数据的值就可以进行叶子节点分裂优化计算，<strong>本质上也就把损失函数的选取和模型算法优化/参数选择分开了。</strong>这种去耦合增加了xgboost的适用性，使得它按需选取损失函数，可以用于分类，也可以用于回归。</p>
+<h2 id="Xgboost如何寻找最优特征"><a href="#Xgboost如何寻找最优特征" class="headerlink" title="Xgboost如何寻找最优特征"></a>Xgboost如何寻找最优特征</h2><p>Xgboost在训练的过程中给出各个特征的增益评分，最大增益的特征会被选出来作为分裂依据，从而记忆了每个特征对在模型训练时的重要性，从根到叶子中间节点涉及某特征的次数作为该特征重要性排序。</p>
+<h2 id="Xgboost的采样"><a href="#Xgboost的采样" class="headerlink" title="Xgboost的采样"></a>Xgboost的采样</h2><p>Xgboost属于boosting集成学习方法，样本是不放回的，因而每轮计算样本不重复。另一方面，Xgboost支持子采样，也就是每轮计算可以不使用全部样本，以减少过拟合，进一步地，Xgboost还有列采样，每轮计算按百分比随机采样一部分特征，既提高计算速度又减少过拟合。</p>
+<h2 id="Xgboost中树的剪枝"><a href="#Xgboost中树的剪枝" class="headerlink" title="Xgboost中树的剪枝"></a>Xgboost中树的剪枝</h2><p>首先看Xgboost分裂的决策函数：<br>$$<br>Gain =\frac{1}{2}[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{(G_L+G_R)^2}{H_L+H_R+\lambda}]-\gamma<br>$$<br>其中第一项为树的左孩子的分数，第二项为树的右孩子的分数，第三项为没有分裂的分数，$\gamma$在这里实际上是一个临界值，它的值越大，表示我们对切分后损失函数下降幅度要求越严。这个值也是可以在xgboost中设定的。Gain是正的，并且值越大，就越值得切分。</p>
+<p>每一次分类选择Gain值最大的分裂方式，可以通过调节$\gamma$值的大小来改变树的分裂倾向，实现预剪枝。</p>
+<p>其次Xgboost会在完整生成一棵决策树后回溯剪枝。</p>
+<p><strong>注意：</strong>xgboost的切分操作和普通的决策树切分过程是不一样的。普通的决策树在切分的时候并不考虑树的复杂度，而依赖后续的剪枝操作来控制。xgboost在切分的时候就已经考虑了树的复杂度，就是那个γ参数。所以，它不需要进行单独的剪枝操作。</p>
+<h2 id="Xgboost对缺失值的处理"><a href="#Xgboost对缺失值的处理" class="headerlink" title="Xgboost对缺失值的处理"></a>Xgboost对缺失值的处理</h2><p>当数据中含有缺失值的时候，我们可以不再填充缺失值。利用Xgboost的机制自动处理缺失值。</p>
+<p><img src="/passages/2019-07-30-集成学习专题（二）/XGBoost%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86.png" alt="XGBoost缺失值处理"></p>
+<p>Xgboost的处理方式是，<strong>缺失值数据会被分到左子树和右子树分别计算损失，选择较优的那个。如果训练中没有数据缺失，预测时出现了数据缺失，默认分类到右子树。</strong></p>
+<h2 id="Xgboost训练通常调整的参数"><a href="#Xgboost训练通常调整的参数" class="headerlink" title="Xgboost训练通常调整的参数"></a>Xgboost训练通常调整的参数</h2><p>Xgboost训练需要调整的参数：</p>
+<ol>
+<li>booster：选择每次迭代的模型，有两种选择：</li>
+</ol>
+<ul>
+<li><p>gbtree：基于树的模型</p>
+</li>
+<li><p>gbliner：线性模型</p>
+</li>
+</ul>
+<ol start="2">
+<li>n_estimatores：总共迭代的次数，即决策树的个数</li>
+<li>eta：学习率，通过减少每一步的权重，可以提高模型的鲁棒性。</li>
+<li>max_depth：树的深度</li>
+<li>min_child_weight：决定最小叶子节点样本权重和</li>
+<li>max_leaf_nodes：树上最大的节点或者叶子的数量</li>
+<li>gamma：</li>
+</ol>
+<p><strong>在节点分裂时，只有分裂后损失函数的值下降了，才会分裂这个节点。</strong></p>
+<p>Gamma指定了节点分裂所需的最小损失函数下降值。</p>
+<p>这个参数的值越大，算法越保守。这个参数的值和损失函数息息相关，所以是需要调整的。</p>
+<ol start="8">
+<li>lambda：权重的L2正则化项</li>
+<li>alpha：权重的L1正则化项</li>
+<li>objective：这个参数定义需要被最小化的损失函数</li>
+<li>eval_metric：对于有效数据的度量方法</li>
+</ol>
+<h1 id="XGBoost和GBDT的异同"><a href="#XGBoost和GBDT的异同" class="headerlink" title="XGBoost和GBDT的异同"></a>XGBoost和GBDT的异同</h1><h2 id="Xgboost-GBDT在调参数时为什么树的深度很少就能达到很高的精度，而随机森林需要的深度相对较高？"><a href="#Xgboost-GBDT在调参数时为什么树的深度很少就能达到很高的精度，而随机森林需要的深度相对较高？" class="headerlink" title="Xgboost/GBDT在调参数时为什么树的深度很少就能达到很高的精度，而随机森林需要的深度相对较高？"></a>Xgboost/GBDT在调参数时为什么树的深度很少就能达到很高的精度，而随机森林需要的深度相对较高？</h2><p>Xgboost/GBDT是基于Boosting思想的集成学习方法，随机森林是基于Bagging思想的集成学习方法。<strong>Boosting主要关注降低偏差，Bagging主要关注降低方差。</strong></p>
+<p>Bagging算法是这样做的：每个分类器都随机从原样本中做有放回的采样，然后分别在这些采样后的样本上训练分类器，然后再把这些分类器组合起来，简单的多数投票一般就可以。代表算法是随机森林。Boosting的意思是这样，他通过迭代地训练一系列的分类器，每个分类器采用的样本分布都和上一轮的学习结果有关。其代表算法是Adaboost，GBDT。</p>
+<p>机器学习算法来说，其泛化误差可以分解为两部分，偏差和方差。</p>
+<p>偏差指的是算法的期望预测</p>
 
       
     </div>
@@ -568,6 +657,8 @@
         <div class="post-tags">
           
             <a href="/tags/集成学习/" rel="tag"># 集成学习</a>
+          
+            <a href="/tags/监督学习/" rel="tag"># 监督学习</a>
           
             <a href="/tags/GBDT/" rel="tag"># GBDT</a>
           
@@ -791,7 +882,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">43</span>
+                      
+                    
+                    <span class="site-state-item-count">44</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -855,7 +948,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GBDT"><span class="nav-number">1.</span> <span class="nav-text">GBDT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT的算法流程"><span class="nav-number">1.1.</span> <span class="nav-text">GBDT的算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT常用的损失函数"><span class="nav-number">1.2.</span> <span class="nav-text">GBDT常用的损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT中为什么用负梯度来拟合残差计算"><span class="nav-number">1.3.</span> <span class="nav-text">GBDT中为什么用负梯度来拟合残差计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT不适合使用高维稀疏特征的原因"><span class="nav-number">1.4.</span> <span class="nav-text">GBDT不适合使用高维稀疏特征的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT减少误差的方式"><span class="nav-number">1.5.</span> <span class="nav-text">GBDT减少误差的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT的优缺点"><span class="nav-number">1.6.</span> <span class="nav-text">GBDT的优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT如何进行正则化"><span class="nav-number">1.7.</span> <span class="nav-text">GBDT如何进行正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT如何构建特征"><span class="nav-number">1.8.</span> <span class="nav-text">GBDT如何构建特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT如何用于分类"><span class="nav-number">1.9.</span> <span class="nav-text">GBDT如何用于分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT需要调试的参数"><span class="nav-number">1.10.</span> <span class="nav-text">GBDT需要调试的参数</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GBDT"><span class="nav-number">1.</span> <span class="nav-text">GBDT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT的算法流程"><span class="nav-number">1.1.</span> <span class="nav-text">GBDT的算法流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT常用的损失函数"><span class="nav-number">1.2.</span> <span class="nav-text">GBDT常用的损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT中为什么用负梯度来拟合残差计算"><span class="nav-number">1.3.</span> <span class="nav-text">GBDT中为什么用负梯度来拟合残差计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT不适合使用高维稀疏特征的原因"><span class="nav-number">1.4.</span> <span class="nav-text">GBDT不适合使用高维稀疏特征的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT减少误差的方式"><span class="nav-number">1.5.</span> <span class="nav-text">GBDT减少误差的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT的优缺点"><span class="nav-number">1.6.</span> <span class="nav-text">GBDT的优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT如何进行正则化"><span class="nav-number">1.7.</span> <span class="nav-text">GBDT如何进行正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT如何构建特征"><span class="nav-number">1.8.</span> <span class="nav-text">GBDT如何构建特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT如何用于分类"><span class="nav-number">1.9.</span> <span class="nav-text">GBDT如何用于分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GBDT需要调试的参数"><span class="nav-number">1.10.</span> <span class="nav-text">GBDT需要调试的参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XGBoost"><span class="nav-number">2.</span> <span class="nav-text">XGBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Xgboost算法思想"><span class="nav-number">2.1.</span> <span class="nav-text">Xgboost算法思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xgboost使用泰勒展开的优势"><span class="nav-number">2.2.</span> <span class="nav-text">Xgboost使用泰勒展开的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xgboost如何寻找最优特征"><span class="nav-number">2.3.</span> <span class="nav-text">Xgboost如何寻找最优特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xgboost的采样"><span class="nav-number">2.4.</span> <span class="nav-text">Xgboost的采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xgboost中树的剪枝"><span class="nav-number">2.5.</span> <span class="nav-text">Xgboost中树的剪枝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xgboost对缺失值的处理"><span class="nav-number">2.6.</span> <span class="nav-text">Xgboost对缺失值的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xgboost训练通常调整的参数"><span class="nav-number">2.7.</span> <span class="nav-text">Xgboost训练通常调整的参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XGBoost和GBDT的异同"><span class="nav-number">3.</span> <span class="nav-text">XGBoost和GBDT的异同</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Xgboost-GBDT在调参数时为什么树的深度很少就能达到很高的精度，而随机森林需要的深度相对较高？"><span class="nav-number">3.1.</span> <span class="nav-text">Xgboost/GBDT在调参数时为什么树的深度很少就能达到很高的精度，而随机森林需要的深度相对较高？</span></a></li></ol></li></ol></div>
             
 
           </div>
