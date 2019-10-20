@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="论文摘要现阶段关系抽取方法采用多示例学习与提供的语义与语境信息有效的确定关系类别。这样模型会识别偏向于高精确率的关系，忽略那些关系长尾句子中（in the long tail），为了解决这个问题，利用预训练语言模型Open AI Generative Pre-trained Transformer（GPT），除了从词法句法的角度解决问题外，也更注重大量的常识知识（一些重要的特征识别更多元的关系），">
+<meta name="keywords" content="Relation Extraction,ACL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction">
+<meta property="og:url" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/index.html">
+<meta property="og:site_name" content="Jun的个人随笔">
+<meta property="og:description" content="论文摘要现阶段关系抽取方法采用多示例学习与提供的语义与语境信息有效的确定关系类别。这样模型会识别偏向于高精确率的关系，忽略那些关系长尾句子中（in the long tail），为了解决这个问题，利用预训练语言模型Open AI Generative Pre-trained Transformer（GPT），除了从词法句法的角度解决问题外，也更注重大量的常识知识（一些重要的特征识别更多元的关系），">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/Transformer-Block_architecture.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/input_for_fine-tuning.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/P-R_curves.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/variety_relations.png">
+<meta property="og:updated_time" content="2019-10-20T08:06:57.412Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction">
+<meta name="twitter:description" content="论文摘要现阶段关系抽取方法采用多示例学习与提供的语义与语境信息有效的确定关系类别。这样模型会识别偏向于高精确率的关系，忽略那些关系长尾句子中（in the long tail），为了解决这个问题，利用预训练语言模型Open AI Generative Pre-trained Transformer（GPT），除了从词法句法的角度解决问题外，也更注重大量的常识知识（一些重要的特征识别更多元的关系），">
+<meta name="twitter:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/Transformer-Block_architecture.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction | Jun的个人随笔</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jun的个人随笔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="NI,JUN">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jun的个人随笔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-15 18:42:14" itemprop="dateCreated datePublished" datetime="2019-10-15T18:42:14+08:00">2019-10-15</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-20 16:06:57" itemprop="dateModified" datetime="2019-10-20T16:06:57+08:00">2019-10-20</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/文献阅读/" itemprop="url" rel="index"><span itemprop="name">文献阅读</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="论文摘要"><a href="#论文摘要" class="headerlink" title="论文摘要"></a>论文摘要</h1><p>现阶段关系抽取方法采用多示例学习与提供的语义与语境信息有效的确定关系类别。这样模型会识别偏向于高精确率的关系，忽略那些关系长尾句子中（in the long tail），为了解决这个问题，利用预训练语言模型Open AI Generative Pre-trained Transformer（GPT），除了从词法句法的角度解决问题外，也更注重大量的常识知识（一些重要的特征识别更多元的关系），在高召回率情况下在NYT10数据集下实现较好的效果。</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>关系抽取使许多自然语言处理应用的关键组件，例如知识库普及与问答系统。远程监督是一种流行方法启发式生成标签数据用于训练关系抽取系统，方法是通过对齐文本中的实体元组与已知关系示例来自于知识库中，但是存在噪声标签与知识库信息不完全。</p>
+<p>现阶段关系抽取方法解决问题是通过多示例学习与显式提供语义和句法知识指导模型，例如：词性与文法依赖信息。最近的方法利用附加信息，例如：意译、关系别名与实体类型。但是依旧会出现摘要中提到的问题。</p>
+<p>深度语言表示，例如那些由Transformer通过语言建模学到的，已经被证实通过无监督的预训练就可以隐式地捕获文本的有价值的语义与句法属性，并在广泛的自然语言处理任务中取得不错的效果。文章假设预训练语言模型为远程监督提供一个强烈的信号，更好的基于知识获取指导关系抽取任务。使用隐形特征代替显性语言知识与附加信息提高领域和语言的独立性，并且能够增加识别出关系的多样性。</p>
+<p>在文章中，引入一个远程监督关系抽取Transformer模型。文章扩展标准的Transformer模型通过一个有选择性的注意力机制处理多示例学习与预测，整个过程直接微调模型在远程监督关系抽取。文章提及该处理最小化显式特征提取并降低错误累积的风险。<strong>此外，文章引入自注意结构允许模型有效地长期依赖关系。</strong></p>
+<p>论文贡献：</p>
+<ol>
+<li><p>将GPT应用于远程监督数据集包级、多示例训练与预测，对句子级信息采用注意力机制进行选择聚合产生包级预测。</p>
+</li>
+<li><p>在NTY数据集上实现较好的（Area of Under Curve）AUC效果，相比于RESIDE，PCNN+ATT in held-out evaluation.</p>
+</li>
+<li><p>手动评估跟踪结果，证明模型预测了一组更加多样化的关系，并在高召回率下表现良好。</p>
+</li>
+<li><p>开源贡献：<a href="https://github.com/DFKI-NLP/DISTRE" target="_blank" rel="noopener">https://github.com/DFKI-NLP/DISTRE</a></p>
+</li>
+</ol>
+<h1 id="模型方法"><a href="#模型方法" class="headerlink" title="模型方法"></a>模型方法</h1><h2 id="Transformer-Decoder模型"><a href="#Transformer-Decoder模型" class="headerlink" title="Transformer-Decoder模型"></a>Transformer-Decoder模型</h2><p>Transformer-Decoder在多个层上重复编码给定的输入表示（Transformer 块），包含掩码多头注意力机制接一个position-wise feedforward operation.，不同于原始的Transformer，鉴于没有编码器，模型不同于原始模型，不含任何形式的无掩码自注意力机制。<br>$$<br>h_0 = TW_e+W_p<br>$$<br>$$<br>h_l =tf_block(h_{l-1}), l \in [1,L]<br>$$</p>
+<p>$T$ 是一个句子中词索引的one-hot 行向量矩阵 ，$W_e$是词向量矩阵，$W_p$是位置向量矩阵，$L$是Transformer块数，$h_t$表示$l$层的state。之所以加入词位置向量在于Transformer模型本身不含隐性的位置信息，自注意结构有效的解决长距离依赖。</p>
+<p><img src="/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/Transformer-Block_architecture.png" alt="Transformer-Block_architecture"></p>
+<h2 id="contextualized-representations语言模型学习方法"><a href="#contextualized-representations语言模型学习方法" class="headerlink" title="contextualized representations语言模型学习方法"></a>contextualized representations语言模型学习方法</h2><p>$$<br>L_1(C) = \sum_i \log P(c_i|c_{i-1},…,c_{i-k};\theta)<br>$$</p>
+<p>无监督预训练语言表示模型采用最大似然估计作为损失函数，其中$k$表示上下文窗口数，通过条件概率$P$预测下一个词$c_i$ （貌似只是单向的），Transformer模型目标函数：<br>$$<br>P(c) = softmax(h_LW_e^T)<br>$$<br>整个优化过程采用随机梯度下降，该结果是对于每一个词的概率分布用于下游任务的输入序列。</p>
+<h2 id="Transformer多示例学习"><a href="#Transformer多示例学习" class="headerlink" title="Transformer多示例学习"></a>Transformer多示例学习</h2><p>实现包级别多示例学习在Transformer结构基础上，文章假设一个标记的数据可以表示为$D =\lbrace(x_i,head_i,tail_i,r_i)\rbrace_{i=1}^N$，其中$head_i$与$tail_i$是相对于头尾实体的相对位置，$x_i$是每个例子包含的输入词序列（句子表示）$x_i = [x^1,…x^m]$。对于包中句子$S=\lbrace x_1,x_2,…,x_n\rbrace$每一个词序列（句子）通过预训练模型使用最后一个状态表示$h_L$的最后一个状态$h_L^m$对应于$x_i$的每一个表示$s_i$，使用$s$用于分类，公式如下：<br>$$<br>s=\sum_i \alpha_is_i<br>$$<br>选择注意力可以学习认清那些带有明显特征表示某个关系的句子同时不重视那些包含噪音的句子，权重计算公式如下：<br>$$<br>\alpha_i = \frac{exp(s_ir)}{\sum_{j=1}^n exp(s_jr)}<br>$$<br>最终优化目标如下：<br>$$<br>p(l|S,\theta) = softmax(W_{r}s+b)<br>$$</p>
+<p>$$<br>L_2(D) = \sum_{i=1}^{|S|}logP(l_i|S_i,\theta)<br>$$</p>
+<p>由于引入语言模型在微调过程中有助于改善泛化能力实现快速收敛，故：<br>$$<br>L(D) = \lambda*L_1(D)+L_2(D)<br>$$<br>标量$\lambda$反映微调期间语言模型的权重值。</p>
+<h3 id="模型输入的特殊性-BPE编码算法"><a href="#模型输入的特殊性-BPE编码算法" class="headerlink" title="模型输入的特殊性-BPE编码算法"></a>模型输入的特殊性-BPE编码算法</h3><p>充分利用分词信息，使用byte pair encoding（BPE）对输入文本分词。BPE是用来解决未登录词问题的一种方法。在做NLP的时候，我们通常会对语料做一个预处理，生成语料的一个字典。为了不让字典太大，我们通常只会把出现频次大于某个阈值的词丢到字典里边，剩下所有的词都统一编码成#UNK。这是很经典很朴素的做法，这种方法不能解决未登录词的问题。<strong>未登录词是指在验证集或测试集出现了但训练集从来没见到过的单词。</strong>这种未登录词对分词、NLP其他任务性能有很大影响。常见的解决方法有：给低频词设置一个back-off表，当出现低频词的时候就去查表；或者不做word-level的东西，转做char-level的东西，因为不管什么词肯定是由若干个字母组成的。</p>
+<p>两种方法各有优劣。第一种方法，简单直接，若干back-off做的很好会对低频词处理有很大提升（机器翻译）；但这种方法依赖于back-off表的质量，而且也没法处理非登录词问题。第二种方法，从源头解决未登录词的问题，但是模型粒度太细，一般出来的效果不是特别好。我认为可能非串级别导致词信息损失过多。</p>
+<p>2016年《Neural Machine Translation of Rare Words with Subword Units》提出了基于subword来生成词典的方法。他的核心思想是综合word-level and char-level的优势，从语料中学习到所有词里边频次高的字符串子串。然后把这些频次高的字符串子串收集起来形成一个字典。这个字典里边，既存在char-level级别的子串。然后把这个字典用于模型的训练。论文在寻找频次高的子串时，使用了BPE算法，就是把子串encoding：每次合并在语料中同一个词里面的、相邻的、出现频率最高的两个子串。decoding的时候，根据生成的voc.txt做相应的替换。</p>
+<p>关系抽取输入为头尾实体有分隔符分割，后面跟着包含句子的token序列，以一个特殊的分类token作为结尾。由于模型处理输入是从左到右的，故论文在最开始添加关系论据，使得注意力机制在处理句子token序列过程中偏向于对应的token表征。</p>
+<p><img src="/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/input_for_fine-tuning.png" alt="input_for_fine-tuning"></p>
+<h2 id="实验设置"><a href="#实验设置" class="headerlink" title="实验设置"></a>实验设置</h2><p>文章在远程监督数据集NYT10上使用PCNN+ATT与RESIDE作为基准进行比较。</p>
+<p>PCNN（The piecewise convolutional neural network）: 将每个句子分割成实体对信息的左中右三个部分，后面接卷积神经网络编码与选择注意力机制得到一个bag-level的表示用于关系分类器。</p>
+<p>RESIDE：使用双向循环门控单元（Bi-GRU）去编码句子，后面接一个图卷积神经网络编码显性提供的文法依赖树信息。然后将其与命名实体识别信息相结合，获得一个句子表示，句子表示通过选择注意力整合并输入到关系分类器中。</p>
+<h3 id="NYT10-Dataset"><a href="#NYT10-Dataset" class="headerlink" title="NYT10 Dataset"></a>NYT10 Dataset</h3><p>2010年Riedel等人提出，对齐Freebase与New York Times corpus，采用2005-2006年信息用于训练，2007年的信息用于测试，目前一般使用2016年Lin等人预处理后的版本数据集，该数据集开源。其测试集也是通过远程监督生成，所以仅仅能提供性能大概度量的方法，P@N是基于manual evaluation。</p>
+<h3 id="语言模型预训练"><a href="#语言模型预训练" class="headerlink" title="语言模型预训练"></a>语言模型预训练</h3><p>目标是反映微调在远程监督关系抽取任务的效率，所以直接重用2018年Radford等人发布的语言模型，扩展了模型的词库添加了task-specific tokens（开始，结束，分隔符）。</p>
+<h2 id="实验结果与结论"><a href="#实验结果与结论" class="headerlink" title="实验结果与结论"></a>实验结果与结论</h2><p><img src="/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/P-R_curves.png" alt="P-R_curves"></p>
+<p>文章在结果上强调P-R曲线的balance问题，即整体表现良好（AUC面积最好），这在现实世界中可能具备很高的应用价值，baselines方法都体现出高召回率下drop early现象。</p>
+<p><img src="/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/variety_relations.png" alt="variety_relations"></p>
+<p>之所以使用手动评估原因在于hold-out dataset不能反映模型存在false positive标签于知识库信息不完整下的真实性能，故使用手工估计评估。文章模型DISTRE’s手动评估结果显示大部分错误容易在高精确率错误标签中出现，例如/location/country/capital。高精确率的Top 300 相比于baselines种类更多。PCNN+ATT模型更关注提取实体类型信号和基本句法模式（包含关系与国籍关系占比91%），例如“LOC in LOC”，适合处理简单模式下的内容，后两种模型（RESIDE与DISTRE）可以处理更复杂的模式，比如实体距离更远。此外文章提出的模型也列出了一些句子级的预测结果。<strong>文章的TOP N（N=300）不是最高的，但是balance好。相比之下利用预训练模型获得隐性特征不同于RESIDE需要显性特征信息，增加domain与language的独立性，预处理可以省略。</strong></p>
+<p>文章扩展点在于通用结构引入额外的背景知识或者进行深度语言模型表示处理。</p>
+<h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><p><strong>关系抽取方向：</strong>最初RE任务基于统计分类器与核方法结合使用具体的句法特征实现，句法特征可以是词性、命名实体识别、形态特征（morphological features）、词网上下位（WordNet hypernyms）。后来被基于序列的方法所取代，具体的特征被替换为分布式（离散）的词与句法特征在神经网络中训练。最短文法依赖信息关注句子中的名词与动作，2015年Xu等人将其输入到基于LSTM的关系分类模型。2018年张等人在TACRED数据集上取得不错的效果，应用了a combination of pruning and graph convolutions to the dependency tree.</p>
+<p><strong>远程监督关系抽取方向：</strong></p>
+<ol>
+<li>multi-instance learning and multi-instance multi-label learning (at least one)</li>
+<li>PCNN</li>
+<li>selective attention</li>
+<li>adversarial training</li>
+<li>noise model (Luo et al 2017)</li>
+<li>soft labeling</li>
+<li>graph convolutions and capsule networks（胶囊网络）</li>
+<li>previously methods</li>
+</ol>
+<p><strong>语言表示与Transfer Learning：</strong></p>
+<p>2018年Peters等人提出embedings from language models（ELMo），在各种自然语言处理任务使用语境化词表征代替静态预训练词向量提高性能。通过无监督语言建模学习语言表示，显著提高文本分类性能，防止过度拟合，提高了样本效率。通用域的预训练与具体任务的微调有助于实现state-of-the-art的结果。2019年Radford等人发现增加语言模型的大小能更好的归纳下游任务，但是仍然欠拟合大规模文本集。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechat.png" alt="NI,JUN 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="NI,JUN 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Relation-Extraction/" rel="tag"># Relation Extraction</a>
+          
+            <a href="/tags/ACL/" rel="tag"># ACL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/passages/2019-08-02-EM算法专题/" rel="next" title="EM算法专题">
+                <i class="fa fa-chevron-left"></i> EM算法专题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">NI,JUN</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/nijunssdut" title="GitHub &rarr; https://github.com/nijunssdut" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:nijun@mail.dlut.edu.com" title="E-Mail &rarr; mailto:nijun@mail.dlut.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#论文摘要"><span class="nav-number">1.</span> <span class="nav-text">论文摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模型方法"><span class="nav-number">3.</span> <span class="nav-text">模型方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transformer-Decoder模型"><span class="nav-number">3.1.</span> <span class="nav-text">Transformer-Decoder模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#contextualized-representations语言模型学习方法"><span class="nav-number">3.2.</span> <span class="nav-text">contextualized representations语言模型学习方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transformer多示例学习"><span class="nav-number">3.3.</span> <span class="nav-text">Transformer多示例学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型输入的特殊性-BPE编码算法"><span class="nav-number">3.3.1.</span> <span class="nav-text">模型输入的特殊性-BPE编码算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验设置"><span class="nav-number">3.4.</span> <span class="nav-text">实验设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NYT10-Dataset"><span class="nav-number">3.4.1.</span> <span class="nav-text">NYT10 Dataset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语言模型预训练"><span class="nav-number">3.4.2.</span> <span class="nav-text">语言模型预训练</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验结果与结论"><span class="nav-number">3.5.</span> <span class="nav-text">实验结果与结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关工作"><span class="nav-number">3.6.</span> <span class="nav-text">相关工作</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">NI,JUN</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.8" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+  <script id="ribbon" size="300" alpha="0.1" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
