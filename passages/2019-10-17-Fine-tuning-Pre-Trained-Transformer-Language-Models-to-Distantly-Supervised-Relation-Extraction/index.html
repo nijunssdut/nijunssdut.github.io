@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/input_for_fine-tuning.png">
 <meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/P-R_curves.png">
 <meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/variety_relations.png">
-<meta property="og:updated_time" content="2019-10-20T08:06:57.412Z">
+<meta property="og:updated_time" content="2019-10-20T08:14:44.466Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction">
 <meta name="twitter:description" content="论文摘要现阶段关系抽取方法采用多示例学习与提供的语义与语境信息有效的确定关系类别。这样模型会识别偏向于高精确率的关系，忽略那些关系长尾句子中（in the long tail），为了解决这个问题，利用预训练语言模型Open AI Generative Pre-trained Transformer（GPT），除了从词法句法的角度解决问题外，也更注重大量的常识知识（一些重要的特征识别更多元的关系），">
@@ -410,7 +410,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-10-20 16:06:57" itemprop="dateModified" datetime="2019-10-20T16:06:57+08:00">2019-10-20</time>
+                <time title="修改时间：2019-10-20 16:14:44" itemprop="dateModified" datetime="2019-10-20T16:14:44+08:00">2019-10-20</time>
               </span>
             
           
@@ -499,7 +499,7 @@
 <h2 id="实验结果与结论"><a href="#实验结果与结论" class="headerlink" title="实验结果与结论"></a>实验结果与结论</h2><p><img src="/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/P-R_curves.png" alt="P-R_curves"></p>
 <p>文章在结果上强调P-R曲线的balance问题，即整体表现良好（AUC面积最好），这在现实世界中可能具备很高的应用价值，baselines方法都体现出高召回率下drop early现象。</p>
 <p><img src="/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/variety_relations.png" alt="variety_relations"></p>
-<p>之所以使用手动评估原因在于hold-out dataset不能反映模型存在false positive标签于知识库信息不完整下的真实性能，故使用手工估计评估。文章模型DISTRE’s手动评估结果显示大部分错误容易在高精确率错误标签中出现，例如/location/country/capital。高精确率的Top 300 相比于baselines种类更多。PCNN+ATT模型更关注提取实体类型信号和基本句法模式（包含关系与国籍关系占比91%），例如“LOC in LOC”，适合处理简单模式下的内容，后两种模型（RESIDE与DISTRE）可以处理更复杂的模式，比如实体距离更远。此外文章提出的模型也列出了一些句子级的预测结果。<strong>文章的TOP N（N=300）不是最高的，但是balance好。相比之下利用预训练模型获得隐性特征不同于RESIDE需要显性特征信息，增加domain与language的独立性，预处理可以省略。</strong></p>
+<p>之所以使用手动评估原因在于hold-out dataset不能反映模型存在false positive标签于知识库信息不完整下的真实性能，故使用手工估计评估。文章模型DISTRE的手动评估结果显示大部分错误容易在高精确率错误标签中出现，例如/location/country/capital。高精确率的Top 300 相比于baselines种类更多。PCNN+ATT模型更关注提取实体类型信号和基本句法模式（包含关系与国籍关系占比91%），例如“LOC in LOC”，适合处理简单模式下的内容，后两种模型（RESIDE与DISTRE）可以处理更复杂的模式，比如实体距离更远。此外文章提出的模型也列出了一些句子级的预测结果。<strong>文章的TOP N（N=300）不是最高的，但是balance好。相比之下利用预训练模型获得隐性特征不同于RESIDE需要显性特征信息，增加domain与language的独立性，预处理可以省略。</strong></p>
 <p>文章扩展点在于通用结构引入额外的背景知识或者进行深度语言模型表示处理。</p>
 <h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><p><strong>关系抽取方向：</strong>最初RE任务基于统计分类器与核方法结合使用具体的句法特征实现，句法特征可以是词性、命名实体识别、形态特征（morphological features）、词网上下位（WordNet hypernyms）。后来被基于序列的方法所取代，具体的特征被替换为分布式（离散）的词与句法特征在神经网络中训练。最短文法依赖信息关注句子中的名词与动作，2015年Xu等人将其输入到基于LSTM的关系分类模型。2018年张等人在TACRED数据集上取得不错的效果，应用了a combination of pruning and graph convolutions to the dependency tree.</p>
 <p><strong>远程监督关系抽取方向：</strong></p>
