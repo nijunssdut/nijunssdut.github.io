@@ -94,20 +94,18 @@
 
 
 
-  <meta name="description" content="1. MapReduce工作机制MapReduce执行总流程  MapReduce Framework如上图所示。 JobTracker: 初始化作业，分配作业，与TaskManager通信，协调整个作业的执行 TaskTracker: 保持与JobTracker的通信，执行map或者reduce任务 HDFS；保存作业的数据，配置信息等，保存作业结果 具体相关流程提交作业客户端编写完程序代码后，">
-<meta name="keywords" content="分布式,方法优化,Hadoop">
+  <meta name="description" content="摘要考虑到Knowledge Base（KB）包含其他side information（边界信息），例如关系别名（founded/co-founded -&amp;gt; founderOfCompany）。RESIDE模型的提出为了充分利用来自知识库的边界信息提高关系抽取效果。模型使用实体类型与关系别名信息在预测关系过程施加软约束。RESIDE采用图卷积网络编码句法信息即使在有限的边界信息也可以取得不错">
+<meta name="keywords" content="Relation Extraction,EMNLP,GCN">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MapReduce原理与排序应用">
-<meta property="og:url" content="http://nijunssdut.github.io/passages/2019-07-01-MapReduce原理与排序应用/index.html">
+<meta property="og:title" content="RESIDE:Improving Distantly-Supervised Neural Relation Extraction using Side Information">
+<meta property="og:url" content="http://nijunssdut.github.io/passages/2019-10-21-RESIDE/index.html">
 <meta property="og:site_name" content="Jun的个人随笔">
-<meta property="og:description" content="1. MapReduce工作机制MapReduce执行总流程  MapReduce Framework如上图所示。 JobTracker: 初始化作业，分配作业，与TaskManager通信，协调整个作业的执行 TaskTracker: 保持与JobTracker的通信，执行map或者reduce任务 HDFS；保存作业的数据，配置信息等，保存作业结果 具体相关流程提交作业客户端编写完程序代码后，">
+<meta property="og:description" content="摘要考虑到Knowledge Base（KB）包含其他side information（边界信息），例如关系别名（founded/co-founded -&amp;gt; founderOfCompany）。RESIDE模型的提出为了充分利用来自知识库的边界信息提高关系抽取效果。模型使用实体类型与关系别名信息在预测关系过程施加软约束。RESIDE采用图卷积网络编码句法信息即使在有限的边界信息也可以取得不错">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-07-01-MapReduce原理与排序应用/MapReduce-Framework.png">
-<meta property="og:updated_time" content="2019-07-01T08:45:27.743Z">
+<meta property="og:updated_time" content="2019-10-22T04:00:37.595Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MapReduce原理与排序应用">
-<meta name="twitter:description" content="1. MapReduce工作机制MapReduce执行总流程  MapReduce Framework如上图所示。 JobTracker: 初始化作业，分配作业，与TaskManager通信，协调整个作业的执行 TaskTracker: 保持与JobTracker的通信，执行map或者reduce任务 HDFS；保存作业的数据，配置信息等，保存作业结果 具体相关流程提交作业客户端编写完程序代码后，">
-<meta name="twitter:image" content="http://nijunssdut.github.io/passages/2019-07-01-MapReduce原理与排序应用/MapReduce-Framework.png">
+<meta name="twitter:title" content="RESIDE:Improving Distantly-Supervised Neural Relation Extraction using Side Information">
+<meta name="twitter:description" content="摘要考虑到Knowledge Base（KB）包含其他side information（边界信息），例如关系别名（founded/co-founded -&amp;gt; founderOfCompany）。RESIDE模型的提出为了充分利用来自知识库的边界信息提高关系抽取效果。模型使用实体类型与关系别名信息在预测关系过程施加软约束。RESIDE采用图卷积网络编码句法信息即使在有限的边界信息也可以取得不错">
 
 
 
@@ -115,7 +113,7 @@
 
   
   
-  <link rel="canonical" href="http://nijunssdut.github.io/passages/2019-07-01-MapReduce原理与排序应用/">
+  <link rel="canonical" href="http://nijunssdut.github.io/passages/2019-10-21-RESIDE/">
 
 
 
@@ -125,7 +123,7 @@
   };
 </script>
 
-  <title>MapReduce原理与排序应用 | Jun的个人随笔</title>
+  <title>RESIDE:Improving Distantly-Supervised Neural Relation Extraction using Side Information | Jun的个人随笔</title>
   
 
 
@@ -349,7 +347,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-07-01-MapReduce原理与排序应用/">
+    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-10-21-RESIDE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="NI,JUN">
@@ -366,7 +364,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MapReduce原理与排序应用
+          <h1 class="post-title" itemprop="name headline">RESIDE:Improving Distantly-Supervised Neural Relation Extraction using Side Information
 
               
             
@@ -392,7 +390,7 @@
                 
               
 
-              <time title="创建时间：2019-07-01 14:16:32 / 修改时间：16:45:27" itemprop="dateCreated datePublished" datetime="2019-07-01T14:16:32+08:00">2019-07-01</time>
+              <time title="创建时间：2019-10-20 19:15:45" itemprop="dateCreated datePublished" datetime="2019-10-20T19:15:45+08:00">2019-10-20</time>
             </span>
           
 
@@ -400,8 +398,33 @@
             
 
             
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-22 12:00:37" itemprop="dateModified" datetime="2019-10-22T12:00:37+08:00">2019-10-22</time>
+              </span>
+            
           
 
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/文献阅读/" itemprop="url" rel="index"><span itemprop="name">文献阅读</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -434,50 +457,37 @@
       
 
       
-        <h1 id="1-MapReduce工作机制"><a href="#1-MapReduce工作机制" class="headerlink" title="1. MapReduce工作机制"></a>1. MapReduce工作机制</h1><p><strong>MapReduce执行总流程</strong></p>
-<p><img src="/passages/2019-07-01-MapReduce原理与排序应用/MapReduce-Framework.png" alt="MapReduce-Framework"></p>
-<p>MapReduce Framework如上图所示。</p>
-<p>JobTracker: 初始化作业，分配作业，与TaskManager通信，协调整个作业的执行</p>
-<p>TaskTracker: 保持与JobTracker的通信，执行map或者reduce任务</p>
-<p>HDFS；保存作业的数据，配置信息等，保存作业结果</p>
-<h2 id="具体相关流程"><a href="#具体相关流程" class="headerlink" title="具体相关流程"></a>具体相关流程</h2><h3 id="提交作业"><a href="#提交作业" class="headerlink" title="提交作业"></a>提交作业</h3><p>客户端编写完程序代码后，打成jar，然后通过相关命令向集群提交自己想要跑的MR任务，具体过程如下：</p>
+        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>考虑到Knowledge Base（KB）包含其他side information（边界信息），例如关系别名（founded/co-founded -&gt; founderOfCompany）。RESIDE模型的提出为了充分利用来自知识库的边界信息提高关系抽取效果。模型使用实体类型与关系别名信息在预测关系过程施加软约束。RESIDE采用图卷积网络编码句法信息即使在有限的边界信息也可以取得不错的效果。<strong>代码开源</strong></p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>大规模知识库：Freebase  and Wikidata 应用于很多NLP任务中像问答、web搜索等。知识库本身是不全面的，关系抽取任务目标是抽取文本中实体对的语义关系填充知识库。关系对明确的条件下该任务可以被简单的建模为分类任务。</p>
+<p>multi-instance learning目的在于松弛远程监督的假设，以前的假设两个实体在知识库中，之后所有提到所有句子均表达同样的关系。</p>
+<p>在神经网络模型中，attention机制是用于缓解远程监督数据集的噪声。来自依赖文法的句法信息用于获取tokens之间的长期依赖。GCN方法编码文法依赖信息在2017年被提出。但是上述方法均依赖远程监督的有噪音示例。</p>
+<p>Relevant side information例如实体类型信息有助于纠正关系预测，这是因为每个关系约束了对应的目标实体类型。同理关系别名也是有价值的。RESIDE充分使用知识库中实体类型与关系别名规则信息，在预测关系时增加软约束。</p>
+<p>文章贡献：</p>
 <ol>
-<li>通过调用JobTracker的getNewJobId()获取当前作业id</li>
-<li>检查作业相关路径</li>
-<li>计算作业的输入划分，并将划分信息写到Job.split文件中</li>
-<li>将运行作业所需要的资源包括作业jar包，配置文件和打算所得的输入划分，复制到作业对应的HDFS上</li>
-<li>调用JobTracker的summitJob()提交，告诉JobTracker作业准备执行</li>
+<li><p>一个全新的神经网络方法，利用知识库中的附加信息采用规则方法提高远程监督关系抽取效果。</p>
+</li>
+<li><p>RESIDE使用图卷积对句法信息进行建模，并被证明即使在有限的边信息情况下也具有竞争力。</p>
+</li>
+<li><p>通过实验证实了RESIDE效果好于baseline，且代码开源链接如下：<a href="http://github.com/malllabiisc/RESIDE" target="_blank" rel="noopener">http://github.com/malllabiisc/RESIDE</a></p>
+</li>
 </ol>
-<h3 id="初始化作业"><a href="#初始化作业" class="headerlink" title="初始化作业"></a>初始化作业</h3><ol>
-<li>从HDFS中读取作业对应的job.split，得到输入数据的划分信息</li>
-<li>创建并且初始化Map任务和Reduce任务：为每个map/reduce task生成一个TaskInProgress去监控和调度该task。例如创建两个初始化task，一个初始化Map，一个初始化Reduce</li>
-</ol>
-<h3 id="分配任务"><a href="#分配任务" class="headerlink" title="分配任务"></a>分配任务</h3><p>JobTracker会将任务分配到TaskTracker去执行，但是怎么判断哪些TaskTracker，怎么分配任务呢？所以，我们要实现JobTracker和TaskTracker中的通信，也就是TaskTracker循环向JobTracker发送心跳，向上级报告自己这边是不是还活着，活干的怎么样了，可以接些新活等。作为JobTracker，接收到心跳信息，如果有待分配任务，就会给这个TaskTracker分配一个任务，然后taskTracker就把这个任务加入到他的任务队列中。我们可以主要看看TaskTracker中的transmitHeartBeart()和JobTracker的heartbeat()方法。</p>
-<h3 id="执行任务"><a href="#执行任务" class="headerlink" title="执行任务"></a>执行任务</h3><p>TaskTracker申请到任务后，在本地执行，主要有以下几个步骤来完成本地的步骤化:</p>
+<h1 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h1><p><strong>远程监督：</strong> 句子会被错误标注，为了缓解这个问题，2010年Riedel等人采用multi-instance single-label learning 缓解远程监督问题，随后为了处理实体间关系重叠问题，学者们提出了multi-instance multi-label learning.</p>
+<p><strong>神经网络关系抽取：</strong>传统方法强烈依赖手工工程特征的质量。2014年Zeng提出一个端到端CNN方法获取相关词汇与句子级特征。后通过picewise max-pooling以及attention机制从多个有效句子中学习。另一方面，依赖树特征对关系抽取任务有着影响。2018年He等人使用依赖树输入到一个recursive tree-GRU模型中来提升结果。本文之所以选用图卷积神经网络在于GCN在句法信息建模上有着不错的效果。</p>
+<p><strong>关系抽取边界信息：</strong>实体描述信息被充分利用（Ji et al., 2017），但是这样的信息并非对所有实体均可利用。实体类型信息被利用主要是通过联合学习实体类型与关系抽取模型来降低远程监督带来的噪声。像Freebase这种知识库可以直接得到可靠的实体类型信息。本文中使用了实体类型信息与关系别名来源于KBs，同时还使用无监督的开放信息提取方法（Open IE），发现无需预定义本体的可能关系事实作为side information。</p>
+<h1 id="图卷积神经网络（GCN）"><a href="#图卷积神经网络（GCN）" class="headerlink" title="图卷积神经网络（GCN）"></a>图卷积神经网络（GCN）</h1><h2 id="GCN-on-labeled-Directed-Graph"><a href="#GCN-on-labeled-Directed-Graph" class="headerlink" title="GCN on labeled Directed Graph"></a>GCN on labeled Directed Graph</h2><p>对于有向图而言，$G =(V,\varepsilon)$，$V$和$\varepsilon$分别表示顶点的集合与边的集合，一条边从点$u$到点$v$带有标签$l_{uv}$被表示为$(u,v,l_{uv})$，然而在有向边信息并非一定沿着其方向传播，这里定义了一个更新边的集合$\varepsilon^{‘}$包含转置边$(v,u,l_{uv}^{-1})$与自环$(u,u,T)$，其中$T$是一个特殊符号标记自环。定义每个节点$v$的一个初始向量表示$x_v$，使用GCN，计算得到一个更新的d维度隐层表示$h_v$，这里仅仅考虑它的近邻，公式如下：<br>$$<br>h_v= f(\sum_{u \in N(v)}(W_{l_{uv}}x_{u}+b_{l_{uv}}))<br>$$<br>其中$N(v)$反映$v$近邻的集合基于$\varepsilon^{‘}$，$f$为任意非线性激活函数。为了捕获多跳邻域，可以叠加多个GCN层。故第k层GCN可表示为:<br>$$<br>h_v^{k+1} = f(\sum_{u \in N(u)}(W_{l_{uv}}^kh_u^k+b_{l_{uv}}^k))<br>$$</p>
+<h2 id="Integrating-Edge-Importance"><a href="#Integrating-Edge-Importance" class="headerlink" title="Integrating Edge Importance"></a>Integrating Edge Importance</h2><p>在自动构造的图中，有些边可能是错误的因此需要丢弃。GCN中的edgewise gating有助于抑制噪声边。实现方法即为图中的每条边分配一个相关分数。在第k层边$(u,v,l_{uv})$的重要性(edgewise gating)计算公式如下：<br>$$<br>g_{uv}^{k} = \sigma ( h_{u}^{k} \cdot \hat{w}<em>{l</em>{uv}}^{k}+\hat{b}<em>{l</em>{uv}}^{k})<br>$$</p>
+<p>$$<br>h_v^{k+1} = f(\sum_{u \in N(v)}g_{uv}^{k}*(W_{l_{uv}}^kh_{u}^k+b_{l_{uv}}^k))<br>$$</p>
+<h1 id="RESIDE"><a href="#RESIDE" class="headerlink" title="RESIDE"></a>RESIDE</h1><p>由三个组件组成：</p>
 <ol>
-<li>将job.split复制到本地</li>
-<li>将job.jar复制到本地</li>
-<li>将job的配置信息写入到Job.xml</li>
-<li>创建本地任务目录，解压job.rar</li>
-<li>调用launchTaskForJob()方法发布任务</li>
+<li><strong>句法句子编码：</strong>使用Bi-GRU编码连续的位置与词嵌入，为了捕获长范围依赖，输入依赖树到GCN将编码结果附加到每个token表示中。最终，attention在token级别应用抑制不相关的tokens，得到一个全句的编码结果。</li>
+<li><strong>边界信息采集：</strong>使用额外的监督来自KB、利用Open IE方法得到相关边界信息。</li>
+<li><strong>示例集整合：</strong>句法句子编码器的句子表示与前一步得到的关系embeding相连接。之后，使用句子级attention，这样整个包可以得到一个表示。在输入softmax分类器之前将表示与实体类型表示连接。</li>
 </ol>
-<p>发布任务后，TaskRunner会启动新的java虚拟机来运行每个任务，以map任务为例，流程如下：</p>
-<ol>
-<li>配置任务执行参数（获取java程序的执行环境和配置参数等）</li>
-<li>在child临时文件表中添加Map任务信息</li>
-<li>配置log文件夹，配置Map任务的执行环境和配置参数；</li>
-<li>根据input split,生成RecordReader读取数据</li>
-<li>为Map任务生成MapRunnable，一次从RecordReader中接收数据，并调用map函数进行处理</li>
-<li>将Map函数的输出调用collect收集到MapOUtputBuffer中</li>
-</ol>
-<h1 id="2-MapReduce中排序应用"><a href="#2-MapReduce中排序应用" class="headerlink" title="2. MapReduce中排序应用"></a>2. MapReduce中排序应用</h1><h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><h3 id="Map阶段"><a href="#Map阶段" class="headerlink" title="Map阶段"></a>Map阶段</h3><p>Read(读取)      ==&gt;  Collect(生成Key-Value)     ==&gt;  Spill(溢写)</p>
-<p><strong>Read:</strong>从HDFS读取inputSplit（由InputFormat根据文件生成）</p>
-<p><strong>Collect:</strong>分为map过程和partition过程，map根据inputSplit生成Key-Value对，而Partition添加分区标记（辅助排序用），并写入环形缓存区。</p>
-<p><strong>Spill:</strong>分为sort过程、compress过程以及combine过程。数据不断的写入环形缓存区，达到阈值之后开始溢写，在溢写的过程中进行一次Sort，这里使用的排序是快排（QuickSort）；一次溢出生成一个file，并且在生成file的过程中进行压缩（compress）；多个file又会进行一次文件合并，在文件合并的过程中进行排序，这里使用的排序是归并排序（MergeSort）。</p>
-<h3 id="Shuffle阶段"><a href="#Shuffle阶段" class="headerlink" title="Shuffle阶段"></a>Shuffle阶段</h3><p>Shuffle阶段主要就是一个数据拷贝的过程，Map端合成的大文件之后，通过HTTP服务(jetty server)拷贝到Reduce端。拷贝到Reduce端的数据并不是马上写入文件，而是同样放在缓存中，达到阈值则进行溢写。</p>
-<h3 id="Reduce阶段"><a href="#Reduce阶段" class="headerlink" title="Reduce阶段"></a>Reduce阶段</h3><p>合并溢写生成的file，这里使用的排序为归并排序(MegerSort)，生成一些更大的文件(进一步减少文件个数)。在归并之后留下少量的大文件，最后对大文件进行一次最终合并，合并成一个有序的大文件(只有一个)，这里使用的排序算法为堆排序(HeapSort)。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>综上所述，一个MapReduce过程涉及到了一次快排、两次归并以及一次堆排的操作。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://www.cnblogs.com/wangkeustc/p/7338369.html" target="_blank" rel="noopener">Hadoop入门第三篇-MapReduce试手以及MR工作机制</a></p>
+<h2 id="句法句子编码"><a href="#句法句子编码" class="headerlink" title="句法句子编码"></a>句法句子编码</h2><p>采用k-dimensional Glove embedding表示每个token。使用的是相对于目标实体的相对位置。使用Bi-GRU的原因在于在许多任务中编码上下文token十分有效。Bi-GRU虽然可以捕获long context，但是通过依赖边才有助于获得long-range依赖。文法依赖树的生成采用Stanford CoreNLP。因为依赖关系图有55个不同的边标签，将所有标签合并在一起可以显著地将模型参数化。因此使用了三种边标签基于边的方向：[forward($\longrightarrow$)，backward($\longleftarrow $)，self-loop($T$)]。所以边标签定义如下：</p>
+<p>将GCN中的语法图编码连接到Bi-GRU输出即$h_i^{concat}=[h_i^{gru};h_{i^{k+1}}^{gcn}]$，得到最终的token表示。由于tokens在RE任务中并非等同相关的，所以采用注意力机制计算每个token的相关度，公式如下：<br>$$<br>\alpha_i = \frac{exp(u_i)}{\sum_{j=1}^mexp(u_j)}<br>$$</p>
+<p>$$<br>u_i = h_i^{concat}·r<br>$$</p>
+<p>$r$是一个随机查询向量。</p>
+<h1 id="实验设置与结果"><a href="#实验设置与结果" class="headerlink" title="实验设置与结果"></a>实验设置与结果</h1><h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>没有未来展望，就是GCN+side information在此不做总结了。</p>
 
       
     </div>
@@ -537,11 +547,11 @@
         
         <div class="post-tags">
           
-            <a href="/tags/分布式/" rel="tag"># 分布式</a>
+            <a href="/tags/Relation-Extraction/" rel="tag"># Relation Extraction</a>
           
-            <a href="/tags/方法优化/" rel="tag"># 方法优化</a>
+            <a href="/tags/EMNLP/" rel="tag"># EMNLP</a>
           
-            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+            <a href="/tags/GCN/" rel="tag"># GCN</a>
           
         </div>
       
@@ -554,8 +564,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/passages/2019-07-01-神策数据实习面试/" rel="next" title="神策数据实习">
-                <i class="fa fa-chevron-left"></i> 神策数据实习
+              <a href="/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/" rel="next" title="Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction">
+                <i class="fa fa-chevron-left"></i> Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction
               </a>
             
           </div>
@@ -563,10 +573,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/passages/2019-07-01-Line实习面/" rel="prev" title="Line实习面">
-                Line实习面 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -841,7 +847,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MapReduce工作机制"><span class="nav-number">1.</span> <span class="nav-text">1. MapReduce工作机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#具体相关流程"><span class="nav-number">1.1.</span> <span class="nav-text">具体相关流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#提交作业"><span class="nav-number">1.1.1.</span> <span class="nav-text">提交作业</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化作业"><span class="nav-number">1.1.2.</span> <span class="nav-text">初始化作业</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分配任务"><span class="nav-number">1.1.3.</span> <span class="nav-text">分配任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行任务"><span class="nav-number">1.1.4.</span> <span class="nav-text">执行任务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MapReduce中排序应用"><span class="nav-number">2.</span> <span class="nav-text">2. MapReduce中排序应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实现过程"><span class="nav-number">2.1.</span> <span class="nav-text">实现过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Map阶段"><span class="nav-number">2.1.1.</span> <span class="nav-text">Map阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shuffle阶段"><span class="nav-number">2.1.2.</span> <span class="nav-text">Shuffle阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reduce阶段"><span class="nav-number">2.1.3.</span> <span class="nav-text">Reduce阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.1.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关工作"><span class="nav-number">3.</span> <span class="nav-text">相关工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图卷积神经网络（GCN）"><span class="nav-number">4.</span> <span class="nav-text">图卷积神经网络（GCN）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GCN-on-labeled-Directed-Graph"><span class="nav-number">4.1.</span> <span class="nav-text">GCN on labeled Directed Graph</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Integrating-Edge-Importance"><span class="nav-number">4.2.</span> <span class="nav-text">Integrating Edge Importance</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RESIDE"><span class="nav-number">5.</span> <span class="nav-text">RESIDE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#句法句子编码"><span class="nav-number">5.1.</span> <span class="nav-text">句法句子编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验设置与结果"><span class="nav-number">6.</span> <span class="nav-text">实验设置与结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结论"><span class="nav-number">7.</span> <span class="nav-text">结论</span></a></li></ol></div>
             
 
           </div>
@@ -1361,6 +1367,46 @@
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
   
 
 
