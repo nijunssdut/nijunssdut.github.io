@@ -102,10 +102,14 @@
 <meta property="og:site_name" content="Jun的个人随笔">
 <meta property="og:description" content="摘要考虑到Knowledge Base（KB）包含其他side information（边界信息），例如关系别名（founded/co-founded -&amp;gt; founderOfCompany）。RESIDE模型的提出为了充分利用来自知识库的边界信息提高关系抽取效果。模型使用实体类型与关系别名信息在预测关系过程施加软约束。RESIDE采用图卷积网络编码句法信息即使在有限的边界信息也可以取得不错">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-22T04:00:37.595Z">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-21-RESIDE/GCN.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-21-RESIDE/edge-label.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-21-RESIDE/side-information.png">
+<meta property="og:updated_time" content="2019-10-22T07:36:04.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RESIDE:Improving Distantly-Supervised Neural Relation Extraction using Side Information">
 <meta name="twitter:description" content="摘要考虑到Knowledge Base（KB）包含其他side information（边界信息），例如关系别名（founded/co-founded -&amp;gt; founderOfCompany）。RESIDE模型的提出为了充分利用来自知识库的边界信息提高关系抽取效果。模型使用实体类型与关系别名信息在预测关系过程施加软约束。RESIDE采用图卷积网络编码句法信息即使在有限的边界信息也可以取得不错">
+<meta name="twitter:image" content="http://nijunssdut.github.io/passages/2019-10-21-RESIDE/GCN.png">
 
 
 
@@ -405,7 +409,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-10-22 12:00:37" itemprop="dateModified" datetime="2019-10-22T12:00:37+08:00">2019-10-22</time>
+                <time title="修改时间：2019-10-22 15:36:04" itemprop="dateModified" datetime="2019-10-22T15:36:04+08:00">2019-10-22</time>
               </span>
             
           
@@ -475,19 +479,45 @@
 <p><strong>神经网络关系抽取：</strong>传统方法强烈依赖手工工程特征的质量。2014年Zeng提出一个端到端CNN方法获取相关词汇与句子级特征。后通过picewise max-pooling以及attention机制从多个有效句子中学习。另一方面，依赖树特征对关系抽取任务有着影响。2018年He等人使用依赖树输入到一个recursive tree-GRU模型中来提升结果。本文之所以选用图卷积神经网络在于GCN在句法信息建模上有着不错的效果。</p>
 <p><strong>关系抽取边界信息：</strong>实体描述信息被充分利用（Ji et al., 2017），但是这样的信息并非对所有实体均可利用。实体类型信息被利用主要是通过联合学习实体类型与关系抽取模型来降低远程监督带来的噪声。像Freebase这种知识库可以直接得到可靠的实体类型信息。本文中使用了实体类型信息与关系别名来源于KBs，同时还使用无监督的开放信息提取方法（Open IE），发现无需预定义本体的可能关系事实作为side information。</p>
 <h1 id="图卷积神经网络（GCN）"><a href="#图卷积神经网络（GCN）" class="headerlink" title="图卷积神经网络（GCN）"></a>图卷积神经网络（GCN）</h1><h2 id="GCN-on-labeled-Directed-Graph"><a href="#GCN-on-labeled-Directed-Graph" class="headerlink" title="GCN on labeled Directed Graph"></a>GCN on labeled Directed Graph</h2><p>对于有向图而言，$G =(V,\varepsilon)$，$V$和$\varepsilon$分别表示顶点的集合与边的集合，一条边从点$u$到点$v$带有标签$l_{uv}$被表示为$(u,v,l_{uv})$，然而在有向边信息并非一定沿着其方向传播，这里定义了一个更新边的集合$\varepsilon^{‘}$包含转置边$(v,u,l_{uv}^{-1})$与自环$(u,u,T)$，其中$T$是一个特殊符号标记自环。定义每个节点$v$的一个初始向量表示$x_v$，使用GCN，计算得到一个更新的d维度隐层表示$h_v$，这里仅仅考虑它的近邻，公式如下：<br>$$<br>h_v= f(\sum_{u \in N(v)}(W_{l_{uv}}x_{u}+b_{l_{uv}}))<br>$$<br>其中$N(v)$反映$v$近邻的集合基于$\varepsilon^{‘}$，$f$为任意非线性激活函数。为了捕获多跳邻域，可以叠加多个GCN层。故第k层GCN可表示为:<br>$$<br>h_v^{k+1} = f(\sum_{u \in N(u)}(W_{l_{uv}}^kh_u^k+b_{l_{uv}}^k))<br>$$</p>
-<h2 id="Integrating-Edge-Importance"><a href="#Integrating-Edge-Importance" class="headerlink" title="Integrating Edge Importance"></a>Integrating Edge Importance</h2><p>在自动构造的图中，有些边可能是错误的因此需要丢弃。GCN中的edgewise gating有助于抑制噪声边。实现方法即为图中的每条边分配一个相关分数。在第k层边$(u,v,l_{uv})$的重要性(edgewise gating)计算公式如下：<br>$$<br>g_{uv}^{k} = \sigma ( h_{u}^{k} \cdot \hat{w}<em>{l</em>{uv}}^{k}+\hat{b}<em>{l</em>{uv}}^{k})<br>$$</p>
-<p>$$<br>h_v^{k+1} = f(\sum_{u \in N(v)}g_{uv}^{k}*(W_{l_{uv}}^kh_{u}^k+b_{l_{uv}}^k))<br>$$</p>
+<h2 id="Integrating-Edge-Importance"><a href="#Integrating-Edge-Importance" class="headerlink" title="Integrating Edge Importance"></a>Integrating Edge Importance</h2><p>在自动构造的图中，有些边可能是错误的因此需要丢弃。GCN中的edgewise gating有助于抑制噪声边。实现方法即为图中的每条边分配一个相关分数。在第k层边$(u,v,l_{uv})$的重要性(edgewise gating)计算公式如下：<br>$$<br>g_{uv}^{k} = \sigma ( h_{u}^{k} \cdot \hat w_{l_{uv}}^{k}+\hat b_{l_{uv}}^{k})<br>$$</p>
+<p>使用edgewise gating，最终的GCN对节点$v$的编码公式为：(文章中非线性函数使用Relu)<br>$$<br>h_v^{k+1} = f(\sum_{u \in N(v)}g_{uv}^{k}*(W_{l_{uv}}^kh_{u}^k+b_{l_{uv}}^k))<br>$$</p>
 <h1 id="RESIDE"><a href="#RESIDE" class="headerlink" title="RESIDE"></a>RESIDE</h1><p>由三个组件组成：</p>
 <ol>
 <li><strong>句法句子编码：</strong>使用Bi-GRU编码连续的位置与词嵌入，为了捕获长范围依赖，输入依赖树到GCN将编码结果附加到每个token表示中。最终，attention在token级别应用抑制不相关的tokens，得到一个全句的编码结果。</li>
 <li><strong>边界信息采集：</strong>使用额外的监督来自KB、利用Open IE方法得到相关边界信息。</li>
 <li><strong>示例集整合：</strong>句法句子编码器的句子表示与前一步得到的关系embeding相连接。之后，使用句子级attention，这样整个包可以得到一个表示。在输入softmax分类器之前将表示与实体类型表示连接。</li>
 </ol>
+<p><img src="/passages/2019-10-21-RESIDE/GCN.png" alt="GCN"></p>
 <h2 id="句法句子编码"><a href="#句法句子编码" class="headerlink" title="句法句子编码"></a>句法句子编码</h2><p>采用k-dimensional Glove embedding表示每个token。使用的是相对于目标实体的相对位置。使用Bi-GRU的原因在于在许多任务中编码上下文token十分有效。Bi-GRU虽然可以捕获long context，但是通过依赖边才有助于获得long-range依赖。文法依赖树的生成采用Stanford CoreNLP。因为依赖关系图有55个不同的边标签，将所有标签合并在一起可以显著地将模型参数化。因此使用了三种边标签基于边的方向：[forward($\longrightarrow$)，backward($\longleftarrow $)，self-loop($T$)]。所以边标签定义如下：</p>
+<p><img src="/passages/2019-10-21-RESIDE/edge-label.png" alt="edge-label"></p>
 <p>将GCN中的语法图编码连接到Bi-GRU输出即$h_i^{concat}=[h_i^{gru};h_{i^{k+1}}^{gcn}]$，得到最终的token表示。由于tokens在RE任务中并非等同相关的，所以采用注意力机制计算每个token的相关度，公式如下：<br>$$<br>\alpha_i = \frac{exp(u_i)}{\sum_{j=1}^mexp(u_j)}<br>$$</p>
-<p>$$<br>u_i = h_i^{concat}·r<br>$$</p>
+<p>$$<br>u_i = h_i^{concat}\cdot r<br>$$</p>
 <p>$r$是一个随机查询向量。</p>
-<h1 id="实验设置与结果"><a href="#实验设置与结果" class="headerlink" title="实验设置与结果"></a>实验设置与结果</h1><h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>没有未来展望，就是GCN+side information在此不做总结了。</p>
+<p><img src="/passages/2019-10-21-RESIDE/side-information.png" alt="side-information"></p>
+<p>RESIDE使用Open IE提取实体间的关系短语，用$P$表示。P可以扩展通过文法依赖路径包含token的一跳距离。从P中提取的短语与关系别名$R$之间的匹配程度可以提供有关该关系与句子相关性的重要线索。相似度计算采用余弦相似度，找到与句子最为匹配的关系别名，使用余弦相似度阈值过滤掉噪声别名。模型RESIDE定义一个匹配关系编码$h^{rel}$与句子表示输入$s$相连。对于句子满足条件$|P| \gt 1$，这种情况下我们可能会得到多个匹配关系，在这种情况下，我们取它们嵌入的平均值</p>
+<p><strong>Note：</strong>仅提供关系名称作为别名也有助于取得较好效果。</p>
+<p>对于实体类型边界信息，文章定义了一个$k_t$维编码叫做entity type embedding（$h^{type}$）。当一个实体在不同语境下有多个类型时，文章取每个类型的编码均值。这个结果是用于连接目标实体与输入到关系分类器的最终包级别表示，来实现效果提升。为了避免参数过多，没有使用细粒度的112个实体类型，使用了38粗粒度类型。</p>
+<p><strong>Note：</strong>关系别名连接句子，实体类型（主语与宾语，即两个实体）连接包结构，最后输入到softmax分类器中求解。</p>
+<h1 id="实验设置与结果"><a href="#实验设置与结果" class="headerlink" title="实验设置与结果"></a>实验设置与结果</h1><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><ol>
+<li><strong>NYT10：</strong>Riedel 在2010年对齐Freebase relations与NYT corpus，标准数据集最为常用，53分类，在此不做介绍。</li>
+<li><strong>GIDS：</strong>Jat等人创建Google Distant Supervision (GIDS)数据集通过扩展谷歌关系抽取数据集，即为每一个关系对添加额外的示例。该数据集保证至少一个假设在多示例学习中成立，这使得自动自动评估更可靠，无需人工验证，5个分类。</li>
+</ol>
+<h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><p><strong>传统方法：</strong>Mintz：多类逻辑回归模型； MultiR：多示例概率图模型； MIMLRE：联合多示例与多标签概率图模型；</p>
+<p><strong>神经网络方法：</strong>PCNN：基于卷积神经网络使用picewise最大池化处理句子表示；PCNN+ATT：就是在上个模型基础上加入句子级attention；BGWA：使用word-level与sentence-level的Bi-GRU关系抽取模型；</p>
+<h2 id="评估标准"><a href="#评估标准" class="headerlink" title="评估标准"></a>评估标准</h2><p>与以前的工作相同，采用held-out evaluation，模型性能评估采用Precision-Recall curve和top-N precision度量。</p>
+<h2 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h2><ol>
+<li>所有的非神经网络的baseline表现效果相对较差，因为它们使用的特征大多来自于NLP工具，特征可能是有错误的。</li>
+<li>合并辅助信息（side information）有助于提高模型效果。（在组件移除效果也能体现）</li>
+<li>Attention 在远程监督关系抽取任务有着不错的效果。</li>
+<li>GCN有效编码句法信息（RESIDE组件移除后P-R 曲线下面积）</li>
+</ol>
+<p><strong>关于Relation Alias这一边界信息</strong>：文章实验采用四种不同的设置：</p>
+<p><strong>None：</strong>关系别名没有提供；</p>
+<p><strong>One：</strong>关系名作为别名；</p>
+<p><strong>One+PPDB：</strong>关系名使用Paraphrase Database（PPDB）扩展；</p>
+<p><strong>All：</strong>手动映射到相应的wikidata属性获取关系别名，补充关系别名少有的信息；</p>
+<p>实验结果反映有限的关系别名也会提升性能，使用更多的别名信息有助于性能进一步提高。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>没有未来展望，就是GCN+side information在此不做总结了。</p>
 
       
     </div>
@@ -847,7 +877,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关工作"><span class="nav-number">3.</span> <span class="nav-text">相关工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图卷积神经网络（GCN）"><span class="nav-number">4.</span> <span class="nav-text">图卷积神经网络（GCN）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GCN-on-labeled-Directed-Graph"><span class="nav-number">4.1.</span> <span class="nav-text">GCN on labeled Directed Graph</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Integrating-Edge-Importance"><span class="nav-number">4.2.</span> <span class="nav-text">Integrating Edge Importance</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RESIDE"><span class="nav-number">5.</span> <span class="nav-text">RESIDE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#句法句子编码"><span class="nav-number">5.1.</span> <span class="nav-text">句法句子编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验设置与结果"><span class="nav-number">6.</span> <span class="nav-text">实验设置与结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结论"><span class="nav-number">7.</span> <span class="nav-text">结论</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关工作"><span class="nav-number">3.</span> <span class="nav-text">相关工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图卷积神经网络（GCN）"><span class="nav-number">4.</span> <span class="nav-text">图卷积神经网络（GCN）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GCN-on-labeled-Directed-Graph"><span class="nav-number">4.1.</span> <span class="nav-text">GCN on labeled Directed Graph</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Integrating-Edge-Importance"><span class="nav-number">4.2.</span> <span class="nav-text">Integrating Edge Importance</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RESIDE"><span class="nav-number">5.</span> <span class="nav-text">RESIDE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#句法句子编码"><span class="nav-number">5.1.</span> <span class="nav-text">句法句子编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验设置与结果"><span class="nav-number">6.</span> <span class="nav-text">实验设置与结果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据集"><span class="nav-number">6.1.</span> <span class="nav-text">数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Baselines"><span class="nav-number">6.2.</span> <span class="nav-text">Baselines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评估标准"><span class="nav-number">6.3.</span> <span class="nav-text">评估标准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果分析"><span class="nav-number">6.4.</span> <span class="nav-text">结果分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结论"><span class="nav-number">7.</span> <span class="nav-text">结论</span></a></li></ol></div>
             
 
           </div>
