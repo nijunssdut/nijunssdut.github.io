@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="摘要问题：生成的训练数据通常包含大量噪音，可能导致在常规的监督学习中表现不佳。 文本提出一种先进的Cross-relation Cross-bag Selective Attention ($C^2SA$）使得远程监督关系抽取器能够实现噪声鲁棒训练。具体而言，文章采用句子级选择注意力机制减少噪声以及不匹配句子的影响，同时利用关系间的相关性来提高注意权重的质量。此外，代替将所有实体对看作是等价的，文">
+<meta name="keywords" content="Relation Extraction,AAAI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cross-Relation Cross-Bag Attention for Distantly-Supervised Relation Extraction">
+<meta property="og:url" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/index.html">
+<meta property="og:site_name" content="Jun的个人随笔">
+<meta property="og:description" content="摘要问题：生成的训练数据通常包含大量噪音，可能导致在常规的监督学习中表现不佳。 文本提出一种先进的Cross-relation Cross-bag Selective Attention ($C^2SA$）使得远程监督关系抽取器能够实现噪声鲁棒训练。具体而言，文章采用句子级选择注意力机制减少噪声以及不匹配句子的影响，同时利用关系间的相关性来提高注意权重的质量。此外，代替将所有实体对看作是等价的，文">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/C2SA.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/PCNN.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/cross-relation-attention.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/similarity-correlation-matrix.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/cross-bag-attention.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/baselines.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/sentence-level-performance.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/P-R-curves.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/manually-check.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/case-study.png">
+<meta property="og:updated_time" content="2019-10-27T05:47:24.113Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cross-Relation Cross-Bag Attention for Distantly-Supervised Relation Extraction">
+<meta name="twitter:description" content="摘要问题：生成的训练数据通常包含大量噪音，可能导致在常规的监督学习中表现不佳。 文本提出一种先进的Cross-relation Cross-bag Selective Attention ($C^2SA$）使得远程监督关系抽取器能够实现噪声鲁棒训练。具体而言，文章采用句子级选择注意力机制减少噪声以及不匹配句子的影响，同时利用关系间的相关性来提高注意权重的质量。此外，代替将所有实体对看作是等价的，文">
+<meta name="twitter:image" content="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/C2SA.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Cross-Relation Cross-Bag Attention for Distantly-Supervised Relation Extraction | Jun的个人随笔</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jun的个人随笔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="NI,JUN">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jun的个人随笔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Cross-Relation Cross-Bag Attention for Distantly-Supervised Relation Extraction
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-24 19:05:53" itemprop="dateCreated datePublished" datetime="2019-10-24T19:05:53+08:00">2019-10-24</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-27 13:47:24" itemprop="dateModified" datetime="2019-10-27T13:47:24+08:00">2019-10-27</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/文献阅读/" itemprop="url" rel="index"><span itemprop="name">文献阅读</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>问题：生成的训练数据通常包含大量噪音，可能导致在常规的监督学习中表现不佳。</p>
+<p>文本提出一种先进的Cross-relation Cross-bag Selective Attention ($C^2SA$）使得远程监督关系抽取器能够实现噪声鲁棒训练。具体而言，文章采用句子级选择注意力机制减少噪声以及不匹配句子的影响，同时利用关系间的相关性来提高注意权重的质量。此外，代替将所有实体对看作是等价的，文章采用注意力机制关注更高质量的关系对。两种类型关系抽取器证实了本文提出方法的优越性，同时进一步的消融实验也证实了推理与技术的有效性。</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>为了探索与分类在给定句子中一个实体对的关系，关系抽取（RE）在自然语言理解中扮演着一个至关重要的角色。一般的方法采用完全监督的模式、需要大量的人工标注，这些是高成本且费时的。为了缓解这样的依赖，学者们企图构建远程监督关系提取器，例如使用知识库（KB）自动生成训练数据。</p>
+<p>尽管远程监督节省了成本与时间，但是远程监督方法是上下文无关的，因此对于句子级的RE其包含大量噪声。</p>
+<p>噪声鲁棒训练模式：多示例学习方法有助于减少噪声增强模型鲁棒性。多示例学习把句子包视为基础的训练示例，每个包中的一组句子被标记为相同的知识库事实。通过包内选择，模型可以更加关注高质量的句子减少对噪音句子关注。Selective Attention企图为句子分配注意力权重之后结合包内所有句子用于训练。</p>
+<p><strong>然而，句子级可选择注意力（ATT）独立的生成每种关系类型的权重而忽略了关系类型间的关联。</strong>举例说明一句话反映低质量的die_in关系同时也可能表达了高质量的live_in关系。基于这个问题，文章提出Cross-relation Attention，在考察所有关系类型之间的关系后产生注意力权重。</p>
+<p>本文放宽了一个训练实例只包含一个实体对的约束。具体来说，本文提出Cross-bag Attention结合不同的句子包，将这种组合结构称为superbag，并将其作为训练示例代替句子包，这使得我们更加关注高质量的句子包，减少知识库中过时或未表示的信息带来的噪声。</p>
+<p>结合两种机制：Cross-relation与Cross-bag两个选择注意力机制是本文的核心部分。</p>
+<h1 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h1><p>关系抽取任务，特别是有监督关系抽取任务已经有很多工作，但是大多基于额外的NLP系统获得词法特征。</p>
+<p>深度神经网络能够自动学习潜在特征，循环神经网络在2012年被Socher等人使用，2014年起Zeng等人采用端到端卷积神经网络处理关系抽取任务。2016年起Zhou等人使用基于注意力机制的LSTM缓解CNN网络处理大跨度信息效果差的弱点。无论CNN还是RNN，甚至是强化学习都在关系抽取任务中有过应用。</p>
+<p>远程监督的出现是为了节约大量标注的成本，而相同实体对的所有句子在同一个包内的多示例学习方法是为了抑制远程监督带来的噪音。选择性注意力机制的提出是为了筛选出包中高质量的句子特征。2017年Luo等人提出了一种基于过渡矩阵的噪音动态表征方法。2018年Feng等人使用强化学习在远程监督数据集上选择一个更可靠的子集并使用它训练分类器。为解决包级别噪音标注问题，Liu等人在2017年采用后验概率约束更正可能不正确的包标签。</p>
+<p>本文提出的方法与选择注意力机制的不同主要有两方面：（1）是本文的方法考虑了多重关系之间的相互影响；（2）本文的方法评估了bag feature的质量，并减少袋级噪声标签问题的影响，而现有的选择性注意力当处理一个完全不正确的bag时是没有效果的。</p>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>本文模型（$C^{2}SA$）的提出通过考虑关系间的相关性提高句子级注意力的效果，并在另一个注意力层级筛选包级别特征。</p>
+<p>如图一所示，关系抽取器包含两个组件：一个神经网络特征抽取器和一个输出层。对于神经网络特征抽取器，它可以抽取有用的特征进行关系分类，并可以使用任何的神经网络结构包括CNN与RNN。基于抽取特征，输出层对关系类型做出预测。模型训练过程整个分为四个步骤：首先为每个句子构建表示。之后，cross-relation选择性注意结合句子表征并生成句子包的表征。相似地，cross-bag选择注意力结合句子包表示生成超级包表示。最终loss基于superbag特征指导关系抽取器学习。</p>
+<p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/C2SA.png" alt="C2SA"></p>
+<p>通常，神经网络特征抽取器可以被看作是一个神经网络句子编码器，它可以将句子编码成低维、固定长度的向量。本文在介绍方法默认采用CNN网络结构。</p>
+<h2 id="输入表示"><a href="#输入表示" class="headerlink" title="输入表示"></a>输入表示</h2><p>encode in an entity-aware manner.预训练词向量，计算到两实体相对位置，位置有对应的位置编码表。位置编码表是随机初始化的并且在整个模型训练过程中进行更新。句子最大长度$m$有限，对于短句子，我们pad其他部分是0。</p>
+<h2 id="神经网络特征抽取器"><a href="#神经网络特征抽取器" class="headerlink" title="神经网络特征抽取器"></a>神经网络特征抽取器</h2><p>文章采用piecewise-CNN，由卷积层和分段最大池化层。卷积层，输出结果$c$计算方法如下：<br>$$<br>c_{i,j} = P_i \circ C_{j,j+l-1}<br>$$<br>其中$P_i$是第i层的卷积核，$l$是核宽，$C_{i,j}$是从词$w_i$到$w_j$的滑动窗口来自句子$C$，分段最大池化的使用是考虑了考虑了关系抽取任务具体的情境的，句子根据实体对分割成三部分，分别对每一部分采用最大池化处理，将三部分特征输出并连接，得到特征向量$x_i$，最后应用双曲正切函数处理输出的特征向量$x_i$。</p>
+<p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/PCNN.png" alt="PCNN"></p>
+<h2 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h2><p>为计算每个关系的置信度，本文采用线性投影与softmax函数计算条件概率，另外本文采用droput策略防止过拟合。Dropout prevents co-adaptation of hidden units by randomly setting them to zero for a proportion $p$，故输出公式计算如下：<br>$$<br>o = W \cdot(f \bigodot h)<br>$$<br>其中，h是随机Bernoulli变量向量使得概率$p$为1。</p>
+<h2 id="Cross-relation-Selective-Attention"><a href="#Cross-relation-Selective-Attention" class="headerlink" title="Cross-relation Selective Attention"></a>Cross-relation Selective Attention</h2><p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/cross-relation-attention.png" alt="cross-relation-attention"></p>
+<p>其目的旨在减少噪声或错误匹配句子的影响，计算选择注意力基于句子与关系间的相似性：<br>$$<br>S_{i,j,k} = \frac{x_{i,j}\cdot r_k}{||x_{i,j}||||r_k||}<br>$$<br>其中$r_k$是注意力参数对应于第k个关系。</p>
+<p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/similarity-correlation-matrix.png" alt="similarity-correlation-matrix"></p>
+<p>为了捕获关系之间的相关性，我们使用bayes规则计算期望注意权重：<br>$$<br>P(j_{th}sentence|k_{th}relation) = \frac{P(k_{th}relation|j_{th}sentence)}{\sum_{\hat j=1}^{n_b}P(k_{th}relation|\hat j_{th}sentence)P(\hat j_{th}sentence)}<br>$$<br>本文假设$P(j_{th}sentence)$是均匀分布，采用softmax函数计算$P(k_{th}relation|j_{th}sentence)$<br>$$<br>P(k_{th}relation|j_{th}sentence) = \frac{e^{S_{i,j,k}}}{\sum_{\hat k=1}^{n_r}e^{S_{i,j,k}}}<br>$$<br>简化概念，定义计算变量$P(k_{th}relation|j_{th}sentence)$简化为$\alpha_{j,k}$，变量$P(j_{th}sentence|k_{th}relation)$简化为$\beta_{j,k}$，因此属于第k个关系的包特征$B_i$可以计算为：<br>$$<br>b_{i,k} = \sum_{\hat j=1}^{n_b}\beta_{\hat j,k}x_{i,\hat j}<br>$$<br>cross-relation selective attention不仅仅依赖于目标关系句子的相似性，也依赖于其他关系。例如在下图中$x_2$和$x_4$与$r_1$有相似的相似度，但是$x_4$更倾向于表示$r_3$关系。因此模型倾向于使用$x_2$特征生成bag特征并用此预测$r_1$关系。</p>
+<h2 id="Cross-bag-Selective-Attention"><a href="#Cross-bag-Selective-Attention" class="headerlink" title="Cross-bag Selective Attention"></a>Cross-bag Selective Attention</h2><p>句子级注意力机制假设在包中至少一句话表达实体对的某种关系，远程监督在句子包级别存在噪音。可能大量关系对不能发现知识库中给定的表达。这种实体对会导致句子级关系抽取存在不匹配或噪声训练示例。</p>
+<p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/cross-bag-attention.png" alt="cross-bag-attention"></p>
+<p>处理办法：本文结合几个包含相同关系类型的句子包，将注意力集中到更高质量的部分，定义superbag为$B=\lbrace B_1,B_2,…,B_{n_s}\rbrace$，其中$n_s$是超级包的大小，所有的$B_i$都由第k个关系类型表示。采用attention layer结合包，公式如下：<br>$$<br>f = \sum_{i=1}^{n_s}\gamma_i \cdot b_{i,k}<br>$$</p>
+<p>$$<br>\gamma_i = \frac{e^{S(r_k,b_{i,k})}}{\sum_{j=1}^{n_s}e^{S(r_k,b_{j,k})}}<br>$$</p>
+<p>$S(r_k,b_{i,k})$即上文提到的余弦相似度计算，$r_k$表示注意力参数对应于第j个关系，$b_{i,k}$是包的表示对应于$B_i$的第k种关系。</p>
+<p>最终模型目标函数训练采用负对数似然实现。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><p>因为$C^2SA$与模型有关，只用于学习阶段，因此本文使用两种类型的神经关系提取器进行实验。使用人工标注的测试库在句子级关系抽取任务上进行实验取得了state-of-the-art结果。进一步采用case study与ablation实验，验证cross-sentence 与cross-bag选择注意力机制的有效性。</p>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>训练集于之前一致使用NYT10作为训练集，53个分类，数据集包含522611个句子，281270实体对与18252知识库事实。</p>
+<p>一个实体对表达关系的概率就是最大化这个关系所有包含实体对的句子提及的概率。</p>
+<h2 id="baselines"><a href="#baselines" class="headerlink" title="baselines"></a>baselines</h2><ol>
+<li><strong>PCNN+ATT：</strong>使用普通的句子级选择注意力结合每个包的句子特征，基于每个包的表示在PCNN模型下训练。</li>
+<li><strong>BLSTM+2ATT：</strong>也是使用普通的句子级选择注意力机制，不同于PCNN采用的是BLSTM模型附加一个额外的word-level attention单元。</li>
+<li><strong>PCNN+ATT+RL：</strong>整合强化学习改善PCNN+ATT，它采用学习策略选择训练集子集PCNN+ATT模型。</li>
+<li><strong>PCNN+ATT+softlabel：</strong>增强PCNN+ATT模型的效果通过使用后验概率约束修正潜在错误包标签。</li>
+</ol>
+<h3 id="corpus-level-Task"><a href="#corpus-level-Task" class="headerlink" title="corpus-level Task"></a>corpus-level Task</h3><p>本文P-R曲线评估方法采用语料库级关系抽取。</p>
+<p>测试集是2007年freebase标注构建的，包含172448句子，96678实体对与1950 知识库事实。</p>
+<p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/baselines.png" alt="baselines"></p>
+<p>性能比较方面从P-R曲线来看，基于PCNN的方法与基于BLSTM的方法没有明确的区别，尽管baseline方法PCNN效果比BLSTM差但是本文提出的$PCNN+C^2SA$与$BLSTM+C^2SA$相比PCNN更好。</p>
+<h3 id="sentence-level-Task"><a href="#sentence-level-Task" class="headerlink" title="sentence-level Task"></a>sentence-level Task</h3><p>与语料库级任务不同，该任务旨在识别特定句子中实体对的关系类型。本质上是将句子表示输入到输出层中并观察预测结果。</p>
+<p>在该任务中采用Hoffmann2011年发表文章的数据集，包含395个人工标注结果，相比于corpus-level任务该数据集比较小，但是考虑到人工标注的价值，这项分析是有意义的。</p>
+<p>在模型比较方面除了Base的PCNN+ATT与BLSTM+2ATT外还考虑了$C^2SA$的两种变体：$CRSA$和$C^2SA-dot$。其中$CRSA$仅使用cross-relation选择注意机制；$C^2SA-dot$将公式中余弦相似度部分均改为点乘（dot product）。</p>
+<p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/sentence-level-performance.png" alt="sentence-level-performance"></p>
+<p>实验结果反映了两个重要信息：（1）本文提出的cross-relation与cross-bag对模型效果的提升都有效；（2）余弦相似度代替点乘作为评分函数的一部分是非常有效的。</p>
+<h2 id="模块切除研究（Ablation-Study）"><a href="#模块切除研究（Ablation-Study）" class="headerlink" title="模块切除研究（Ablation Study）"></a>模块切除研究（Ablation Study）</h2><p>为证明cross-relation机制的有效性，比较$CRSA$与$ATT$，因为二者均在句子包级别上进行训练。而cross-bag是基于句子包表示的，因此通过比较$CRSA$与$C^2SA$来证明cross-bag的有效性。为保证公平的比较，本文分别对PCNN与BLSTM based方法都进行了Precision-Recall curve评估。</p>
+<p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/P-R-curves.png" alt="P-R-curves"></p>
+<p>文章说明了PCNNs-based的方法比BLSTMs-based方法效果好很可能是由于不同神经网络特征提取器的特征差异造成的。CNNs模型能够很好地提取句子中反映在特征向量维度上的局部信息（如触发词），这一点导致基于余弦相似度的注意机制具有更好的性能。</p>
+<p>另一方面，$C^2SA$与$CRSA$之间的表现差距证实了一些句子包相比其他的有更高的质量。主要说明了模型在superbag level上训练会有更好的鲁棒性，case study实验也是支持这一观点。</p>
+<h2 id="Case-Study"><a href="#Case-Study" class="headerlink" title="Case Study"></a>Case Study</h2><h3 id="Noise-of-Distant-Supervision-at-Bag-level"><a href="#Noise-of-Distant-Supervision-at-Bag-level" class="headerlink" title="Noise of Distant Supervision at Bag-level"></a>Noise of Distant Supervision at Bag-level</h3><p>本文随机采样20种不同的NYT数据集中关系类型，随机选择100个实体对构建100个句子包。手工检验它们的质量，这些句子包包含483个句子，句子包的质量效果一般（一般句子级是用于考虑句子内的关系），如下图。</p>
+<p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/manually-check.png" alt="manually-check"></p>
+<p>从结果上来看，大约31%的句子包甚至没有包含一个正确标注的句子。因此，得出结论如下：应对远程监督的噪声，采用superbag-level进行训练是有价值的。</p>
+<h3 id="Effectiveness-of-Cross-bag-Selective-Attention"><a href="#Effectiveness-of-Cross-bag-Selective-Attention" class="headerlink" title="Effectiveness of Cross-bag Selective Attention"></a>Effectiveness of Cross-bag Selective Attention</h3><p>下图显示一个表示关系类型lived_in的superbag，它两个句子包。经过观察发现仅有一个句子正确的标注在第一个句子包中，二第二个句子包所有句子均不匹配知识库反应的关系事实。cross-bag选择注意力允许模型关注更多句子包从而获得更高的质量。</p>
+<p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/case-study.png" alt="case-study"></p>
+<h1 id="结论与展望"><a href="#结论与展望" class="headerlink" title="结论与展望"></a>结论与展望</h1><p>本文提出cross-relation cross-bag 选择注意力，建立一个实体关系模型有效地学习真实表达关系的特征从包含噪声的远程监督数据中。实验证明所提出的模型能更好的学习高质量的bag feature对比于现存文献。跨包注意力选择机制有助于进一步提升性能通过使用高质量的bag features。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechat.png" alt="NI,JUN 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="NI,JUN 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Relation-Extraction/" rel="tag"># Relation Extraction</a>
+          
+            <a href="/tags/AAAI/" rel="tag"># AAAI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/passages/2019-10-21-RESIDE/" rel="next" title="RESIDE:Improving Distantly-Supervised Neural Relation Extraction using Side Information">
+                <i class="fa fa-chevron-left"></i> RESIDE:Improving Distantly-Supervised Neural Relation Extraction using Side Information
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">NI,JUN</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">49</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/nijunssdut" title="GitHub &rarr; https://github.com/nijunssdut" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:nijun@mail.dlut.edu.com" title="E-Mail &rarr; mailto:nijun@mail.dlut.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关工作"><span class="nav-number">3.</span> <span class="nav-text">相关工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方法"><span class="nav-number">4.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#输入表示"><span class="nav-number">4.1.</span> <span class="nav-text">输入表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#神经网络特征抽取器"><span class="nav-number">4.2.</span> <span class="nav-text">神经网络特征抽取器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出层"><span class="nav-number">4.3.</span> <span class="nav-text">输出层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cross-relation-Selective-Attention"><span class="nav-number">4.4.</span> <span class="nav-text">Cross-relation Selective Attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cross-bag-Selective-Attention"><span class="nav-number">4.5.</span> <span class="nav-text">Cross-bag Selective Attention</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验"><span class="nav-number">5.</span> <span class="nav-text">实验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据集"><span class="nav-number">5.1.</span> <span class="nav-text">数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#baselines"><span class="nav-number">5.2.</span> <span class="nav-text">baselines</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#corpus-level-Task"><span class="nav-number">5.2.1.</span> <span class="nav-text">corpus-level Task</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sentence-level-Task"><span class="nav-number">5.2.2.</span> <span class="nav-text">sentence-level Task</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块切除研究（Ablation-Study）"><span class="nav-number">5.3.</span> <span class="nav-text">模块切除研究（Ablation Study）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Case-Study"><span class="nav-number">5.4.</span> <span class="nav-text">Case Study</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Noise-of-Distant-Supervision-at-Bag-level"><span class="nav-number">5.4.1.</span> <span class="nav-text">Noise of Distant Supervision at Bag-level</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Effectiveness-of-Cross-bag-Selective-Attention"><span class="nav-number">5.4.2.</span> <span class="nav-text">Effectiveness of Cross-bag Selective Attention</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结论与展望"><span class="nav-number">6.</span> <span class="nav-text">结论与展望</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">NI,JUN</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.8" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+  <script id="ribbon" size="300" alpha="0.1" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

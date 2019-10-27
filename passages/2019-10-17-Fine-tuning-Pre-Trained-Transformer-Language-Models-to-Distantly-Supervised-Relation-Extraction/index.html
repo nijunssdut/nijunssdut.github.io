@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/input_for_fine-tuning.png">
 <meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/P-R_curves.png">
 <meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/variety_relations.png">
-<meta property="og:updated_time" content="2019-10-20T08:14:44.466Z">
+<meta property="og:updated_time" content="2019-10-25T13:09:38.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction">
 <meta name="twitter:description" content="论文摘要现阶段关系抽取方法采用多示例学习与提供的语义与语境信息有效的确定关系类别。这样模型会识别偏向于高精确率的关系，忽略那些关系长尾句子中（in the long tail），为了解决这个问题，利用预训练语言模型Open AI Generative Pre-trained Transformer（GPT），除了从词法句法的角度解决问题外，也更注重大量的常识知识（一些重要的特征识别更多元的关系），">
@@ -410,7 +410,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-10-20 16:14:44" itemprop="dateModified" datetime="2019-10-20T16:14:44+08:00">2019-10-20</time>
+                <time title="修改时间：2019-10-25 21:09:38" itemprop="dateModified" datetime="2019-10-25T21:09:38+08:00">2019-10-25</time>
               </span>
             
           
@@ -463,7 +463,7 @@
 
       
         <h1 id="论文摘要"><a href="#论文摘要" class="headerlink" title="论文摘要"></a>论文摘要</h1><p>现阶段关系抽取方法采用多示例学习与提供的语义与语境信息有效的确定关系类别。这样模型会识别偏向于高精确率的关系，忽略那些关系长尾句子中（in the long tail），为了解决这个问题，利用预训练语言模型Open AI Generative Pre-trained Transformer（GPT），除了从词法句法的角度解决问题外，也更注重大量的常识知识（一些重要的特征识别更多元的关系），在高召回率情况下在NYT10数据集下实现较好的效果。</p>
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>关系抽取使许多自然语言处理应用的关键组件，例如知识库普及与问答系统。远程监督是一种流行方法启发式生成标签数据用于训练关系抽取系统，方法是通过对齐文本中的实体元组与已知关系示例来自于知识库中，但是存在噪声标签与知识库信息不完全。</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>关系抽取是许多自然语言处理应用的关键组件，例如知识库普及与问答系统。远程监督是一种流行方法启发式生成标签数据用于训练关系抽取系统，方法是通过对齐文本中的实体元组与已知关系示例来自于知识库中，但是存在噪声标签与知识库信息不完全。</p>
 <p>现阶段关系抽取方法解决问题是通过多示例学习与显式提供语义和句法知识指导模型，例如：词性与文法依赖信息。最近的方法利用附加信息，例如：意译、关系别名与实体类型。但是依旧会出现摘要中提到的问题。</p>
 <p>深度语言表示，例如那些由Transformer通过语言建模学到的，已经被证实通过无监督的预训练就可以隐式地捕获文本的有价值的语义与句法属性，并在广泛的自然语言处理任务中取得不错的效果。文章假设预训练语言模型为远程监督提供一个强烈的信号，更好的基于知识获取指导关系抽取任务。使用隐形特征代替显性语言知识与附加信息提高领域和语言的独立性，并且能够增加识别出关系的多样性。</p>
 <p>在文章中，引入一个远程监督关系抽取Transformer模型。文章扩展标准的Transformer模型通过一个有选择性的注意力机制处理多示例学习与预测，整个过程直接微调模型在远程监督关系抽取。文章提及该处理最小化显式特征提取并降低错误累积的风险。<strong>此外，文章引入自注意结构允许模型有效地长期依赖关系。</strong></p>
@@ -488,7 +488,7 @@
 <p>由于引入语言模型在微调过程中有助于改善泛化能力实现快速收敛，故：<br>$$<br>L(D) = \lambda*L_1(D)+L_2(D)<br>$$<br>标量$\lambda$反映微调期间语言模型的权重值。</p>
 <h3 id="模型输入的特殊性-BPE编码算法"><a href="#模型输入的特殊性-BPE编码算法" class="headerlink" title="模型输入的特殊性-BPE编码算法"></a>模型输入的特殊性-BPE编码算法</h3><p>充分利用分词信息，使用byte pair encoding（BPE）对输入文本分词。BPE是用来解决未登录词问题的一种方法。在做NLP的时候，我们通常会对语料做一个预处理，生成语料的一个字典。为了不让字典太大，我们通常只会把出现频次大于某个阈值的词丢到字典里边，剩下所有的词都统一编码成#UNK。这是很经典很朴素的做法，这种方法不能解决未登录词的问题。<strong>未登录词是指在验证集或测试集出现了但训练集从来没见到过的单词。</strong>这种未登录词对分词、NLP其他任务性能有很大影响。常见的解决方法有：给低频词设置一个back-off表，当出现低频词的时候就去查表；或者不做word-level的东西，转做char-level的东西，因为不管什么词肯定是由若干个字母组成的。</p>
 <p>两种方法各有优劣。第一种方法，简单直接，若干back-off做的很好会对低频词处理有很大提升（机器翻译）；但这种方法依赖于back-off表的质量，而且也没法处理非登录词问题。第二种方法，从源头解决未登录词的问题，但是模型粒度太细，一般出来的效果不是特别好。我认为可能非串级别导致词信息损失过多。</p>
-<p>2016年《Neural Machine Translation of Rare Words with Subword Units》提出了基于subword来生成词典的方法。他的核心思想是综合word-level and char-level的优势，从语料中学习到所有词里边频次高的字符串子串。然后把这些频次高的字符串子串收集起来形成一个字典。这个字典里边，既存在char-level级别的子串。然后把这个字典用于模型的训练。论文在寻找频次高的子串时，使用了BPE算法，就是把子串encoding：每次合并在语料中同一个词里面的、相邻的、出现频率最高的两个子串。decoding的时候，根据生成的voc.txt做相应的替换。</p>
+<p>2016年《Neural Machine Translation of Rare Words with Subword Units》提出了基于subword来生成词典的方法。他的核心思想是综合word-level and char-level的优势，从语料中学习到所有词里边频次高的字符串子串。然后把这些频次高的字符串子串收集起来形成一个字典。这个字典里边，既存在char-level级别字符也存在word-level级别的子串。然后把这个字典用于模型的训练。论文在寻找频次高的子串时，使用了BPE算法，就是把子串encoding：每次合并在语料中同一个词里面的、相邻的、出现频率最高的两个子串。decoding的时候，根据生成的voc.txt做相应的替换。</p>
 <p>关系抽取输入为头尾实体有分隔符分割，后面跟着包含句子的token序列，以一个特殊的分类token作为结尾。由于模型处理输入是从左到右的，故论文在最开始添加关系论据，使得注意力机制在处理句子token序列过程中偏向于对应的token表征。</p>
 <p><img src="/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/input_for_fine-tuning.png" alt="input_for_fine-tuning"></p>
 <h2 id="实验设置"><a href="#实验设置" class="headerlink" title="实验设置"></a>实验设置</h2><p>文章在远程监督数据集NYT10上使用PCNN+ATT与RESIDE作为基准进行比较。</p>
@@ -670,7 +670,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -812,7 +812,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">48</span>
+                      
+                    
+                    <span class="site-state-item-count">49</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
