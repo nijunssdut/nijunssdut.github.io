@@ -43,49 +43,6 @@
       </tags>
   </entry>
   <entry>
-    <title>快速排序</title>
-    <url>/passages/2019-06-30-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><p>快速排序是一种高效的排序算法，它采用“分而治之”的思想。其原理是：对于一组给定的记录，通过一趟排序后，将原序列分成两部分，其中前部分的所有记录均比后面部分的所有记录小，然后再依次对前后两部分的记录进行快速排序，递归该过程，直到序列中的所有记录均有序为止。</p>
-<p>具体算法步骤如下：</p>
-<p>(1) 分解: 将输入的序列array[m,…,n]划分成两个非空子序列array[m,…,k]和array[k+1,…,n]，使array[m,..,k]和array[k+1,…,n]，使array[m,…,k]中任一元素的值不大于array[k+1,…,n]中任一元素的值。</p>
-<p>(2) 递归求解：通过递归调用快速排序算法分别对array[m,…,k]和array[k+1,…,n]进行排序。</p>
-<p>(3) 合并: 由于对分解出的两个子序列的排序是就地进行的，所以在array[m,…k]和array[k+1,…,n]都是排好序后，不需要执行任何计算，array[m,…,n]就已排好序。</p>
-<h2 id="2-Python代码实现"><a href="#2-Python代码实现" class="headerlink" title="2. Python代码实现"></a>2. Python代码实现</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如何进行快速排序</span></span><br><span class="line"><span class="comment"># 整体有序,基准左边或右边样本为空，比较次数多，最坏时间复杂度，例如基准最小，排序递增</span></span><br><span class="line"><span class="comment"># 最坏时间复杂度为O(n^2),最好时间复杂度为O(nlogn),平均时间复杂度为O(nlogn)</span></span><br><span class="line"><span class="comment"># 平均空间复杂度为O(nlogn)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(left,right,lists)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> left &gt; right:</span><br><span class="line">        <span class="keyword">return</span> lists</span><br><span class="line">    key = lists[left]</span><br><span class="line">    low = left</span><br><span class="line">    high = right</span><br><span class="line">    <span class="keyword">while</span> left &lt; right:</span><br><span class="line">        <span class="keyword">while</span> left &lt;right <span class="keyword">and</span> lists[right]&gt;=key:</span><br><span class="line">            right -= <span class="number">1</span></span><br><span class="line">        lists[left] = lists[right]</span><br><span class="line">        <span class="keyword">while</span> left &lt;right <span class="keyword">and</span> lists[left] &lt;= key:</span><br><span class="line">            left += <span class="number">1</span></span><br><span class="line">        lists[right] = lists[left]</span><br><span class="line">    lists[left] = key</span><br><span class="line">    quick_sort(low,left<span class="number">-1</span>,lists)</span><br><span class="line">    quick_sort(left+<span class="number">1</span>,high,lists)</span><br><span class="line">    <span class="keyword">return</span> lists</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    lists = [<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">5</span>,<span class="number">1</span>]</span><br><span class="line">    print(<span class="string">"排序前序列为："</span>,end=<span class="string">""</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> lists:</span><br><span class="line">        print(i,end=<span class="string">" "</span>)</span><br><span class="line">    print(<span class="string">"\n排序后序列为："</span>,end=<span class="string">""</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> (quick_sort(<span class="number">0</span>,len(lists)<span class="number">-1</span>,lists)):</span><br><span class="line">        print(i,end=<span class="string">" "</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3 参考资料"></a>3 参考资料</h2><ol>
-<li>《Python程序员面试算法宝典》</li>
-</ol>
-<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>数据结构</category>
-      </categories>
-      <tags>
-        <tag>笔试面试</tag>
-        <tag>排序算法</tag>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>经典笔试——找到数组第k大或第k小的数</title>
-    <url>/passages/2019-06-30-%E6%89%BE%E5%88%B0%E6%95%B0%E7%BB%84%E7%AC%ACk%E5%A4%A7%E6%88%96%E7%AC%ACk%E5%B0%8F%E7%9A%84%E6%95%B0/</url>
-    <content><![CDATA[<h1 id="1-问题"><a href="#1-问题" class="headerlink" title="1. 问题"></a>1. 问题</h1><p>在未排序的数组中找到第k个最大的元素，<strong>找到数组排序后的第k个最大的元素</strong>。</p>
-<p><strong>示例：</strong></p>
-<p>输入：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[3,2,3,1,2,4,5,5,6] 和 k=4</span><br></pre></td></tr></table></figure>
-<p>输出：4</p>
-<h1 id="2-解题思路"><a href="#2-解题思路" class="headerlink" title="2. 解题思路"></a>2. 解题思路</h1><p>类快速排序思想，找到数组中元素的位置，当分界点的索引为k-1的时候，它就是第k大元素，第k小的数只需找<strong>（组数长度+1-k）</strong>大的数即可。其时间复杂度应小于$O(n\log_2n)$。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self,nums,k)</span>:</span></span><br><span class="line">		<span class="keyword">return</span> self.findKthSmallest(nums,len(nums)+<span class="number">1</span>-k)</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">findKthSmallest</span><span class="params">(self,nums,k)</span>:</span>  </span><br><span class="line">		<span class="keyword">if</span> nums:</span><br><span class="line">			pos = self.partition(nums,<span class="number">0</span>,len(nums)<span class="number">-1</span>)</span><br><span class="line">			<span class="keyword">if</span> k&gt;pos+<span class="number">1</span>:</span><br><span class="line">				<span class="keyword">return</span> self.findKthSmallest(nums[pos+<span class="number">1</span>:],k-pos<span class="number">-1</span>)</span><br><span class="line">			<span class="keyword">elif</span> k&lt;pos+<span class="number">1</span>:</span><br><span class="line">				<span class="keyword">return</span> self.findKthSmallest(nums[:pos],k)</span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				<span class="keyword">return</span> nums[pos]</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(self,nums,l,r)</span>:</span></span><br><span class="line">		low = l</span><br><span class="line">		<span class="keyword">while</span> l&lt;r:</span><br><span class="line">			<span class="keyword">if</span> nums[l] &lt; nums[r]:</span><br><span class="line">				nums[l],nums[low] = nums[low],num[l]</span><br><span class="line">				low += <span class="number">1</span></span><br><span class="line">			l += <span class="number">1</span></span><br><span class="line">		nums[low],nums[r] = nums[r],nums[low]</span><br><span class="line">		<span class="keyword">return</span> low</span><br></pre></td></tr></table></figure>
-<h1 id="3-其他解法"><a href="#3-其他解法" class="headerlink" title="3. 其他解法"></a>3. 其他解法</h1><p>堆排序方法</p>
-<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>数据结构</category>
-      </categories>
-      <tags>
-        <tag>笔试面试</tag>
-        <tag>python</tag>
-        <tag>必会题目</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>排序算法比较</title>
     <url>/passages/2019-06-29-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/</url>
     <content><![CDATA[<h1 id="各种排序算法比较"><a href="#各种排序算法比较" class="headerlink" title="各种排序算法比较"></a>各种排序算法比较</h1><table>
@@ -183,88 +140,46 @@
       </tags>
   </entry>
   <entry>
-    <title>Line实习面</title>
-    <url>/passages/2019-07-01-Line%E5%AE%9E%E4%B9%A0%E9%9D%A2/</url>
-    <content><![CDATA[<h1 id="1-笔试"><a href="#1-笔试" class="headerlink" title="1. 笔试"></a>1. 笔试</h1><p><strong>问题1：</strong>平衡二叉树的性质（笔者菜，画蛇添足了…）</p>
-<p><strong>正确解答：</strong>平衡二叉树或者是棵空树，或者是具有下列性质的二叉树：</p>
-<ul>
-<li>它的左子树和右子树都是平衡二叉树，且左子树和右子树的深度之差的绝对值不超过1。</li>
-<li>若将二叉树节点的平衡因子（Balance Factor）定义为该节点的左子树的深度减去它的右子树的深度，则平衡二叉树上所有节点的平衡因子只可能为-1，0，1。</li>
-<li>只要二叉树上有一个节点的平衡因子的绝对值大于1，那么这颗平衡二叉树就失去平衡了</li>
-</ul>
-<p><strong>问题2：</strong>在浏览器中输入 www.xxxx.com 后执行的全部过程。</p>
-<p><strong>正确解答：</strong></p>
-<ol>
-<li>客户端浏览器通过DNS解析到 www.xxxx.com 的IP地址，然后通过TCP进行封装数据包，输入到网络层。</li>
-<li>在客户端的传输层，把HTTP会话请求分成报文段，添加源和目的端口，如服务器使用80端口监听客户端的请求，客户端由系统随机选择一个端口如5000，与服务器进行交换，服务器把相应的请求返回给客户端的5000端口。然后使用IP层的IP地址查找目的端。</li>
-<li>客户端的网络层不必关心应用层或者传输层的东西，主要做的是通过查找路由表确定如何到达服务器，期间可能经过多个路由器，这些都是由路由器来完成的工作，就是通过查找路由表决定通过哪个路径到达服务器。</li>
-<li>客户端的链路层，包通过链路层发送到路由器，通过邻居协议查找给定IP地址的MAC地址，然后发送ARP请求查找目的地址，如果得到回应后就可以使用ARP的请求应答交换IP数据包。现在就可以传输了，然后发送IP数据包到达服务器的地址。</li>
+    <title>快速排序</title>
+    <url>/passages/2019-06-30-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h2><p>快速排序是一种高效的排序算法，它采用“分而治之”的思想。其原理是：对于一组给定的记录，通过一趟排序后，将原序列分成两部分，其中前部分的所有记录均比后面部分的所有记录小，然后再依次对前后两部分的记录进行快速排序，递归该过程，直到序列中的所有记录均有序为止。</p>
+<p>具体算法步骤如下：</p>
+<p>(1) 分解: 将输入的序列array[m,…,n]划分成两个非空子序列array[m,…,k]和array[k+1,…,n]，使array[m,..,k]和array[k+1,…,n]，使array[m,…,k]中任一元素的值不大于array[k+1,…,n]中任一元素的值。</p>
+<p>(2) 递归求解：通过递归调用快速排序算法分别对array[m,…,k]和array[k+1,…,n]进行排序。</p>
+<p>(3) 合并: 由于对分解出的两个子序列的排序是就地进行的，所以在array[m,…k]和array[k+1,…,n]都是排好序后，不需要执行任何计算，array[m,…,n]就已排好序。</p>
+<h2 id="2-Python代码实现"><a href="#2-Python代码实现" class="headerlink" title="2. Python代码实现"></a>2. Python代码实现</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如何进行快速排序</span></span><br><span class="line"><span class="comment"># 整体有序,基准左边或右边样本为空，比较次数多，最坏时间复杂度，例如基准最小，排序递增</span></span><br><span class="line"><span class="comment"># 最坏时间复杂度为O(n^2),最好时间复杂度为O(nlogn),平均时间复杂度为O(nlogn)</span></span><br><span class="line"><span class="comment"># 平均空间复杂度为O(nlogn)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(left,right,lists)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> left &gt; right:</span><br><span class="line">        <span class="keyword">return</span> lists</span><br><span class="line">    key = lists[left]</span><br><span class="line">    low = left</span><br><span class="line">    high = right</span><br><span class="line">    <span class="keyword">while</span> left &lt; right:</span><br><span class="line">        <span class="keyword">while</span> left &lt;right <span class="keyword">and</span> lists[right]&gt;=key:</span><br><span class="line">            right -= <span class="number">1</span></span><br><span class="line">        lists[left] = lists[right]</span><br><span class="line">        <span class="keyword">while</span> left &lt;right <span class="keyword">and</span> lists[left] &lt;= key:</span><br><span class="line">            left += <span class="number">1</span></span><br><span class="line">        lists[right] = lists[left]</span><br><span class="line">    lists[left] = key</span><br><span class="line">    quick_sort(low,left<span class="number">-1</span>,lists)</span><br><span class="line">    quick_sort(left+<span class="number">1</span>,high,lists)</span><br><span class="line">    <span class="keyword">return</span> lists</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    lists = [<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">5</span>,<span class="number">1</span>]</span><br><span class="line">    print(<span class="string">"排序前序列为："</span>,end=<span class="string">""</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> lists:</span><br><span class="line">        print(i,end=<span class="string">" "</span>)</span><br><span class="line">    print(<span class="string">"\n排序后序列为："</span>,end=<span class="string">""</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> (quick_sort(<span class="number">0</span>,len(lists)<span class="number">-1</span>,lists)):</span><br><span class="line">        print(i,end=<span class="string">" "</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3 参考资料"></a>3 参考资料</h2><ol>
+<li>《Python程序员面试算法宝典》</li>
 </ol>
-<p><strong>问题3：</strong> 设计实现HashTable类。(这题博主见过两次了，都没答对，是真的菜…)</p>
-<p>HashTable有两个问题需要解决，首先是key值哈希化，我们可以借助Python自带的hash函数解决key的哈希编码问题。其次是Hash 冲突的解决机制，在这里只考虑最简单的一种，即将同一个 hash 值下的不同的 key 存放在数组的同一个位置，以链表形式保存。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MyDict(object):</span><br><span class="line">	def __init__(self,size = 10000):</span><br><span class="line">		self.hash_list = [list() for _ in range(size)]</span><br><span class="line">		self.size = size</span><br><span class="line">	def __setitem__(self,key,value):</span><br><span class="line">		# 利用python自带的hash函数，对key哈希并对size取模</span><br><span class="line">		# hashed_key位置没有值就追加，否则覆盖</span><br><span class="line">		hashed_key = hash(key)%self.size</span><br><span class="line">		for item in self.hash_list[hashed_key]:</span><br><span class="line">			if item[0] == key:</span><br><span class="line">				item[1] = value</span><br><span class="line">				break</span><br><span class="line">			else:</span><br><span class="line">				self.hash_list[hashed_key].append([key,value])</span><br><span class="line">	def __getitem__(self,key):</span><br><span class="line">		# return: key所对应的value</span><br><span class="line">		# 没有key，就抛出keyError</span><br><span class="line">		for item in self.hash_list[hash(key)%self.size]:</span><br><span class="line">			if item[0] == key:</span><br><span class="line">				return item[1]</span><br><span class="line">			raise keyError(key)</span><br><span class="line">	def __repr__(self):</span><br><span class="line">		# hashtable打印</span><br><span class="line">		result = []</span><br><span class="line">		for sub_list in self.hash_list:</span><br><span class="line">			if not sub_list:</span><br><span class="line">				continue</span><br><span class="line">			for item in sub_list:</span><br><span class="line">				result.append(str(item[0])+&quot;:&quot;+str(item[1]))</span><br><span class="line">		return &quot;&#123;&quot;+&quot;,&quot;.join(result)+&quot;&#125;&quot;</span><br></pre></td></tr></table></figure>
-<p><strong>参考答案：</strong><a href="https://blog.csdn.net/lzw2016/article/details/85222322" target="_blank" rel="noopener">不用 Python 自带的 Dict 实现自己的 HashTable</a></p>
-<h1 id="2-面试"><a href="#2-面试" class="headerlink" title="2. 面试"></a>2. 面试</h1><p>主要问博主与简历相关的工作与能力，后续博主会陆续更新自己的研究内容。（博主过了，但不能实习可惜…）</p>
 <script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
       <categories>
-        <category>个人笔经面经</category>
+        <category>数据结构</category>
       </categories>
       <tags>
-        <tag>算法岗</tag>
+        <tag>笔试面试</tag>
+        <tag>排序算法</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
-    <title>MapReduce原理与排序应用</title>
-    <url>/passages/2019-07-01-MapReduce%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8E%92%E5%BA%8F%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<h1 id="1-MapReduce工作机制"><a href="#1-MapReduce工作机制" class="headerlink" title="1. MapReduce工作机制"></a>1. MapReduce工作机制</h1><p><strong>MapReduce执行总流程</strong></p>
-<p><img src="/passages/2019-07-01-MapReduce原理与排序应用/MapReduce-Framework.png" alt="MapReduce-Framework"></p>
-<p>MapReduce Framework如上图所示。</p>
-<p>JobTracker: 初始化作业，分配作业，与TaskManager通信，协调整个作业的执行</p>
-<p>TaskTracker: 保持与JobTracker的通信，执行map或者reduce任务</p>
-<p>HDFS；保存作业的数据，配置信息等，保存作业结果</p>
-<h2 id="具体相关流程"><a href="#具体相关流程" class="headerlink" title="具体相关流程"></a>具体相关流程</h2><h3 id="提交作业"><a href="#提交作业" class="headerlink" title="提交作业"></a>提交作业</h3><p>客户端编写完程序代码后，打成jar，然后通过相关命令向集群提交自己想要跑的MR任务，具体过程如下：</p>
-<ol>
-<li>通过调用JobTracker的getNewJobId()获取当前作业id</li>
-<li>检查作业相关路径</li>
-<li>计算作业的输入划分，并将划分信息写到Job.split文件中</li>
-<li>将运行作业所需要的资源包括作业jar包，配置文件和打算所得的输入划分，复制到作业对应的HDFS上</li>
-<li>调用JobTracker的summitJob()提交，告诉JobTracker作业准备执行</li>
-</ol>
-<h3 id="初始化作业"><a href="#初始化作业" class="headerlink" title="初始化作业"></a>初始化作业</h3><ol>
-<li>从HDFS中读取作业对应的job.split，得到输入数据的划分信息</li>
-<li>创建并且初始化Map任务和Reduce任务：为每个map/reduce task生成一个TaskInProgress去监控和调度该task。例如创建两个初始化task，一个初始化Map，一个初始化Reduce</li>
-</ol>
-<h3 id="分配任务"><a href="#分配任务" class="headerlink" title="分配任务"></a>分配任务</h3><p>JobTracker会将任务分配到TaskTracker去执行，但是怎么判断哪些TaskTracker，怎么分配任务呢？所以，我们要实现JobTracker和TaskTracker中的通信，也就是TaskTracker循环向JobTracker发送心跳，向上级报告自己这边是不是还活着，活干的怎么样了，可以接些新活等。作为JobTracker，接收到心跳信息，如果有待分配任务，就会给这个TaskTracker分配一个任务，然后taskTracker就把这个任务加入到他的任务队列中。我们可以主要看看TaskTracker中的transmitHeartBeart()和JobTracker的heartbeat()方法。</p>
-<h3 id="执行任务"><a href="#执行任务" class="headerlink" title="执行任务"></a>执行任务</h3><p>TaskTracker申请到任务后，在本地执行，主要有以下几个步骤来完成本地的步骤化:</p>
-<ol>
-<li>将job.split复制到本地</li>
-<li>将job.jar复制到本地</li>
-<li>将job的配置信息写入到Job.xml</li>
-<li>创建本地任务目录，解压job.rar</li>
-<li>调用launchTaskForJob()方法发布任务</li>
-</ol>
-<p>发布任务后，TaskRunner会启动新的java虚拟机来运行每个任务，以map任务为例，流程如下：</p>
-<ol>
-<li>配置任务执行参数（获取java程序的执行环境和配置参数等）</li>
-<li>在child临时文件表中添加Map任务信息</li>
-<li>配置log文件夹，配置Map任务的执行环境和配置参数；</li>
-<li>根据input split,生成RecordReader读取数据</li>
-<li>为Map任务生成MapRunnable，一次从RecordReader中接收数据，并调用map函数进行处理</li>
-<li>将Map函数的输出调用collect收集到MapOUtputBuffer中</li>
-</ol>
-<h1 id="2-MapReduce中排序应用"><a href="#2-MapReduce中排序应用" class="headerlink" title="2. MapReduce中排序应用"></a>2. MapReduce中排序应用</h1><h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><h3 id="Map阶段"><a href="#Map阶段" class="headerlink" title="Map阶段"></a>Map阶段</h3><p>Read(读取)      ==&gt;  Collect(生成Key-Value)     ==&gt;  Spill(溢写)</p>
-<p><strong>Read:</strong>从HDFS读取inputSplit（由InputFormat根据文件生成）</p>
-<p><strong>Collect:</strong>分为map过程和partition过程，map根据inputSplit生成Key-Value对，而Partition添加分区标记（辅助排序用），并写入环形缓存区。</p>
-<p><strong>Spill:</strong>分为sort过程、compress过程以及combine过程。数据不断的写入环形缓存区，达到阈值之后开始溢写，在溢写的过程中进行一次Sort，这里使用的排序是快排（QuickSort）；一次溢出生成一个file，并且在生成file的过程中进行压缩（compress）；多个file又会进行一次文件合并，在文件合并的过程中进行排序，这里使用的排序是归并排序（MergeSort）。</p>
-<h3 id="Shuffle阶段"><a href="#Shuffle阶段" class="headerlink" title="Shuffle阶段"></a>Shuffle阶段</h3><p>Shuffle阶段主要就是一个数据拷贝的过程，Map端合成的大文件之后，通过HTTP服务(jetty server)拷贝到Reduce端。拷贝到Reduce端的数据并不是马上写入文件，而是同样放在缓存中，达到阈值则进行溢写。</p>
-<h3 id="Reduce阶段"><a href="#Reduce阶段" class="headerlink" title="Reduce阶段"></a>Reduce阶段</h3><p>合并溢写生成的file，这里使用的排序为归并排序(MegerSort)，生成一些更大的文件(进一步减少文件个数)。在归并之后留下少量的大文件，最后对大文件进行一次最终合并，合并成一个有序的大文件(只有一个)，这里使用的排序算法为堆排序(HeapSort)。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>综上所述，一个MapReduce过程涉及到了一次快排、两次归并以及一次堆排的操作。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://www.cnblogs.com/wangkeustc/p/7338369.html" target="_blank" rel="noopener">Hadoop入门第三篇-MapReduce试手以及MR工作机制</a></p>
+    <title>经典笔试——找到数组第k大或第k小的数</title>
+    <url>/passages/2019-06-30-%E6%89%BE%E5%88%B0%E6%95%B0%E7%BB%84%E7%AC%ACk%E5%A4%A7%E6%88%96%E7%AC%ACk%E5%B0%8F%E7%9A%84%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="1-问题"><a href="#1-问题" class="headerlink" title="1. 问题"></a>1. 问题</h1><p>在未排序的数组中找到第k个最大的元素，<strong>找到数组排序后的第k个最大的元素</strong>。</p>
+<p><strong>示例：</strong></p>
+<p>输入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[3,2,3,1,2,4,5,5,6] 和 k=4</span><br></pre></td></tr></table></figure>
+<p>输出：4</p>
+<h1 id="2-解题思路"><a href="#2-解题思路" class="headerlink" title="2. 解题思路"></a>2. 解题思路</h1><p>类快速排序思想，找到数组中元素的位置，当分界点的索引为k-1的时候，它就是第k大元素，第k小的数只需找<strong>（组数长度+1-k）</strong>大的数即可。其时间复杂度应小于$O(n\log_2n)$。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self,nums,k)</span>:</span></span><br><span class="line">		<span class="keyword">return</span> self.findKthSmallest(nums,len(nums)+<span class="number">1</span>-k)</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">findKthSmallest</span><span class="params">(self,nums,k)</span>:</span>  </span><br><span class="line">		<span class="keyword">if</span> nums:</span><br><span class="line">			pos = self.partition(nums,<span class="number">0</span>,len(nums)<span class="number">-1</span>)</span><br><span class="line">			<span class="keyword">if</span> k&gt;pos+<span class="number">1</span>:</span><br><span class="line">				<span class="keyword">return</span> self.findKthSmallest(nums[pos+<span class="number">1</span>:],k-pos<span class="number">-1</span>)</span><br><span class="line">			<span class="keyword">elif</span> k&lt;pos+<span class="number">1</span>:</span><br><span class="line">				<span class="keyword">return</span> self.findKthSmallest(nums[:pos],k)</span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				<span class="keyword">return</span> nums[pos]</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">partition</span><span class="params">(self,nums,l,r)</span>:</span></span><br><span class="line">		low = l</span><br><span class="line">		<span class="keyword">while</span> l&lt;r:</span><br><span class="line">			<span class="keyword">if</span> nums[l] &lt; nums[r]:</span><br><span class="line">				nums[l],nums[low] = nums[low],num[l]</span><br><span class="line">				low += <span class="number">1</span></span><br><span class="line">			l += <span class="number">1</span></span><br><span class="line">		nums[low],nums[r] = nums[r],nums[low]</span><br><span class="line">		<span class="keyword">return</span> low</span><br></pre></td></tr></table></figure>
+<h1 id="3-其他解法"><a href="#3-其他解法" class="headerlink" title="3. 其他解法"></a>3. 其他解法</h1><p>堆排序方法</p>
 <script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>数据结构</category>
+      </categories>
       <tags>
-        <tag>分布式</tag>
-        <tag>方法优化</tag>
-        <tag>Hadoop</tag>
+        <tag>笔试面试</tag>
+        <tag>python</tag>
+        <tag>必会题目</tag>
       </tags>
   </entry>
   <entry>
@@ -340,6 +255,56 @@ s.t.\\\\
       </tags>
   </entry>
   <entry>
+    <title>Line实习面</title>
+    <url>/passages/2019-07-01-Line%E5%AE%9E%E4%B9%A0%E9%9D%A2/</url>
+    <content><![CDATA[<h1 id="1-笔试"><a href="#1-笔试" class="headerlink" title="1. 笔试"></a>1. 笔试</h1><p><strong>问题1：</strong>平衡二叉树的性质（笔者菜，画蛇添足了…）</p>
+<p><strong>正确解答：</strong>平衡二叉树或者是棵空树，或者是具有下列性质的二叉树：</p>
+<ul>
+<li>它的左子树和右子树都是平衡二叉树，且左子树和右子树的深度之差的绝对值不超过1。</li>
+<li>若将二叉树节点的平衡因子（Balance Factor）定义为该节点的左子树的深度减去它的右子树的深度，则平衡二叉树上所有节点的平衡因子只可能为-1，0，1。</li>
+<li>只要二叉树上有一个节点的平衡因子的绝对值大于1，那么这颗平衡二叉树就失去平衡了</li>
+</ul>
+<p><strong>问题2：</strong>在浏览器中输入 www.xxxx.com 后执行的全部过程。</p>
+<p><strong>正确解答：</strong></p>
+<ol>
+<li>客户端浏览器通过DNS解析到 www.xxxx.com 的IP地址，然后通过TCP进行封装数据包，输入到网络层。</li>
+<li>在客户端的传输层，把HTTP会话请求分成报文段，添加源和目的端口，如服务器使用80端口监听客户端的请求，客户端由系统随机选择一个端口如5000，与服务器进行交换，服务器把相应的请求返回给客户端的5000端口。然后使用IP层的IP地址查找目的端。</li>
+<li>客户端的网络层不必关心应用层或者传输层的东西，主要做的是通过查找路由表确定如何到达服务器，期间可能经过多个路由器，这些都是由路由器来完成的工作，就是通过查找路由表决定通过哪个路径到达服务器。</li>
+<li>客户端的链路层，包通过链路层发送到路由器，通过邻居协议查找给定IP地址的MAC地址，然后发送ARP请求查找目的地址，如果得到回应后就可以使用ARP的请求应答交换IP数据包。现在就可以传输了，然后发送IP数据包到达服务器的地址。</li>
+</ol>
+<p><strong>问题3：</strong> 设计实现HashTable类。(这题博主见过两次了，都没答对，是真的菜…)</p>
+<p>HashTable有两个问题需要解决，首先是key值哈希化，我们可以借助Python自带的hash函数解决key的哈希编码问题。其次是Hash 冲突的解决机制，在这里只考虑最简单的一种，即将同一个 hash 值下的不同的 key 存放在数组的同一个位置，以链表形式保存。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class MyDict(object):</span><br><span class="line">	def __init__(self,size = 10000):</span><br><span class="line">		self.hash_list = [list() for _ in range(size)]</span><br><span class="line">		self.size = size</span><br><span class="line">	def __setitem__(self,key,value):</span><br><span class="line">		# 利用python自带的hash函数，对key哈希并对size取模</span><br><span class="line">		# hashed_key位置没有值就追加，否则覆盖</span><br><span class="line">		hashed_key = hash(key)%self.size</span><br><span class="line">		for item in self.hash_list[hashed_key]:</span><br><span class="line">			if item[0] == key:</span><br><span class="line">				item[1] = value</span><br><span class="line">				break</span><br><span class="line">			else:</span><br><span class="line">				self.hash_list[hashed_key].append([key,value])</span><br><span class="line">	def __getitem__(self,key):</span><br><span class="line">		# return: key所对应的value</span><br><span class="line">		# 没有key，就抛出keyError</span><br><span class="line">		for item in self.hash_list[hash(key)%self.size]:</span><br><span class="line">			if item[0] == key:</span><br><span class="line">				return item[1]</span><br><span class="line">			raise keyError(key)</span><br><span class="line">	def __repr__(self):</span><br><span class="line">		# hashtable打印</span><br><span class="line">		result = []</span><br><span class="line">		for sub_list in self.hash_list:</span><br><span class="line">			if not sub_list:</span><br><span class="line">				continue</span><br><span class="line">			for item in sub_list:</span><br><span class="line">				result.append(str(item[0])+&quot;:&quot;+str(item[1]))</span><br><span class="line">		return &quot;&#123;&quot;+&quot;,&quot;.join(result)+&quot;&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>参考答案：</strong><a href="https://blog.csdn.net/lzw2016/article/details/85222322" target="_blank" rel="noopener">不用 Python 自带的 Dict 实现自己的 HashTable</a></p>
+<h1 id="2-面试"><a href="#2-面试" class="headerlink" title="2. 面试"></a>2. 面试</h1><p>主要问博主与简历相关的工作与能力，后续博主会陆续更新自己的研究内容。（博主过了，但不能实习可惜…）</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>个人笔经面经</category>
+      </categories>
+      <tags>
+        <tag>算法岗</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>神策数据实习</title>
+    <url>/passages/2019-07-01-%E7%A5%9E%E7%AD%96%E6%95%B0%E6%8D%AE%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="1-笔试"><a href="#1-笔试" class="headerlink" title="1. 笔试"></a>1. 笔试</h1><p>拓扑排序：可以实现有向图以及无向图判断是否有环存在。</p>
+<p>稳定排序算法：归并排序、基数排序、冒泡排序和直接插入排序</p>
+<h1 id="2-面试"><a href="#2-面试" class="headerlink" title="2. 面试"></a>2. 面试</h1><p>时间很短，每人只有15分钟，本人大概面试了20分钟左右，面试官不是做算法的，技术能力很强（认识…），效果不理想，主要是自己菜—&gt;.</p>
+<p><strong>问题1：</strong>描述一下过拟合。</p>
+<p><strong>问题2：</strong>给一些数据，如何选取模型去挑选数据，判断与随机取数据的好坏。</p>
+<p><strong>问题3：</strong>分布式了解吗？MR工作机制？</p>
+<p><strong>问题4：</strong>给文章数据让你统计词频，你怎么实现会有哪些问题？大量数据怎么处理？正常字典法请手撕代码。</p>
+<p><strong>问题5：</strong>针对于分词那么换行问题“hell-\nO world”如何处理，文章应当一部分一部分去处理，如果分句针对较长的句子该怎么办？（面试官不看好replace(“-\n”,””)）我也没有合适的解决方案…..</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>个人笔经面经</category>
+      </categories>
+      <tags>
+        <tag>算法岗</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>作业帮算法卷笔试</title>
     <url>/passages/2019-07-02-%E4%BD%9C%E4%B8%9A%E5%B8%AE%E7%AE%97%E6%B3%95%E5%8D%B7%E7%AC%94%E8%AF%95/</url>
     <content><![CDATA[<h1 id="博主问题笔记"><a href="#博主问题笔记" class="headerlink" title="博主问题笔记"></a>博主问题笔记</h1><p>不包含博主经历所有题目只记录典型问题（估计也差不多全部了，因为博主菜…..）</p>
@@ -405,22 +370,57 @@ H(x,y) = -\sum_{i=1}^nx_i\ln{y_i}</script><p>这里公式定义，x、y都是表
       </tags>
   </entry>
   <entry>
-    <title>神策数据实习</title>
-    <url>/passages/2019-07-01-%E7%A5%9E%E7%AD%96%E6%95%B0%E6%8D%AE%E5%AE%9E%E4%B9%A0%E9%9D%A2%E8%AF%95/</url>
-    <content><![CDATA[<h1 id="1-笔试"><a href="#1-笔试" class="headerlink" title="1. 笔试"></a>1. 笔试</h1><p>拓扑排序：可以实现有向图以及无向图判断是否有环存在。</p>
-<p>稳定排序算法：归并排序、基数排序、冒泡排序和直接插入排序</p>
-<h1 id="2-面试"><a href="#2-面试" class="headerlink" title="2. 面试"></a>2. 面试</h1><p>时间很短，每人只有15分钟，本人大概面试了20分钟左右，面试官不是做算法的，技术能力很强（认识…），效果不理想，主要是自己菜—&gt;.</p>
-<p><strong>问题1：</strong>描述一下过拟合。</p>
-<p><strong>问题2：</strong>给一些数据，如何选取模型去挑选数据，判断与随机取数据的好坏。</p>
-<p><strong>问题3：</strong>分布式了解吗？MR工作机制？</p>
-<p><strong>问题4：</strong>给文章数据让你统计词频，你怎么实现会有哪些问题？大量数据怎么处理？正常字典法请手撕代码。</p>
-<p><strong>问题5：</strong>针对于分词那么换行问题“hell-\nO world”如何处理，文章应当一部分一部分去处理，如果分句针对较长的句子该怎么办？（面试官不看好replace(“-\n”,””)）我也没有合适的解决方案…..</p>
+    <title>MapReduce原理与排序应用</title>
+    <url>/passages/2019-07-01-MapReduce%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8E%92%E5%BA%8F%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="1-MapReduce工作机制"><a href="#1-MapReduce工作机制" class="headerlink" title="1. MapReduce工作机制"></a>1. MapReduce工作机制</h1><p><strong>MapReduce执行总流程</strong></p>
+<p><img src="/passages/2019-07-01-MapReduce原理与排序应用/MapReduce-Framework.png" alt="MapReduce-Framework"></p>
+<p>MapReduce Framework如上图所示。</p>
+<p>JobTracker: 初始化作业，分配作业，与TaskManager通信，协调整个作业的执行</p>
+<p>TaskTracker: 保持与JobTracker的通信，执行map或者reduce任务</p>
+<p>HDFS；保存作业的数据，配置信息等，保存作业结果</p>
+<h2 id="具体相关流程"><a href="#具体相关流程" class="headerlink" title="具体相关流程"></a>具体相关流程</h2><h3 id="提交作业"><a href="#提交作业" class="headerlink" title="提交作业"></a>提交作业</h3><p>客户端编写完程序代码后，打成jar，然后通过相关命令向集群提交自己想要跑的MR任务，具体过程如下：</p>
+<ol>
+<li>通过调用JobTracker的getNewJobId()获取当前作业id</li>
+<li>检查作业相关路径</li>
+<li>计算作业的输入划分，并将划分信息写到Job.split文件中</li>
+<li>将运行作业所需要的资源包括作业jar包，配置文件和打算所得的输入划分，复制到作业对应的HDFS上</li>
+<li>调用JobTracker的summitJob()提交，告诉JobTracker作业准备执行</li>
+</ol>
+<h3 id="初始化作业"><a href="#初始化作业" class="headerlink" title="初始化作业"></a>初始化作业</h3><ol>
+<li>从HDFS中读取作业对应的job.split，得到输入数据的划分信息</li>
+<li>创建并且初始化Map任务和Reduce任务：为每个map/reduce task生成一个TaskInProgress去监控和调度该task。例如创建两个初始化task，一个初始化Map，一个初始化Reduce</li>
+</ol>
+<h3 id="分配任务"><a href="#分配任务" class="headerlink" title="分配任务"></a>分配任务</h3><p>JobTracker会将任务分配到TaskTracker去执行，但是怎么判断哪些TaskTracker，怎么分配任务呢？所以，我们要实现JobTracker和TaskTracker中的通信，也就是TaskTracker循环向JobTracker发送心跳，向上级报告自己这边是不是还活着，活干的怎么样了，可以接些新活等。作为JobTracker，接收到心跳信息，如果有待分配任务，就会给这个TaskTracker分配一个任务，然后taskTracker就把这个任务加入到他的任务队列中。我们可以主要看看TaskTracker中的transmitHeartBeart()和JobTracker的heartbeat()方法。</p>
+<h3 id="执行任务"><a href="#执行任务" class="headerlink" title="执行任务"></a>执行任务</h3><p>TaskTracker申请到任务后，在本地执行，主要有以下几个步骤来完成本地的步骤化:</p>
+<ol>
+<li>将job.split复制到本地</li>
+<li>将job.jar复制到本地</li>
+<li>将job的配置信息写入到Job.xml</li>
+<li>创建本地任务目录，解压job.rar</li>
+<li>调用launchTaskForJob()方法发布任务</li>
+</ol>
+<p>发布任务后，TaskRunner会启动新的java虚拟机来运行每个任务，以map任务为例，流程如下：</p>
+<ol>
+<li>配置任务执行参数（获取java程序的执行环境和配置参数等）</li>
+<li>在child临时文件表中添加Map任务信息</li>
+<li>配置log文件夹，配置Map任务的执行环境和配置参数；</li>
+<li>根据input split,生成RecordReader读取数据</li>
+<li>为Map任务生成MapRunnable，一次从RecordReader中接收数据，并调用map函数进行处理</li>
+<li>将Map函数的输出调用collect收集到MapOUtputBuffer中</li>
+</ol>
+<h1 id="2-MapReduce中排序应用"><a href="#2-MapReduce中排序应用" class="headerlink" title="2. MapReduce中排序应用"></a>2. MapReduce中排序应用</h1><h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><h3 id="Map阶段"><a href="#Map阶段" class="headerlink" title="Map阶段"></a>Map阶段</h3><p>Read(读取)      ==&gt;  Collect(生成Key-Value)     ==&gt;  Spill(溢写)</p>
+<p><strong>Read:</strong>从HDFS读取inputSplit（由InputFormat根据文件生成）</p>
+<p><strong>Collect:</strong>分为map过程和partition过程，map根据inputSplit生成Key-Value对，而Partition添加分区标记（辅助排序用），并写入环形缓存区。</p>
+<p><strong>Spill:</strong>分为sort过程、compress过程以及combine过程。数据不断的写入环形缓存区，达到阈值之后开始溢写，在溢写的过程中进行一次Sort，这里使用的排序是快排（QuickSort）；一次溢出生成一个file，并且在生成file的过程中进行压缩（compress）；多个file又会进行一次文件合并，在文件合并的过程中进行排序，这里使用的排序是归并排序（MergeSort）。</p>
+<h3 id="Shuffle阶段"><a href="#Shuffle阶段" class="headerlink" title="Shuffle阶段"></a>Shuffle阶段</h3><p>Shuffle阶段主要就是一个数据拷贝的过程，Map端合成的大文件之后，通过HTTP服务(jetty server)拷贝到Reduce端。拷贝到Reduce端的数据并不是马上写入文件，而是同样放在缓存中，达到阈值则进行溢写。</p>
+<h3 id="Reduce阶段"><a href="#Reduce阶段" class="headerlink" title="Reduce阶段"></a>Reduce阶段</h3><p>合并溢写生成的file，这里使用的排序为归并排序(MegerSort)，生成一些更大的文件(进一步减少文件个数)。在归并之后留下少量的大文件，最后对大文件进行一次最终合并，合并成一个有序的大文件(只有一个)，这里使用的排序算法为堆排序(HeapSort)。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>综上所述，一个MapReduce过程涉及到了一次快排、两次归并以及一次堆排的操作。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://www.cnblogs.com/wangkeustc/p/7338369.html" target="_blank" rel="noopener">Hadoop入门第三篇-MapReduce试手以及MR工作机制</a></p>
 <script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>个人笔经面经</category>
-      </categories>
       <tags>
-        <tag>算法岗</tag>
+        <tag>分布式</tag>
+        <tag>方法优化</tag>
+        <tag>Hadoop</tag>
       </tags>
   </entry>
   <entry>
@@ -547,28 +547,6 @@ TF-IDF = TF\*IDF</script><p><strong>Note：</strong>TF-IDF算法非常容易理�
       </tags>
   </entry>
   <entry>
-    <title>特征工程知识点整理概述(二)</title>
-    <url>/passages/2019-07-07-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86%E6%A6%82%E8%BF%B0-%E4%BA%8C/</url>
-    <content><![CDATA[<h1 id="文本表示"><a href="#文本表示" class="headerlink" title="文本表示"></a>文本表示</h1><p>文本是一类非常重要的非结构化数据，如何表示文本数据一直是机器学习领域的一个重要研究方向。</p>
-<h2 id="词袋模型（Bag-of-Words）"><a href="#词袋模型（Bag-of-Words）" class="headerlink" title="词袋模型（Bag of Words）"></a>词袋模型（Bag of Words）</h2><p>最基础的文本表示模型是词袋模型。顾名思义，就是将每篇文章看成一袋子词，并忽略每个词出现的顺序。具体地说，就是将整段文本以词为单位切分开，然后每篇文章可以表示成一个长向量，向量中的每一维代表一个单词，而该维对应的权重则反映了这个词在原文章中的重要程度。常用TF-IDF来计算权重。TF-IDF内容详见我的博客：<a href="https://nijunssdut.github.io/passages/2019-07-05-TF-IDF算法介绍/#more">TF-IDF算法介绍</a></p>
-<p>将文章进行单词级别的划分有时候并不是一种好的做法，比如英文中的natural language processing（自然语言处理）一词，如果将natural，language，processing这三个词拆分开来，所表达的含义与三个词连续出现时大相径庭。通常，可以将连续出现的n个词$(n\le N)$组成的词组（N-gram）也作为一个单独的特征放到向量表示中去，构成N-gram模型。另外，同一个词可能有多种词性变化，却具有相似的含义。在实际应用中，一般会对单词进行词干抽取（word Stemming）处理，即将不同词性的单词统一成为同一词干形式。</p>
-<h2 id="主题模型（Topic-Model）"><a href="#主题模型（Topic-Model）" class="headerlink" title="主题模型（Topic Model）"></a>主题模型（Topic Model）</h2><p>主题模型用于从文本库中发现有代表性的主题（得到每个主题上面词的分布特性），并且能够计算出每篇文章的主题分布。具体处理方法在后续的博文中楼主会详细介绍……</p>
-<h2 id="词嵌入模型-（Word-Embedding）"><a href="#词嵌入模型-（Word-Embedding）" class="headerlink" title="词嵌入模型 （Word Embedding）"></a>词嵌入模型 （Word Embedding）</h2><p>词嵌入是一类将词向量化的模型的统称，核心思想是将每个词都映射成低维空间（通常K = 50~300维）上的一个稠密向量（Dense Vector）。K维空间的每一维也可以看作一个隐含的主题，只不过不像主题模型中的主题那样直观。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li>《百面机器学习》</li>
-</ul>
-<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>笔试面试</tag>
-        <tag>NLP</tag>
-        <tag>文本表示</tag>
-        <tag>特征工程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>特征工程知识点整理概述（一）</title>
     <url>/passages/2019-07-06-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86%E6%A6%82%E8%BF%B0%EF%BC%88%E4%B8%80%EF%BC%89/</url>
     <content><![CDATA[<h1 id="特征归一化"><a href="#特征归一化" class="headerlink" title="特征归一化"></a>特征归一化</h1><p>为了消除数据特征之间的量纲影响，我们需要对特征进行归一化处理，使得不同指标之间具有可比性。</p>
@@ -612,6 +590,141 @@ Y = sigmoid(\sum_i\sum_yw_{ij}<x_i,x_j>)</script><p>这里$w<em>{ij}=x</em>{i}^{
         <tag>特征工程</tag>
         <tag>归一化</tag>
         <tag>预处理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Word2Vec知识简述</title>
+    <url>/passages/2019-07-08-Word2Vec/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>谷歌2013年提出的Word2Vec是目前最常用的词嵌入模型之一。Word2Vec实际是一种浅层的神经网络模型，它有两种网络结构，分别是CBOW（Continues Bag of Words）和Skip-gram。</p>
+<p><strong>负采样（Negative Sample）和层次softmax（Hierarchical Softmax）则是两种加速训练的方法</strong>。</p>
+<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><p>CBOW的目标是根据上下文出现的词语来预测当前词的生成概率；而Skip-gram是根据当前词来预测上下文中各词的生成概率。</p>
+<p><img src="/passages/2019-07-08-Word2Vec/CBOW模型.png" alt="CBOW模型">                                      <img src="/passages/2019-07-08-Word2Vec/Skip-gram模型.png" alt="CBOW模型"></p>
+<p>其中$w(t)$是当前所关注的词，$w(t-2)、w(t-1)、w(t+1)、w(t+2)$是上下文中出现的词。这里前后滑动窗口大小均设为2。</p>
+<p>CBOW和Skip-gram都可以表示成由输入层（Input）、映射层（Projection）和输出层（Output）组成的神经网络。</p>
+<p>输入层中的每个词由独热编码方式表示，即所有词均表示成一个N维向量，其中N为词汇表中单词的总数。在向量中，每个词都将与之对应的维度置为1，其余维度的值均设为0。</p>
+<p>在映射层（又称隐含层）中，K个隐含单元（Hidden Units）的取值可以由N维输入向量以及连接输入和隐含单元之间的N*K维权重矩阵计算得到。在CBOW中，还需要将各个输入词所计算出的隐含单元求和。</p>
+<p>同理，输出层向量的值可以通过隐含层向量（K维），以及连接隐含层和输出层之间的K*N维权重矩阵计算得到。输出层也是一个N维向量，每维与词汇表中的一个单词相对应。最后，对输出层向量应用softmax激活函数，可以计算出每个单词的生成概率。Softmax函数定义为：</p>
+<script type="math/tex; mode=display">
+p(y=w_n|x) = \frac{e^{x_{n}}}{\sum_{k=1}^{N}e^{x_{k}}}</script><p>其中$x$代表N维的原始输出向量，$x_n$为在原始输出向量中，与单词$w_n$所对应维度的取值。</p>
+<p>接下来的任务就是训练神经网络的权重，使得语料库中所有单词的整体生成概率最大化。从输入层到隐含层需要一个维度为N*K的权重矩阵，从隐含层到输入层需要一个维度K*N的权重矩阵，学习权重可以用反向传播算法实现。但由于Softmax中存在归一化项的缘故，推导出的迭代公式需要对词汇表中的所有单词进行遍历，使得每次迭代过程非常缓慢，因此需要改进。最终训练得到维度为N*K和K*N的两个权重矩阵之后，可以选择其中一个作为N个词的K维向量表示。</p>
+<h2 id="负采样"><a href="#负采样" class="headerlink" title="负采样"></a>负采样</h2><p>最后的softmax分出来的类是整个词袋的大小，那么是不是可以把词袋大小减小，因为有些出现概率低的词我们根本可以不考虑。这就是负采样的核心思想。</p>
+<p>假设我们有一个训练样本，中心词是$w$，它周围上下文共有$2c$个词，记为$context(w)$。由于这个中心词$w$的确和$content(w)$相关存在，因此它是一个真实的正例。通过Negative Sampling 采样，得到n个和$w$不同的中心词$w_i,i =1,2,…,n$，这样$context(w)$和$w_i$就组成了n个并不存在的负例。利用这一个正例和n个负例，进行二元逻辑回归，得到负采样对应的每个词$w_i$对应的模型参数$\theta_i$和每个词的词向量。整个过程相比Hierarchical Softmax简单。</p>
+<p>但需要明确两个问题：（1）如何通过一个正例和n个负例进行二元逻辑回归？（2）如何进行负采样？</p>
+<h3 id="梯度计算"><a href="#梯度计算" class="headerlink" title="梯度计算"></a>梯度计算</h3><p>这里我们将正例定义为$w_0$。</p>
+<p>在逻辑回归中，正例期望满足：</p>
+<script type="math/tex; mode=display">
+P(context(w_0),w_i)=\sigma(x_{w_0}^T\theta^{w_i}),y_i=1,i=0</script><p>负期望满足：</p>
+<script type="math/tex; mode=display">
+P(context(w_0),w_i)=1-\sigma(x_{w_0}^T\theta^{w_i}),y_i=0,i=1,2,..n</script><p>其对应的对数似然函数为：</p>
+<script type="math/tex; mode=display">
+L= \sum_{i=0}^ny_ilog(\sigma(x_{w_0}^T\theta^{w_i}))+(1-y_i)log(1-\sigma(x_{w_0}^T\theta^{w_i}))</script><p>和层次Softmax类似，采用随机梯度上升法，仅仅每次只用一个样本更新梯度，来进行迭代更新得到我们需要的$x_{w_i},\theta^{w_i}$。求导得梯度表达式，用梯度上升法进行一步步的求解。</p>
+<h3 id="负采样方法"><a href="#负采样方法" class="headerlink" title="负采样方法"></a>负采样方法</h3><p>word2vec采用的方法不复杂，如果词汇表的大小为V，那么我们就将一段长度为1的线段分成V份，每份对应词汇表中的一个词。当然每个词对应的线段长度是不一样的，高频词对应的线段长，低频词对应的线段短，每个词$w$的线段长度由下式决定：</p>
+<script type="math/tex; mode=display">
+len(w) =\frac{count(w)}{\sum_{\mu\in vocab}count(\mu)}</script><p>在word2vec中，分子和分母都取了3/4次幂如下：</p>
+<script type="math/tex; mode=display">
+len(w) =\frac{count(w)^{3/4}}{\sum_{\mu\in vocab}count(\mu)^{3/4}}</script><p>　在采样前，我们将这段长度为1的线段划分成$M$等份，这里$M&gt;&gt;V$，这样可以保证每个词对应的线段都会划分成对应的小块。而M份中的每一份都会落在某一个词对应的线段上。在采样的时候，我们只需要从$M$个位置中采样出$n$个位置就行，此时采样到的每一个位置对应到的线段所属的词就是我们的负例词。</p>
+<p><img src="/passages/2019-07-08-Word2Vec/Negative_Sampling.png" alt="Negative Sampling"></p>
+<p>在word2vec中，$M$取值默认为$10^8$</p>
+<h2 id="层次softmax"><a href="#层次softmax" class="headerlink" title="层次softmax"></a>层次softmax</h2><p>Hierarchical Softmax，层次softmax是一种加速训练的技巧，要解决的问题是原来softmax的参数太多的问题，所以<strong>不管是层次softmax也好，还是负采样也好，都是对最后的softmax做一个处理</strong>。</p>
+<p>层次softmax的核心内容是哈夫曼树（Huffman Tree）。树的核心概念是 <strong>出现概率越高的符号使用较短的编码（层次越浅），出现概率低的符号则使用较长的编码（层次越深）。</strong></p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>使用霍夫曼树来替代传统的神经网络，可以提高模型训练的效率。但是如果我们的训练样本里的中心词$w$是一个很生僻的词，那么就得在霍夫曼树中辛苦的向下走很久了。负采样比之而言考虑了该问题，不再使用霍夫曼树。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li>《百面机器学习》</li>
+<li><a href="https://www.jianshu.com/p/d8bfaae28fa9" target="_blank" rel="noopener">word2vector的原理，结构，训练过程</a></li>
+<li><a href="https://www.cnblogs.com/pinard/p/7249903.html" target="_blank" rel="noopener">word2vec原理</a></li>
+</ul>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>笔试面试</tag>
+        <tag>NLP</tag>
+        <tag>Word2Vec</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>高斯混合模型</title>
+    <url>/passages/2019-07-22-%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<h1 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h1><p>高斯混合模型（Gaussian Mixed Model，GMM）是一种常见的聚类算法，与K均值算法类似，同样使用了EM算法进行迭代计算。高斯混合模型假设每个簇的数据都符合高斯分布（又叫正态分布）。</p>
+<h1 id="高斯混合模型的核心思想"><a href="#高斯混合模型的核心思想" class="headerlink" title="高斯混合模型的核心思想"></a>高斯混合模型的核心思想</h1><p>高斯混合模型的核心思想是，假设数据可以看作多个高斯分布中生成出来的。在该假设下，每个单独的分模型都是标准高斯模型，其均值$\mu_i$和方差$\sum_i$是待估计的参数。此外，每个分模型都还有一个参数$\pi_i$，可以理解为权重或生成数据的概率。高斯混合模型的公式为：</p>
+<script type="math/tex; mode=display">
+p(x) = \sum_{i=1}^K\pi_iN(x|\mu_i,\sum_i)</script><h1 id="高斯混合模型与K均值算法的异同"><a href="#高斯混合模型与K均值算法的异同" class="headerlink" title="高斯混合模型与K均值算法的异同"></a>高斯混合模型与K均值算法的异同</h1><p>高斯混合模型与K均值算法的相同点是，它们都是可用于聚类算法；都需要指定K值；都是使用EM算法来求解；都往往只能收敛于局部最优。<strong>而它相比于K均值算法的优点是，</strong>可以给出一个样本属于某类的概率是多少；不仅仅可以用于聚类，还可以用于概率密度的估计；并且可以用于生成新的样本点。</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>聚类</tag>
+        <tag>面试笔试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>特征工程知识点整理概述(二)</title>
+    <url>/passages/2019-07-07-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86%E6%A6%82%E8%BF%B0-%E4%BA%8C/</url>
+    <content><![CDATA[<h1 id="文本表示"><a href="#文本表示" class="headerlink" title="文本表示"></a>文本表示</h1><p>文本是一类非常重要的非结构化数据，如何表示文本数据一直是机器学习领域的一个重要研究方向。</p>
+<h2 id="词袋模型（Bag-of-Words）"><a href="#词袋模型（Bag-of-Words）" class="headerlink" title="词袋模型（Bag of Words）"></a>词袋模型（Bag of Words）</h2><p>最基础的文本表示模型是词袋模型。顾名思义，就是将每篇文章看成一袋子词，并忽略每个词出现的顺序。具体地说，就是将整段文本以词为单位切分开，然后每篇文章可以表示成一个长向量，向量中的每一维代表一个单词，而该维对应的权重则反映了这个词在原文章中的重要程度。常用TF-IDF来计算权重。TF-IDF内容详见我的博客：<a href="https://nijunssdut.github.io/passages/2019-07-05-TF-IDF算法介绍/#more">TF-IDF算法介绍</a></p>
+<p>将文章进行单词级别的划分有时候并不是一种好的做法，比如英文中的natural language processing（自然语言处理）一词，如果将natural，language，processing这三个词拆分开来，所表达的含义与三个词连续出现时大相径庭。通常，可以将连续出现的n个词$(n\le N)$组成的词组（N-gram）也作为一个单独的特征放到向量表示中去，构成N-gram模型。另外，同一个词可能有多种词性变化，却具有相似的含义。在实际应用中，一般会对单词进行词干抽取（word Stemming）处理，即将不同词性的单词统一成为同一词干形式。</p>
+<h2 id="主题模型（Topic-Model）"><a href="#主题模型（Topic-Model）" class="headerlink" title="主题模型（Topic Model）"></a>主题模型（Topic Model）</h2><p>主题模型用于从文本库中发现有代表性的主题（得到每个主题上面词的分布特性），并且能够计算出每篇文章的主题分布。具体处理方法在后续的博文中楼主会详细介绍……</p>
+<h2 id="词嵌入模型-（Word-Embedding）"><a href="#词嵌入模型-（Word-Embedding）" class="headerlink" title="词嵌入模型 （Word Embedding）"></a>词嵌入模型 （Word Embedding）</h2><p>词嵌入是一类将词向量化的模型的统称，核心思想是将每个词都映射成低维空间（通常K = 50~300维）上的一个稠密向量（Dense Vector）。K维空间的每一维也可以看作一个隐含的主题，只不过不像主题模型中的主题那样直观。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li>《百面机器学习》</li>
+</ul>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>笔试面试</tag>
+        <tag>NLP</tag>
+        <tag>文本表示</tag>
+        <tag>特征工程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>概率图模型概述</title>
+    <url>/passages/2019-07-23-%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h1 id="概率图"><a href="#概率图" class="headerlink" title="概率图"></a>概率图</h1><p>概率图中的节点分为隐含节点和观测节点，边分为有向边和无向边。从概率论的角度，节点对应于随机变量，边对应于随机变量的依赖或相关关系，其中有向边表示单向的依赖，无向边表示相互依赖关系。</p>
+<p>概率图模型分为贝叶斯网络（Bayesian Network）和马尔可夫网络（Markov Network）两大类。贝叶斯网络可以用一个有向图结构表示，马尔可夫网络可以表示成一个无向图的网络结构。更详细地说，概率图模型包括了朴素贝叶斯模型、最大熵模型、隐马尔可夫模型、条件随机场、主题模型等，在机器学习的诸多场景中都有着广泛的应用。</p>
+<h1 id="马尔可夫网络的联合概率分布"><a href="#马尔可夫网络的联合概率分布" class="headerlink" title="马尔可夫网络的联合概率分布"></a>马尔可夫网络的联合概率分布</h1><p>在马尔可夫网络中，联合概率分布的定义为</p>
+<script type="math/tex; mode=display">
+P(x) = \frac{1}{Z}\prod_{Q \in C}\varphi_{Q}(X_Q)</script><p>其中$C$为图中最大团所构成的集合，$Z = \sum<em>{x} \prod</em>{Q \in C}\varphi<em>{Q}(X_Q)$为归一化因子，用来保证$P(x)$是被正确定义的概率，$\varphi</em>{Q}$是与团$Q$对应的势函数。势函数是非负的，并且应该在概率较大的变量上取得较大的值，例如指数函数</p>
+<script type="math/tex; mode=display">
+\varphi_{Q}(X_Q)=e^{-H_{Q}(x_Q)}</script><p>其中，</p>
+<script type="math/tex; mode=display">
+H_Q(x_Q)= \sum_{\mu,v \in Q,\mu \neq v}\alpha_{\mu,v}x_{\mu}x_v+\sum_{v \in Q}\beta_vx_v</script><p>对于图中所有节点$x={x_1,x_2,…,x_n}$所构成的一个子集，如果在这个子集中，任意两点之间都存在边相连，则这个子集中的所有节点构成了一个团。如果在这个子集中加入任意其他节点，都不能构成一个团，则称这样的子集构成了一个最大团。</p>
+<p>对于由A，B，C，D四个点构成的四边形无向图，其联合概率分布为：</p>
+<script type="math/tex; mode=display">
+P(A,B,C,D)=\frac{1}{Z}e^{-H(A,B,C,D)}</script><h1 id="概率图表示"><a href="#概率图表示" class="headerlink" title="概率图表示"></a>概率图表示</h1><h2 id="解释朴素贝叶斯模型原理"><a href="#解释朴素贝叶斯模型原理" class="headerlink" title="解释朴素贝叶斯模型原理"></a>解释朴素贝叶斯模型原理</h2><p>朴素贝叶斯模型通过预测指定样本属于特定类别的概率$P(y_i|x)$来预测该样本的所属类别，即</p>
+<script type="math/tex; mode=display">
+y = \max_{y_i}P(y_i|x)</script><p>$P(y_i|x)$可以写成</p>
+<script type="math/tex; mode=display">
+P(y_i|x) = \frac{P(x|y_i)P(y_i)}{P(x)}</script><p>其中$x= (x_1,x_2,x_3,…,x_n)$为样本对应的特征向量，$P(x)$为样本的先验概率。对于特定的样本x和任意类别$y_i$，$P(x)$的取值均相同，在计算中可以被忽略。假设特征相互独立，$P(y_i)$可以通过训练样本统计得到，<strong>后验概率$P(x_j|y_i)$的取值决定了分类的结果。</strong>并且任意特征$x_j$都由$y_i$的取值所影响。</p>
+<h2 id="解释最大熵模型的原理"><a href="#解释最大熵模型的原理" class="headerlink" title="解释最大熵模型的原理"></a>解释最大熵模型的原理</h2><p>信息是指人们对事物理解的不确定性的降低或消除，而<strong>熵是不确定性的度量，熵越大，不确定性也就越大。</strong></p>
+<p>最大熵原理是概率模型学习的一个准则，指导思想是在满足约束条件的模型集合中选取熵最大的模型，即不确定性最大的模型。</p>
+<p><strong>在对训练数据集一无所知的情况下，最大熵模型认为$P(y|x)$是符合均匀分布的。</strong></p>
+<p>给定离散随机变量$x$和$y$上的条件概率分布$P(x|y)$，定义在条件概率分布上的条件熵为：</p>
+<script type="math/tex; mode=display">
+H(p) =  -\sum_{x,y}\tilde{P}(x)P(y|x)\log P(y|x)</script><p>其中$\tilde{P}(x)$为样本在训练数据集上的经验分布，即$x$的各个取值在样本中出现的频率统计。</p>
+<p>当我们有了训练数据集之后，我们希望从中找到一些规律，从而消除一些不确定性，这时就需要用到特征函数$f(x,y)$。特征函数$f$描述了输入$x$和输出$y$之间的一个规律。为了使学习到的模型能够正确捕捉训练数据集中的特征，我们加入一个约束，使得特征函数$f(x,y)$关于经验分布$\tilde{P}(x,y)$的期望值与关于模型$P(y|x)$和经验分布$\tilde{P}(x)$的期望值相等。</p>
+<script type="math/tex; mode=display">
+E_{\tilde{P}}(f) = \sum_{x,y}\tilde{P}(x,y)f(x,y)</script><script type="math/tex; mode=display">
+E_p(f) = \sum_{x,y}\tilde{P}(x)P(y|x)f(x,y)</script><p>综上，给定训练数据集$T={(x_1,y_1),(x_2,y_2),…,(x_N,y_N)}$，以及M个特征函数${f_i(x,y),i=1,2,…,M}$，最大熵模型的学习等价于约束最优化问题：</p>
+<script type="math/tex; mode=display">
+\max_{p}H(P) = -\sum_{x,y}\tilde{P}(x)P(y|x)\log P(y|x)
+\\ s.t., E_{\tilde{P}}(f) = E_p(f), \forall i =1,2,...,M,
+\\ \sum_{y}P(y|x) = 1</script><p>求解之后可以得到最大熵模型的表达形式为</p>
+<script type="math/tex; mode=display">
+P_w(y|x) = \frac{1}{Z}exp(\sum_{i=1}^{M}w_if_i(x,y))</script><p>最终，最大熵模型归结为学习最佳的参数$w$，使得$P_w(y|x)$最大化。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li>《百面机器学习》</li>
+</ul>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>概率图模型</tag>
       </tags>
   </entry>
   <entry>
@@ -660,63 +773,65 @@ Q_i(z^{(i)}) = P(z^{(i)}|x^{(i)},\theta)</script><p>（2） M步骤：最大化�
       </categories>
       <tags>
         <tag>笔试面试</tag>
+        <tag>聚类</tag>
         <tag>无监督学习</tag>
-        <tag>聚类</tag>
       </tags>
   </entry>
   <entry>
-    <title>高斯混合模型</title>
-    <url>/passages/2019-07-22-%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B/</url>
-    <content><![CDATA[<h1 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h1><p>高斯混合模型（Gaussian Mixed Model，GMM）是一种常见的聚类算法，与K均值算法类似，同样使用了EM算法进行迭代计算。高斯混合模型假设每个簇的数据都符合高斯分布（又叫正态分布）。</p>
-<h1 id="高斯混合模型的核心思想"><a href="#高斯混合模型的核心思想" class="headerlink" title="高斯混合模型的核心思想"></a>高斯混合模型的核心思想</h1><p>高斯混合模型的核心思想是，假设数据可以看作多个高斯分布中生成出来的。在该假设下，每个单独的分模型都是标准高斯模型，其均值$\mu_i$和方差$\sum_i$是待估计的参数。此外，每个分模型都还有一个参数$\pi_i$，可以理解为权重或生成数据的概率。高斯混合模型的公式为：</p>
+    <title>主题模型专题</title>
+    <url>/passages/2019-07-25-%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B%E4%B8%93%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="主题模型产生背景"><a href="#主题模型产生背景" class="headerlink" title="主题模型产生背景"></a>主题模型产生背景</h1><p>基于词袋模型或N-gram模型的文本表示模型有一个明显的缺陷，就是无法识别出两个不同的词或词组具有相同的主题。因此，需要一种技术能够将具有相同主题的词或词组映射到同一维度上去，于是产生了主题模型。</p>
+<p>假设有K个主题，我们就把任意文章表示成一个K维的主题向量，其中向量的每一维代表一个主题，权重代表这篇文章属于这个特定主题的概率。主题模型所解决的事情，<strong>就是从文本库中发现有代表性的主题(得到每个主题上面词的分布)，并且计算出每篇文章对应着哪些主题。</strong></p>
+<h1 id="常见的主题模型"><a href="#常见的主题模型" class="headerlink" title="常见的主题模型"></a>常见的主题模型</h1><h2 id="pLSA-Probabilistic-Latent-Semantic-Analysis"><a href="#pLSA-Probabilistic-Latent-Semantic-Analysis" class="headerlink" title="pLSA (Probabilistic Latent Semantic Analysis)"></a>pLSA (Probabilistic Latent Semantic Analysis)</h2><p>pLSA是用一个生成模型来建模文章的生成过程，增加了主题模型，形成简单的贝叶斯网络，可以使用EM算法学习模型参数。</p>
+<p>pLSA图模型如下图所示：</p>
+<p><img src="/passages/2019-07-25-主题模型专题/pLSA.png" alt="pLSA模型"></p>
+<p>假设有K个主题，M篇文章；对语料库中的任意文章d，假设该文章有N个词，则对于其中的每一个词，我们首先选择一个主题z，然后在当前主题的基础上生成一个词w。</p>
+<p>（1）D代表文档，Z代表主题（隐含类别），W代表单词；$P(d_i)$表示文档$d_i$的出现概率，$P(z_k|d_i)$表示文档$d_i$中主题$z_k$的出现概率，$P(w_j|z_k)$表示给定主题$z_k$出现单词$w_j$的概率。</p>
+<p>（2）每个主题在所有词项上服从多项分布，每个文档在所有主题上服从多项分布。</p>
+<p>（3）给定文章d，生成词w的概率可以表示为：</p>
 <script type="math/tex; mode=display">
-p(x) = \sum_{i=1}^K\pi_iN(x|\mu_i,\sum_i)</script><h1 id="高斯混合模型与K均值算法的异同"><a href="#高斯混合模型与K均值算法的异同" class="headerlink" title="高斯混合模型与K均值算法的异同"></a>高斯混合模型与K均值算法的异同</h1><p>高斯混合模型与K均值算法的相同点是，它们都是可用于聚类算法；都需要指定K值；都是使用EM算法来求解；都往往只能收敛于局部最优。<strong>而它相比于K均值算法的优点是，</strong>可以给出一个样本属于某类的概率是多少；不仅仅可以用于聚类，还可以用于概率密度的估计；并且可以用于生成新的样本点。</p>
-<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>聚类</tag>
-        <tag>面试笔试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>概率图模型概述</title>
-    <url>/passages/2019-07-23-%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%BF%B0/</url>
-    <content><![CDATA[<h1 id="概率图"><a href="#概率图" class="headerlink" title="概率图"></a>概率图</h1><p>概率图中的节点分为隐含节点和观测节点，边分为有向边和无向边。从概率论的角度，节点对应于随机变量，边对应于随机变量的依赖或相关关系，其中有向边表示单向的依赖，无向边表示相互依赖关系。</p>
-<p>概率图模型分为贝叶斯网络（Bayesian Network）和马尔可夫网络（Markov Network）两大类。贝叶斯网络可以用一个有向图结构表示，马尔可夫网络可以表示成一个无向图的网络结构。更详细地说，概率图模型包括了朴素贝叶斯模型、最大熵模型、隐马尔可夫模型、条件随机场、主题模型等，在机器学习的诸多场景中都有着广泛的应用。</p>
-<h1 id="马尔可夫网络的联合概率分布"><a href="#马尔可夫网络的联合概率分布" class="headerlink" title="马尔可夫网络的联合概率分布"></a>马尔可夫网络的联合概率分布</h1><p>在马尔可夫网络中，联合概率分布的定义为</p>
+p(w|d) = \sum_zp(w|z,d)p(z|d)</script><p>这里我们做一个简化，假设给定主题z的条件下，生成词w的概率是与特定的文章无关的，则公式可以简化为：</p>
 <script type="math/tex; mode=display">
-P(x) = \frac{1}{Z}\prod_{Q \in C}\varphi_{Q}(X_Q)</script><p>其中$C$为图中最大团所构成的集合，$Z = \sum<em>{x} \prod</em>{Q \in C}\varphi<em>{Q}(X_Q)$为归一化因子，用来保证$P(x)$是被正确定义的概率，$\varphi</em>{Q}$是与团$Q$对应的势函数。势函数是非负的，并且应该在概率较大的变量上取得较大的值，例如指数函数</p>
+p(w|d) =\sum_zp(w|z)p(z|d)</script><p>（4）整个语料库中的文本生成概率可以用似然函数表示为：</p>
 <script type="math/tex; mode=display">
-\varphi_{Q}(X_Q)=e^{-H_{Q}(x_Q)}</script><p>其中，</p>
+L=\prod_m^M\prod_m^Mp(d_w,w_n)^{c(d_m,w_n)}</script><p>其中$p(d_m,w_n)$是在第m篇文章$d_m$中，出现单词$w_n$的概率，<strong>即联合概率分布</strong>；$c(d_m,w_m)$是在第m篇文章$d_m$中，单词$w_n$出现的次数。<strong>利用对数似然简化计算得：</strong></p>
 <script type="math/tex; mode=display">
-H_Q(x_Q)= \sum_{\mu,v \in Q,\mu \neq v}\alpha_{\mu,v}x_{\mu}x_v+\sum_{v \in Q}\beta_vx_v</script><p>对于图中所有节点$x={x_1,x_2,…,x_n}$所构成的一个子集，如果在这个子集中，任意两点之间都存在边相连，则这个子集中的所有节点构成了一个团。如果在这个子集中加入任意其他节点，都不能构成一个团，则称这样的子集构成了一个最大团。</p>
-<p>对于由A，B，C，D四个点构成的四边形无向图，其联合概率分布为：</p>
+L = \sum_m^M\sum_m^Mc(d_m,w_m)\log(d_m,w_n)\\
+= \sum_m^M\sum_n^Mc(d_m,w_n)\log\sum_k^Kp(d_m)p(z_k|d_m)p(w_n|z_k)</script><p>在上面的公式中，定义在文章上的主题分布$p(z_k|d_m)$和定义在主题上的词分布$p(w_n|z_k)$是待估计的参数。<strong>由于参数中包含的$z_k$是隐含变量（即无法直接观测到的变量），因此无法利用最大似然估计直接求解，可以利用最大期望算法（EM）来解决。</strong></p>
+<p>（5）EM算法的求解过程</p>
+<p>需要求解隐变量$z_k$的后验概率，目标函数建立将约束问题求解使用Lagrange乘子法处理。</p>
+<p>关于EM算法迭代如下：</p>
+<p><strong>M-step：</strong></p>
 <script type="math/tex; mode=display">
-P(A,B,C,D)=\frac{1}{Z}e^{-H(A,B,C,D)}</script><h1 id="概率图表示"><a href="#概率图表示" class="headerlink" title="概率图表示"></a>概率图表示</h1><h2 id="解释朴素贝叶斯模型原理"><a href="#解释朴素贝叶斯模型原理" class="headerlink" title="解释朴素贝叶斯模型原理"></a>解释朴素贝叶斯模型原理</h2><p>朴素贝叶斯模型通过预测指定样本属于特定类别的概率$P(y_i|x)$来预测该样本的所属类别，即</p>
+p(w_j|z_k) = \frac{\sum_{i}n(d_i,w_j)p(z_k|d_i,w_j)}{\sum_{m=1}^M\sum_in(d_i,w_j)p(z_k|d_i,w_j)}</script><script type="math/tex; mode=display">
+p(z_k|d_i) = \frac{\sum_{j}n(d_i,w_j)p(z_k|d_i,w_j)}{\sum_{k=1}^K\sum_jn(d_i,w_j)p(z_k|d_i,w_j)}</script><p><strong>E-step：</strong></p>
 <script type="math/tex; mode=display">
-y = \max_{y_i}P(y_i|x)</script><p>$P(y_i|x)$可以写成</p>
+p(z_k|d_i,w_j) = \frac{p(w_j|z_k)p(z_k|d_i)}{\sum_{i=1}^Kp(w_j|z_i)p(z_i|d_i)}</script><p>（6）pLSA总结</p>
+<ul>
+<li>pLSA应用于信息检索、过滤、自然语言处理等领域，pLSA考虑到词分布和主题分布，使用EM算法来学习参数。</li>
+<li>虽然推导略显复杂，但最终公式简洁清晰，很符合直观理解，需用心琢磨；此外，推导过程使用了EM算法，也是学习EM算法的重要素材。</li>
+</ul>
+<h2 id="LDA"><a href="#LDA" class="headerlink" title="LDA"></a>LDA</h2><p>LDA可以看作是pLSA的贝叶斯版本，其文本生成过程与pLSA基本相同，<strong>不同的是为主题分布分别加了两个狄利克雷(Dirichlet)先验。</strong></p>
+<p>为什么要加入狄利克雷先验呢？pLSA采用的是频率派思想，将每篇文章对应的主题分布$p(z_k|d_m)$和每个主题对应的词分布$p(w_n|z_k)$看作确定的未知常数，并可以求解出来；而LDA采用的是贝叶斯学派的思想，认为待估计的参数（主题分布和词分布）不再是一个固定的常数，而是服从一定分布的随机变量。这个分布符合一定的先验概率分布（即狄利克雷分布），并且在观察到样本信息之后，可以对先验分布进行修正，从而得到后验分布。<strong>LDA之所以选择狄利克雷分布作为先验分布，是因为它为多项式分布的共轭先验概率分布，后验概率依然服从狄利克雷分布，这样做可以为计算带来便利。</strong>下图为LDA的图模型，其中$\alpha,\beta$分别为两个狄利克雷分布的超参数，<strong>为人工设定</strong>。图中m为文章数，K为主题数，n表示文章的第n个词。</p>
+<p><img src="/passages/2019-07-25-主题模型专题/LDA.png" alt="LDA"></p>
+<p>语料库的生成过程为：对文本库中的每一篇文档$d_i$，采用以下操作：</p>
+<p>（1）从超参数为$\alpha$的狄利克雷分布中抽样生成文档$d_i$的主题分布$\theta_i$。</p>
+<p>（2）对文档$d_i$中的每一个词进行以下3个操作。</p>
+<ul>
+<li>从代表主题的多项式分布$\theta<em>i$中抽样生成它所对应的主题$z</em>{i,j}$。</li>
+<li>从超参数为$\beta$的狄利克雷分布中抽样生成主题$z<em>{i,j}$对应的词分布$\psi</em>{z_{i,j}}$。</li>
+<li>从代表词的多项式分布$\psi<em>{z</em>{i,j}}$中抽样生成词$w_{i,j}$。</li>
+</ul>
+<p>求解主题分布$\theta<em>i$以及词分布$\psi</em>{z_{i,j}}$的期望，可以用吉布斯采样(Gibbs Sampling)的方式实现。</p>
+<p>首先随机给定每个单词的主题，然后在其他变量固定的情况下，根据转移概率抽样生成每个单词的新主题。对于每个单词来说，<strong>转移概率可以理解为：给定文章中的所有单词以及除自身以外其他所有单词的主题，在此条件下该单词对应为各个新主题的概率。</strong>最后，经过反复迭代，我们可以根据收敛后的采样结果计算主题分布和词分布的期望。</p>
+<h3 id="如何确定LDA模型中的主题个数"><a href="#如何确定LDA模型中的主题个数" class="headerlink" title="如何确定LDA模型中的主题个数"></a>如何确定LDA模型中的主题个数</h3><p>在LDA中，主题的个数K是一个预先指定的超参数。对于模型超参数的选择，实践中的做法一般是将全部数据集分为训练集、验证集和测试集三个部分，然后利用验证集对超参数进行选择。</p>
+<p>为了衡量LDA模型在验证集和测试集上的效果，需要寻找一个合适的评估指标。一个常用的评估指标是困惑度（perplexity）。在文档集合D上，模型的困惑度被定义为：</p>
 <script type="math/tex; mode=display">
-P(y_i|x) = \frac{P(x|y_i)P(y_i)}{P(x)}</script><p>其中$x= (x_1,x_2,x_3,…,x_n)$为样本对应的特征向量，$P(x)$为样本的先验概率。对于特定的样本x和任意类别$y_i$，$P(x)$的取值均相同，在计算中可以被忽略。假设特征相互独立，$P(y_i)$可以通过训练样本统计得到，<strong>后验概率$P(x_j|y_i)$的取值决定了分类的结果。</strong>并且任意特征$x_j$都由$y_i$的取值所影响。</p>
-<h2 id="解释最大熵模型的原理"><a href="#解释最大熵模型的原理" class="headerlink" title="解释最大熵模型的原理"></a>解释最大熵模型的原理</h2><p>信息是指人们对事物理解的不确定性的降低或消除，而<strong>熵是不确定性的度量，熵越大，不确定性也就越大。</strong></p>
-<p>最大熵原理是概率模型学习的一个准则，指导思想是在满足约束条件的模型集合中选取熵最大的模型，即不确定性最大的模型。</p>
-<p><strong>在对训练数据集一无所知的情况下，最大熵模型认为$P(y|x)$是符合均匀分布的。</strong></p>
-<p>给定离散随机变量$x$和$y$上的条件概率分布$P(x|y)$，定义在条件概率分布上的条件熵为：</p>
-<script type="math/tex; mode=display">
-H(p) =  -\sum_{x,y}\tilde{P}(x)P(y|x)\log P(y|x)</script><p>其中$\tilde{P}(x)$为样本在训练数据集上的经验分布，即$x$的各个取值在样本中出现的频率统计。</p>
-<p>当我们有了训练数据集之后，我们希望从中找到一些规律，从而消除一些不确定性，这时就需要用到特征函数$f(x,y)$。特征函数$f$描述了输入$x$和输出$y$之间的一个规律。为了使学习到的模型能够正确捕捉训练数据集中的特征，我们加入一个约束，使得特征函数$f(x,y)$关于经验分布$\tilde{P}(x,y)$的期望值与关于模型$P(y|x)$和经验分布$\tilde{P}(x)$的期望值相等。</p>
-<script type="math/tex; mode=display">
-E_{\tilde{P}}(f) = \sum_{x,y}\tilde{P}(x,y)f(x,y)</script><script type="math/tex; mode=display">
-E_p(f) = \sum_{x,y}\tilde{P}(x)P(y|x)f(x,y)</script><p>综上，给定训练数据集$T={(x_1,y_1),(x_2,y_2),…,(x_N,y_N)}$，以及M个特征函数${f_i(x,y),i=1,2,…,M}$，最大熵模型的学习等价于约束最优化问题：</p>
-<script type="math/tex; mode=display">
-\max_{p}H(P) = -\sum_{x,y}\tilde{P}(x)P(y|x)\log P(y|x)
-\\ s.t., E_{\tilde{P}}(f) = E_p(f), \forall i =1,2,...,M,
-\\ \sum_{y}P(y|x) = 1</script><p>求解之后可以得到最大熵模型的表达形式为</p>
-<script type="math/tex; mode=display">
-P_w(y|x) = \frac{1}{Z}exp(\sum_{i=1}^{M}w_if_i(x,y))</script><p>最终，最大熵模型归结为学习最佳的参数$w$，使得$P_w(y|x)$最大化。</p>
+perplexity(D) = exp\{-\frac{\sum_{d=1}^Mlogp(w_d)}{\sum_{d=1}^MN_d}\}</script><p>其中M为文档的总数，$w_d$为文档d中单词所组成的词袋向量，$p(w_d)$为模型所预测的文档d的生成概率，$N_d$为文档d中单词的总数。</p>
+<p>一开始，随着主题数的增多，模型在训练集和验证集的困惑度呈下降趋势，但当主题数目足够大的时候，会出现过拟合，导致困惑度指标在训练集上继续下降但在验证集上反而增长。这时可以取验证集的困惑度极小值点可能出现在主题数目非常大的时候，然而实际应用并不能承受如此大的主题数目，这时需要在实际应用中合理的主题数目范围内进行选择，比如选择合理范围内困惑度的下降明显变慢（拐点）的时候。</p>
+<p>另一种方法是在LDA基础上融入分层狄利克雷过程（Hierarchical Dirichlet Process,HDP），构成一种非参数主题模型HDP-LDA。非参数主题模型的好处是不需要预先指定主题的个数，模型可以随着文档数目的变化而自动对主题个数进行调整；它的缺点是在LDA基础上融入HDP之后使得整个概率图模型更加复杂，训练速度也更加缓慢，因此在实际应用中还是经常采用第一种方法确定合适的主题数目。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li>《百面机器学习》</li>
+<li><a href="https://www.cnblogs.com/softzrp/p/6964951.html" target="_blank" rel="noopener">主题模型（概率潜语义分析PLSA、隐含狄利克雷分布LDA）</a></li>
 </ul>
 <script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
       <categories>
@@ -724,6 +839,8 @@ P_w(y|x) = \frac{1}{Z}exp(\sum_{i=1}^{M}w_if_i(x,y))</script><p>最终，最大�
       </categories>
       <tags>
         <tag>概率图模型</tag>
+        <tag>pLSA</tag>
+        <tag>LDA</tag>
       </tags>
   </entry>
   <entry>
@@ -829,57 +946,6 @@ P(X_i = x_i|Y=y_i) =\frac{1}{\sqrt{2\pi\sigma_{i,j}}}e^{-\frac{(x_i-\mu_{i,j})^2
       <tags>
         <tag>概率图模型</tag>
         <tag>贝叶斯网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Word2Vec知识简述</title>
-    <url>/passages/2019-07-08-Word2Vec/</url>
-    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>谷歌2013年提出的Word2Vec是目前最常用的词嵌入模型之一。Word2Vec实际是一种浅层的神经网络模型，它有两种网络结构，分别是CBOW（Continues Bag of Words）和Skip-gram。</p>
-<p><strong>负采样（Negative Sample）和层次softmax（Hierarchical Softmax）则是两种加速训练的方法</strong>。</p>
-<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><p>CBOW的目标是根据上下文出现的词语来预测当前词的生成概率；而Skip-gram是根据当前词来预测上下文中各词的生成概率。</p>
-<p><img src="/passages/2019-07-08-Word2Vec/CBOW模型.png" alt="CBOW模型">                                      <img src="/passages/2019-07-08-Word2Vec/Skip-gram模型.png" alt="CBOW模型"></p>
-<p>其中$w(t)$是当前所关注的词，$w(t-2)、w(t-1)、w(t+1)、w(t+2)$是上下文中出现的词。这里前后滑动窗口大小均设为2。</p>
-<p>CBOW和Skip-gram都可以表示成由输入层（Input）、映射层（Projection）和输出层（Output）组成的神经网络。</p>
-<p>输入层中的每个词由独热编码方式表示，即所有词均表示成一个N维向量，其中N为词汇表中单词的总数。在向量中，每个词都将与之对应的维度置为1，其余维度的值均设为0。</p>
-<p>在映射层（又称隐含层）中，K个隐含单元（Hidden Units）的取值可以由N维输入向量以及连接输入和隐含单元之间的N*K维权重矩阵计算得到。在CBOW中，还需要将各个输入词所计算出的隐含单元求和。</p>
-<p>同理，输出层向量的值可以通过隐含层向量（K维），以及连接隐含层和输出层之间的K*N维权重矩阵计算得到。输出层也是一个N维向量，每维与词汇表中的一个单词相对应。最后，对输出层向量应用softmax激活函数，可以计算出每个单词的生成概率。Softmax函数定义为：</p>
-<script type="math/tex; mode=display">
-p(y=w_n|x) = \frac{e^{x_{n}}}{\sum_{k=1}^{N}e^{x_{k}}}</script><p>其中$x$代表N维的原始输出向量，$x_n$为在原始输出向量中，与单词$w_n$所对应维度的取值。</p>
-<p>接下来的任务就是训练神经网络的权重，使得语料库中所有单词的整体生成概率最大化。从输入层到隐含层需要一个维度为N*K的权重矩阵，从隐含层到输入层需要一个维度K*N的权重矩阵，学习权重可以用反向传播算法实现。但由于Softmax中存在归一化项的缘故，推导出的迭代公式需要对词汇表中的所有单词进行遍历，使得每次迭代过程非常缓慢，因此需要改进。最终训练得到维度为N*K和K*N的两个权重矩阵之后，可以选择其中一个作为N个词的K维向量表示。</p>
-<h2 id="负采样"><a href="#负采样" class="headerlink" title="负采样"></a>负采样</h2><p>最后的softmax分出来的类是整个词袋的大小，那么是不是可以把词袋大小减小，因为有些出现概率低的词我们根本可以不考虑。这就是负采样的核心思想。</p>
-<p>假设我们有一个训练样本，中心词是$w$，它周围上下文共有$2c$个词，记为$context(w)$。由于这个中心词$w$的确和$content(w)$相关存在，因此它是一个真实的正例。通过Negative Sampling 采样，得到n个和$w$不同的中心词$w_i,i =1,2,…,n$，这样$context(w)$和$w_i$就组成了n个并不存在的负例。利用这一个正例和n个负例，进行二元逻辑回归，得到负采样对应的每个词$w_i$对应的模型参数$\theta_i$和每个词的词向量。整个过程相比Hierarchical Softmax简单。</p>
-<p>但需要明确两个问题：（1）如何通过一个正例和n个负例进行二元逻辑回归？（2）如何进行负采样？</p>
-<h3 id="梯度计算"><a href="#梯度计算" class="headerlink" title="梯度计算"></a>梯度计算</h3><p>这里我们将正例定义为$w_0$。</p>
-<p>在逻辑回归中，正例期望满足：</p>
-<script type="math/tex; mode=display">
-P(context(w_0),w_i)=\sigma(x_{w_0}^T\theta^{w_i}),y_i=1,i=0</script><p>负期望满足：</p>
-<script type="math/tex; mode=display">
-P(context(w_0),w_i)=1-\sigma(x_{w_0}^T\theta^{w_i}),y_i=0,i=1,2,..n</script><p>其对应的对数似然函数为：</p>
-<script type="math/tex; mode=display">
-L= \sum_{i=0}^ny_ilog(\sigma(x_{w_0}^T\theta^{w_i}))+(1-y_i)log(1-\sigma(x_{w_0}^T\theta^{w_i}))</script><p>和层次Softmax类似，采用随机梯度上升法，仅仅每次只用一个样本更新梯度，来进行迭代更新得到我们需要的$x_{w_i},\theta^{w_i}$。求导得梯度表达式，用梯度上升法进行一步步的求解。</p>
-<h3 id="负采样方法"><a href="#负采样方法" class="headerlink" title="负采样方法"></a>负采样方法</h3><p>word2vec采用的方法不复杂，如果词汇表的大小为V，那么我们就将一段长度为1的线段分成V份，每份对应词汇表中的一个词。当然每个词对应的线段长度是不一样的，高频词对应的线段长，低频词对应的线段短，每个词$w$的线段长度由下式决定：</p>
-<script type="math/tex; mode=display">
-len(w) =\frac{count(w)}{\sum_{\mu\in vocab}count(\mu)}</script><p>在word2vec中，分子和分母都取了3/4次幂如下：</p>
-<script type="math/tex; mode=display">
-len(w) =\frac{count(w)^{3/4}}{\sum_{\mu\in vocab}count(\mu)^{3/4}}</script><p>　在采样前，我们将这段长度为1的线段划分成$M$等份，这里$M&gt;&gt;V$，这样可以保证每个词对应的线段都会划分成对应的小块。而M份中的每一份都会落在某一个词对应的线段上。在采样的时候，我们只需要从$M$个位置中采样出$n$个位置就行，此时采样到的每一个位置对应到的线段所属的词就是我们的负例词。</p>
-<p><img src="/passages/2019-07-08-Word2Vec/Negative_Sampling.png" alt="Negative Sampling"></p>
-<p>在word2vec中，$M$取值默认为$10^8$</p>
-<h2 id="层次softmax"><a href="#层次softmax" class="headerlink" title="层次softmax"></a>层次softmax</h2><p>Hierarchical Softmax，层次softmax是一种加速训练的技巧，要解决的问题是原来softmax的参数太多的问题，所以<strong>不管是层次softmax也好，还是负采样也好，都是对最后的softmax做一个处理</strong>。</p>
-<p>层次softmax的核心内容是哈夫曼树（Huffman Tree）。树的核心概念是 <strong>出现概率越高的符号使用较短的编码（层次越浅），出现概率低的符号则使用较长的编码（层次越深）。</strong></p>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>使用霍夫曼树来替代传统的神经网络，可以提高模型训练的效率。但是如果我们的训练样本里的中心词$w$是一个很生僻的词，那么就得在霍夫曼树中辛苦的向下走很久了。负采样比之而言考虑了该问题，不再使用霍夫曼树。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li>《百面机器学习》</li>
-<li><a href="https://www.jianshu.com/p/d8bfaae28fa9" target="_blank" rel="noopener">word2vector的原理，结构，训练过程</a></li>
-<li><a href="https://www.cnblogs.com/pinard/p/7249903.html" target="_blank" rel="noopener">word2vec原理</a></li>
-</ul>
-<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>笔试面试</tag>
-        <tag>NLP</tag>
-        <tag>Word2Vec</tag>
       </tags>
   </entry>
   <entry>
@@ -1069,72 +1135,6 @@ Gini_index(D,a) = \sum_{i=1}^kp(D_i)Gini(D_i)</script><p>于是在候选集合�
         <tag>ID3</tag>
         <tag>C4.5</tag>
         <tag>CART</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>主题模型专题</title>
-    <url>/passages/2019-07-25-%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B%E4%B8%93%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="主题模型产生背景"><a href="#主题模型产生背景" class="headerlink" title="主题模型产生背景"></a>主题模型产生背景</h1><p>基于词袋模型或N-gram模型的文本表示模型有一个明显的缺陷，就是无法识别出两个不同的词或词组具有相同的主题。因此，需要一种技术能够将具有相同主题的词或词组映射到同一维度上去，于是产生了主题模型。</p>
-<p>假设有K个主题，我们就把任意文章表示成一个K维的主题向量，其中向量的每一维代表一个主题，权重代表这篇文章属于这个特定主题的概率。主题模型所解决的事情，<strong>就是从文本库中发现有代表性的主题(得到每个主题上面词的分布)，并且计算出每篇文章对应着哪些主题。</strong></p>
-<h1 id="常见的主题模型"><a href="#常见的主题模型" class="headerlink" title="常见的主题模型"></a>常见的主题模型</h1><h2 id="pLSA-Probabilistic-Latent-Semantic-Analysis"><a href="#pLSA-Probabilistic-Latent-Semantic-Analysis" class="headerlink" title="pLSA (Probabilistic Latent Semantic Analysis)"></a>pLSA (Probabilistic Latent Semantic Analysis)</h2><p>pLSA是用一个生成模型来建模文章的生成过程，增加了主题模型，形成简单的贝叶斯网络，可以使用EM算法学习模型参数。</p>
-<p>pLSA图模型如下图所示：</p>
-<p><img src="/passages/2019-07-25-主题模型专题/pLSA.png" alt="pLSA模型"></p>
-<p>假设有K个主题，M篇文章；对语料库中的任意文章d，假设该文章有N个词，则对于其中的每一个词，我们首先选择一个主题z，然后在当前主题的基础上生成一个词w。</p>
-<p>（1）D代表文档，Z代表主题（隐含类别），W代表单词；$P(d_i)$表示文档$d_i$的出现概率，$P(z_k|d_i)$表示文档$d_i$中主题$z_k$的出现概率，$P(w_j|z_k)$表示给定主题$z_k$出现单词$w_j$的概率。</p>
-<p>（2）每个主题在所有词项上服从多项分布，每个文档在所有主题上服从多项分布。</p>
-<p>（3）给定文章d，生成词w的概率可以表示为：</p>
-<script type="math/tex; mode=display">
-p(w|d) = \sum_zp(w|z,d)p(z|d)</script><p>这里我们做一个简化，假设给定主题z的条件下，生成词w的概率是与特定的文章无关的，则公式可以简化为：</p>
-<script type="math/tex; mode=display">
-p(w|d) =\sum_zp(w|z)p(z|d)</script><p>（4）整个语料库中的文本生成概率可以用似然函数表示为：</p>
-<script type="math/tex; mode=display">
-L=\prod_m^M\prod_m^Mp(d_w,w_n)^{c(d_m,w_n)}</script><p>其中$p(d_m,w_n)$是在第m篇文章$d_m$中，出现单词$w_n$的概率，<strong>即联合概率分布</strong>；$c(d_m,w_m)$是在第m篇文章$d_m$中，单词$w_n$出现的次数。<strong>利用对数似然简化计算得：</strong></p>
-<script type="math/tex; mode=display">
-L = \sum_m^M\sum_m^Mc(d_m,w_m)\log(d_m,w_n)\\
-= \sum_m^M\sum_n^Mc(d_m,w_n)\log\sum_k^Kp(d_m)p(z_k|d_m)p(w_n|z_k)</script><p>在上面的公式中，定义在文章上的主题分布$p(z_k|d_m)$和定义在主题上的词分布$p(w_n|z_k)$是待估计的参数。<strong>由于参数中包含的$z_k$是隐含变量（即无法直接观测到的变量），因此无法利用最大似然估计直接求解，可以利用最大期望算法（EM）来解决。</strong></p>
-<p>（5）EM算法的求解过程</p>
-<p>需要求解隐变量$z_k$的后验概率，目标函数建立将约束问题求解使用Lagrange乘子法处理。</p>
-<p>关于EM算法迭代如下：</p>
-<p><strong>M-step：</strong></p>
-<script type="math/tex; mode=display">
-p(w_j|z_k) = \frac{\sum_{i}n(d_i,w_j)p(z_k|d_i,w_j)}{\sum_{m=1}^M\sum_in(d_i,w_j)p(z_k|d_i,w_j)}</script><script type="math/tex; mode=display">
-p(z_k|d_i) = \frac{\sum_{j}n(d_i,w_j)p(z_k|d_i,w_j)}{\sum_{k=1}^K\sum_jn(d_i,w_j)p(z_k|d_i,w_j)}</script><p><strong>E-step：</strong></p>
-<script type="math/tex; mode=display">
-p(z_k|d_i,w_j) = \frac{p(w_j|z_k)p(z_k|d_i)}{\sum_{i=1}^Kp(w_j|z_i)p(z_i|d_i)}</script><p>（6）pLSA总结</p>
-<ul>
-<li>pLSA应用于信息检索、过滤、自然语言处理等领域，pLSA考虑到词分布和主题分布，使用EM算法来学习参数。</li>
-<li>虽然推导略显复杂，但最终公式简洁清晰，很符合直观理解，需用心琢磨；此外，推导过程使用了EM算法，也是学习EM算法的重要素材。</li>
-</ul>
-<h2 id="LDA"><a href="#LDA" class="headerlink" title="LDA"></a>LDA</h2><p>LDA可以看作是pLSA的贝叶斯版本，其文本生成过程与pLSA基本相同，<strong>不同的是为主题分布分别加了两个狄利克雷(Dirichlet)先验。</strong></p>
-<p>为什么要加入狄利克雷先验呢？pLSA采用的是频率派思想，将每篇文章对应的主题分布$p(z_k|d_m)$和每个主题对应的词分布$p(w_n|z_k)$看作确定的未知常数，并可以求解出来；而LDA采用的是贝叶斯学派的思想，认为待估计的参数（主题分布和词分布）不再是一个固定的常数，而是服从一定分布的随机变量。这个分布符合一定的先验概率分布（即狄利克雷分布），并且在观察到样本信息之后，可以对先验分布进行修正，从而得到后验分布。<strong>LDA之所以选择狄利克雷分布作为先验分布，是因为它为多项式分布的共轭先验概率分布，后验概率依然服从狄利克雷分布，这样做可以为计算带来便利。</strong>下图为LDA的图模型，其中$\alpha,\beta$分别为两个狄利克雷分布的超参数，<strong>为人工设定</strong>。图中m为文章数，K为主题数，n表示文章的第n个词。</p>
-<p><img src="/passages/2019-07-25-主题模型专题/LDA.png" alt="LDA"></p>
-<p>语料库的生成过程为：对文本库中的每一篇文档$d_i$，采用以下操作：</p>
-<p>（1）从超参数为$\alpha$的狄利克雷分布中抽样生成文档$d_i$的主题分布$\theta_i$。</p>
-<p>（2）对文档$d_i$中的每一个词进行以下3个操作。</p>
-<ul>
-<li>从代表主题的多项式分布$\theta<em>i$中抽样生成它所对应的主题$z</em>{i,j}$。</li>
-<li>从超参数为$\beta$的狄利克雷分布中抽样生成主题$z<em>{i,j}$对应的词分布$\psi</em>{z_{i,j}}$。</li>
-<li>从代表词的多项式分布$\psi<em>{z</em>{i,j}}$中抽样生成词$w_{i,j}$。</li>
-</ul>
-<p>求解主题分布$\theta<em>i$以及词分布$\psi</em>{z_{i,j}}$的期望，可以用吉布斯采样(Gibbs Sampling)的方式实现。</p>
-<p>首先随机给定每个单词的主题，然后在其他变量固定的情况下，根据转移概率抽样生成每个单词的新主题。对于每个单词来说，<strong>转移概率可以理解为：给定文章中的所有单词以及除自身以外其他所有单词的主题，在此条件下该单词对应为各个新主题的概率。</strong>最后，经过反复迭代，我们可以根据收敛后的采样结果计算主题分布和词分布的期望。</p>
-<h3 id="如何确定LDA模型中的主题个数"><a href="#如何确定LDA模型中的主题个数" class="headerlink" title="如何确定LDA模型中的主题个数"></a>如何确定LDA模型中的主题个数</h3><p>在LDA中，主题的个数K是一个预先指定的超参数。对于模型超参数的选择，实践中的做法一般是将全部数据集分为训练集、验证集和测试集三个部分，然后利用验证集对超参数进行选择。</p>
-<p>为了衡量LDA模型在验证集和测试集上的效果，需要寻找一个合适的评估指标。一个常用的评估指标是困惑度（perplexity）。在文档集合D上，模型的困惑度被定义为：</p>
-<script type="math/tex; mode=display">
-perplexity(D) = exp\{-\frac{\sum_{d=1}^Mlogp(w_d)}{\sum_{d=1}^MN_d}\}</script><p>其中M为文档的总数，$w_d$为文档d中单词所组成的词袋向量，$p(w_d)$为模型所预测的文档d的生成概率，$N_d$为文档d中单词的总数。</p>
-<p>一开始，随着主题数的增多，模型在训练集和验证集的困惑度呈下降趋势，但当主题数目足够大的时候，会出现过拟合，导致困惑度指标在训练集上继续下降但在验证集上反而增长。这时可以取验证集的困惑度极小值点可能出现在主题数目非常大的时候，然而实际应用并不能承受如此大的主题数目，这时需要在实际应用中合理的主题数目范围内进行选择，比如选择合理范围内困惑度的下降明显变慢（拐点）的时候。</p>
-<p>另一种方法是在LDA基础上融入分层狄利克雷过程（Hierarchical Dirichlet Process,HDP），构成一种非参数主题模型HDP-LDA。非参数主题模型的好处是不需要预先指定主题的个数，模型可以随着文档数目的变化而自动对主题个数进行调整；它的缺点是在LDA基础上融入HDP之后使得整个概率图模型更加复杂，训练速度也更加缓慢，因此在实际应用中还是经常采用第一种方法确定合适的主题数目。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://www.cnblogs.com/softzrp/p/6964951.html" target="_blank" rel="noopener">主题模型（概率潜语义分析PLSA、隐含狄利克雷分布LDA）</a></li>
-</ul>
-<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>概率图模型</tag>
-        <tag>pLSA</tag>
-        <tag>LDA</tag>
       </tags>
   </entry>
   <entry>
@@ -1358,75 +1358,6 @@ f(x) = \sum\alpha h_i(x),h_i(x)为各个弱分类器</script><h2 id="AdaBoost优
       </tags>
   </entry>
   <entry>
-    <title>EM算法专题</title>
-    <url>/passages/2019-08-02-EM%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="最大似然概率"><a href="#最大似然概率" class="headerlink" title="最大似然概率"></a>最大似然概率</h1><p>以测量校园里学生身高分布为例，分为男生和女生，分别抽取100个人。假设他们的身高是服从高斯分布的，但是这个分布的均值$\mu$和方差$\sigma^2$是未知的，我们要估计这两个参数，记作$\theta=[\mu,\sigma]^T$。</p>
-<p>我们独立地按照概率密度$p(x|\theta)$抽取100个身高，组成样本集X，我们想通过样本集X来估计出未知参数$\theta$。其中的未知参数是$\theta = [\mu,\sigma]^T$。抽到的样本集是$X={x_1,x_2,…,x_N}$，其中$x_i$表示抽到第i个人的身高，N为抽到样本个数。</p>
-<p>在$\theta$参数的情况下抽取得到样本集的概率，就是从分布是$p(x| \theta)$的总体样本中抽取到这100个样本的概率，也就是样本集X中各个样本的联合概率，用下式表示：</p>
-<script type="math/tex; mode=display">
-L(\theta) = L(x_1,..,x_n;\theta) = \prod_{i=1}^np(x_i;\theta),\theta \in \Theta</script><p>这里$L(\theta)$就是参数$\theta$相对于样本集的似然函数（likehood function）</p>
-<p>那么$\theta$的最大似然估计量，记为：$\hat\theta = argmaxl(\theta)$</p>
-<p>有时为了我便于分析与计算，定义对数似然函数，将连乘变成连加：</p>
-<script type="math/tex; mode=display">
-H(\theta) = \ln L(\theta) = \ln\prod_{i=1}^{n}p(x_i;\theta) =\sum_{i=1}^n\ln p(x_i;\theta)</script><p>之后为求一个函数的最值，需要求导使得导数为0，那么解这个方程得到的$ \theta$就是了（前提是函数$L(\theta)$连续可微）；如果$\theta$包含多个参数的向量，则求$L(\theta)$对所有参数的偏导数，n个未知的参数，就有n个方程，方程组的解就是似然函数的极值点。</p>
-<h2 id="求解最大似然函数估计值的一般步骤"><a href="#求解最大似然函数估计值的一般步骤" class="headerlink" title="求解最大似然函数估计值的一般步骤"></a>求解最大似然函数估计值的一般步骤</h2><p>（1）写出似然函数；</p>
-<p>（2）对似然函数取对数，并整理；</p>
-<p>（3）求导数，令导数为0，得到似然方程；</p>
-<p>（4）解似然方程，得到的参数即为所求。</p>
-<p><strong>注意</strong>：参数只是对应了一个类别，也就是说男生，女生身高的问题，就是在已知这一群人都是男生的情况下，获得这个类别的参数，或者都是女生的情况下获得。如果两个类别混在一起，那么就是下面的EM估计了。</p>
-<h1 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h1><p><strong>EM出现的原因就是抽取的样本不知道是哪个分布抽取的</strong>。例如上例的最大似然，两种高斯分布的人（男生、女生）混在一块了，我们又不知道哪些人属于第一个高斯分布，哪些属于第二个，所以就没法估计这两个分布的参数。反过来，只有当我们对这两个分布的参数作出了准确的估计的时候，才能知道到底哪些人属于第一个分布，那些人属于第二个分布。所以这里就是说EM估计就是因为多了一个<strong>隐含变量（抽取得到的每个样本都不知道是从哪个分布抽取的）使得本来简单的可以求解的问题变复杂了。</strong></p>
-<p>简单的处理办法是先初始化隐含变量，然后估计出每个类别对应的分布参数。然后再根据这个分布参数去调整每个样本的隐含参数，依次迭代。其能迭代成功的原因在于<strong>我们可以证明似然函数是一个单调函数。</strong></p>
-<h2 id="EM算法的推导"><a href="#EM算法的推导" class="headerlink" title="EM算法的推导"></a>EM算法的推导</h2><p>给定的训练样本是${x^{(1)},…,x^{(m)}}$，样例间独立，我们想找到每个样例隐含的类别z，能使得$p(x,z)$最大。$p(x,z)$的最大似然估计如下：</p>
-<script type="math/tex; mode=display">
-l(\theta) = \sum_{i=1}^m \log p(x;\theta) = \sum_{i=1}^m\log\sum_zp(x,z;\theta)</script><p>第一步是对极大似然取对数，第二步是对每个样例的每个可能类别z求联合分布概率和。但是直接求$\theta$一般比较困难，因为有隐藏变量z存在，但是一般确定了z后，求解就容易了，也就是说我们的目标是找到合适的$\theta$和z让$L(\theta)$最大。</p>
-<p><strong>EM是一种解决存在隐含变量优化问题的有效方法。竟然不能直接最大化$l(\theta)$，我们可以不断地建立$l$的下界（E步），然后优化下界（M步）。</strong></p>
-<p>对于每一个样例i，让$Q_i$表示该样例隐含变量z的某种分布，$Q_i$满足的条件是$\sum_xQ_i(z) = 1, Q_i(z) \ge 0$。（如果z是连续性的，那么$Q_t$是概率密度函数，需要将求和符号换做积分符号）。比如要将班上学生聚类，假设隐藏变量z是身高，那么就是连续的高斯分布。如果按照隐藏变量是男女，那么就是伯努利分布了。</p>
-<p>则似然公式如下：</p>
-<script type="math/tex; mode=display">
-\sum_i \log p(x^{(i)};\theta) = \sum_i\log p(x^{(i)},z^{(i)};\theta) ,(1)式\\
-= \sum_i \log \sum_{z^{(i)}}Q_i(z^{(i)})\frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})},(2)式\\
-\ge \sum_i\sum_{z^{(i)}}Q_i(z^{(i)})\log \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})},(3)式</script><p>看似最后只多了一个未知变量$Q_i(z^{(i)})$而已，实际上变到（3）式的时候公式由“和的对数”变为“对数的和”，这样求导就容易了。值得注意的是，（3）式变为了不等号，<strong>这就是Jensen不等式（就是对凹函数的公式: f(E[X]&gt;=E[f(X)])）的大显神威的地方。</strong></p>
-<p>（1）到（2）比较直接，就是分子分母同乘以一个相等的函数。（2）到（3）利用了Jensen不等式，考虑到$\log(x)$是凹函数（二阶导数小于0），而且$\sum_{z^{(i)}}Q_i(z^{(i)})[\frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})}]$就是$[p(x^{(i)},z^{(i)};\theta)/Q_i(z^{(i)})]$的期望。（依期望公式中的Lazy Statistician规则）</p>
-<h3 id="Lazy-Statistician规则"><a href="#Lazy-Statistician规则" class="headerlink" title="Lazy Statistician规则"></a>Lazy Statistician规则</h3><p>设Y是随机变量X的函数，$Y=g(X)$（g是连续函数），那么：</p>
-<p>（1） X是离散型随机变量，它的分布律为$P(X=x<em>k) = p_k,k=1,2,…$。若$\sum</em>{k=1}^{\infty}g(x<em>k)p_k$绝对收敛，则有$E(Y) =E[g(X)] = \sum</em>{k=1}^{\infty}g(x_k)p_k$</p>
-<p>（2） X是连续型随机变量，它的概率密度为$f(x)$，若$\displaystyle\int^{\infty}<em>{-\infty}{g(x)f(x)dx}$绝对收敛，则有$E(Y)= E[g(X)] =\displaystyle\int^{\infty}</em>{-\infty}{g(x)f(x)dx}$</p>
-<p>依据上述规则，上面的（2）式到（3）式的不等式可以写成：似然函数$L(\theta)&gt;=J(z,Q)$，那么我们可以通过不断的最大化这个下界J，来使得$L(\theta)$不断提高，最终达到它的最大值。</p>
-<p><img src="/passages/2019-08-02-EM算法专题/EM_iter.jpg" alt="EM_iter"></p>
-<p>见上图，我们固定$\theta$，调整Q(z)使得下界$J(z,Q)$上升至与$L(\theta)$在此点$\theta$处相等（绿色曲线到蓝色曲线），然后固定$Q(z)$，调整$\theta$使下界$J(z,Q)$达到最大值（$\theta^t$到$\theta^{t+1}$），然后再固定$\theta$，调整Q(z)…直到收敛到似然函数$L(\theta)$的最大值处的$\theta^{*}$。这里有两个问题：什么时候下界$J(z,Q)$与$L(\theta)$在此点$\theta$处相等？为什么一定会收敛？</p>
-<p>这个过程可以看作是对$l(\theta)$求了下界。对于$Q_i$的选择，有多种可能，<strong>哪种更好？</strong>假设$\theta$已经给定，那么$l(\theta)$的值就决定于$Q_i(z^{(i)})$和$p(x^{(i)},z^{(i)})$了。我们可以通过调整这两个概率使下界不断上升，以逼近$l(\theta)$的真实值，那么什么时候算是调整好了呢？当不等式变成等式时，说明我们调整后的概率能够等价于$l(\theta)$了。按照这个思路，我们要找到等式成立的条件。根据Jensen不等式，要想让等式成立，需要让随机变量变成常数值，这里得到：</p>
-<script type="math/tex; mode=display">
-\frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})} = c</script><p>c为常数，不依赖于$z^{(i)}$。对此式子做进一步推导，我们知道$\sum_zQ_i(z^{(i)})=1$，那么也就有$\sum_z p(x^{(i)},z^{(i)};\theta) =c$（多个等式分子分母相加不变，这个认为每个样例的两个概率比值都是c），那么有下式：</p>
-<script type="math/tex; mode=display">
-Q_i(z^{(i)}) = \frac{p(x^{(i)},z^{(i)};\theta)}{\sum_zp(x^{(i)},z;\theta)}\\
-= \frac{p(x^{(i)},z^{(i)};\theta)}{\sum_zp(x^{(i)};\theta)}\\
-= p(z^{(i)}|x^{(i)};\theta)</script><p>至此，我们推出了在固定其他参数$\theta$后，$Q_i(z^{(i)})$的计算公式就是后验概率，解决了$Q_i(z^{(i)})$如何选择的问题。这一步就是E步，建立$l(\theta)$的下界。接下来的M步，就是给定$Q_i(z^{(i)})$后，调整$\theta$，去极大化$l(\theta)$的下界（在固定$Q_i(z^{(i)})$后，下界还可以调整的更大）。那么一般的EM算法步骤如下：</p>
-<p>循环重复直到收敛{<br>            (E步)，对于每一个i，计算</p>
-<script type="math/tex; mode=display">
-Q_i(z^{(i)}) := p(z^{(i)}|x^{(i)};\theta)</script><p>​            (M步)，计算</p>
-<script type="math/tex; mode=display">
-\theta:= \arg\max_{\theta}\sum_i\sum_{z^{(i)}}Q_i(z^{(i)})\log \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})}</script><p>}</p>
-<p>究竟怎么确保EM收敛？假定$\theta^{(t)}$和$\theta^{(t+1)}$是EM第t次和t+1次迭代后的结果。如果我们证明了$l(\theta^{(t)})\le l(\theta^{(t+1)})$，也就是说极大似然估计单调增加，那么最终我们会到达最大似然估计的最大值。</p>
-<p>感性的说，因为下界不断提高，所以极大似然估计单调增加，那么最终我们会到达最大似然估计的最大值。理性分析的话，就会得到下面的式子：</p>
-<script type="math/tex; mode=display">
-l(\theta^{(t+1)}) \ge \sum_i\sum_{z^{(i)}}Q_i^{(t)}(z^{(i)})\log \frac{p(x^{(i)},z^{(i)};\theta^{(t+1)})}{Q_i^{(t)}(z^{(i)})}\\
-\ge \sum_i\sum_{z^{(i)}}Q_i^{(t)}(z^{(i)})\log \frac{p(x^{(i)},z^{(i)};\theta^{(t)})}{Q_i^{(t)}(z^{(i)})}\\
-= l(\theta^{(t)})</script><h2 id="EM算法另一种理解"><a href="#EM算法另一种理解" class="headerlink" title="EM算法另一种理解"></a>EM算法另一种理解</h2><p>坐标上升法（Coordinate ascent）：</p>
-<p><img src="/passages/2019-08-02-EM算法专题/EM.jpg" alt="EM"></p>
-<p>图中的直线式迭代优化的路径，可以看到每一步都会向最优值前进一步，而且前进路线是平行于坐标轴的，因为<strong>每一步只优化一个变量</strong>。</p>
-<p>这类似在x-y坐标系中找一个曲线的极值，然而曲线函数不能直接求导，因此梯度下降的方法就不适用了。但固定一个变量后，另外一个可以通过求导得到，因此可以使用坐标上升法，一次固定一个变量，对另外的求极值，最后逐步逼近极值。对应到EM上，<strong>E步：</strong>固定$\theta$，优化Q；<strong>M步：</strong>固定Q，优化$\theta$；交替将极值推向最大。</p>
-<h2 id="EM的应用"><a href="#EM的应用" class="headerlink" title="EM的应用"></a>EM的应用</h2><p>EM算法有很多的应用，最广泛的就是GMM混合高斯模型、聚类、HMM等等。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a href="https://blog.csdn.net/fuqiuai/article/details/79484421" target="_blank" rel="noopener">数据挖掘领域十大经典算法之一EM算法</a></li>
-</ul>
-<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>聚类</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>集成学习专题（二）</title>
     <url>/passages/2019-07-30-%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0%E4%B8%93%E9%A2%98%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
     <content><![CDATA[<h1 id="GBDT"><a href="#GBDT" class="headerlink" title="GBDT"></a>GBDT</h1><p>GBDT是集成学习Boosting的一种。Gradient Boosting的主要的思想是，每一次建立单个学习器时，是在之前建立的模型的损失函数的梯度下降方向。损失函数越大，说明模型越容易出错，如果我们的模型能够让损失函数持续下降，则说明我们的模型在不停的改进，而<strong>最好的方式就是让损失函数在其梯度的方向上下降</strong>。</p>
@@ -1620,6 +1551,81 @@ Obj = \sum_{i=1}^n l(y_i,\hat{y_i})+\sum_{k=1}^K\Omega(f_k)</script><p>正则项
       </tags>
   </entry>
   <entry>
+    <title>RESIDE:Improving Distantly-Supervised Neural Relation Extraction using Side Information</title>
+    <url>/passages/2019-10-21-RESIDE/</url>
+    <content><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>考虑到Knowledge Base（KB）包含其他side information（边界信息），例如关系别名（founded/co-founded -&gt; founderOfCompany）。RESIDE模型的提出为了充分利用来自知识库的边界信息提高关系抽取效果。模型使用实体类型与关系别名信息在预测关系过程施加软约束。RESIDE采用图卷积网络编码句法信息即使在有限的边界信息也可以取得不错的效果。<strong>代码开源</strong></p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>大规模知识库：Freebase  and Wikidata 应用于很多NLP任务中像问答、web搜索等。知识库本身是不全面的，关系抽取任务目标是抽取文本中实体对的语义关系填充知识库。关系对明确的条件下该任务可以被简单的建模为分类任务。</p>
+<p>multi-instance learning目的在于松弛远程监督的假设，以前的假设两个实体在知识库中，之后所有提到所有句子均表达同样的关系。</p>
+<p>在神经网络模型中，attention机制是用于缓解远程监督数据集的噪声。来自依赖文法的句法信息用于获取tokens之间的长期依赖。GCN方法编码文法依赖信息在2017年被提出。但是上述方法均依赖远程监督的有噪音示例。</p>
+<p>Relevant side information例如实体类型信息有助于纠正关系预测，这是因为每个关系约束了对应的目标实体类型。同理关系别名也是有价值的。RESIDE充分使用知识库中实体类型与关系别名规则信息，在预测关系时增加软约束。</p>
+<p>文章贡献：</p>
+<ol>
+<li><p>一个全新的神经网络方法，利用知识库中的附加信息采用规则方法提高远程监督关系抽取效果。</p>
+</li>
+<li><p>RESIDE使用图卷积对句法信息进行建模，并被证明即使在有限的边信息情况下也具有竞争力。</p>
+</li>
+<li>通过实验证实了RESIDE效果好于baseline，且代码开源链接如下：<a href="http://github.com/malllabiisc/RESIDE" target="_blank" rel="noopener">http://github.com/malllabiisc/RESIDE</a></li>
+</ol>
+<h1 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h1><p><strong>远程监督：</strong> 句子会被错误标注，为了缓解这个问题，2010年Riedel等人采用multi-instance single-label learning 缓解远程监督问题，随后为了处理实体间关系重叠问题，学者们提出了multi-instance multi-label learning.</p>
+<p><strong>神经网络关系抽取：</strong>传统方法强烈依赖手工工程特征的质量。2014年Zeng提出一个端到端CNN方法获取相关词汇与句子级特征。后通过picewise max-pooling以及attention机制从多个有效句子中学习。另一方面，依赖树特征对关系抽取任务有着影响。2018年He等人使用依赖树输入到一个recursive tree-GRU模型中来提升结果。本文之所以选用图卷积神经网络在于GCN在句法信息建模上有着不错的效果。</p>
+<p><strong>关系抽取边界信息：</strong>实体描述信息被充分利用（Ji et al., 2017），但是这样的信息并非对所有实体均可利用。实体类型信息被利用主要是通过联合学习实体类型与关系抽取模型来降低远程监督带来的噪声。像Freebase这种知识库可以直接得到可靠的实体类型信息。本文中使用了实体类型信息与关系别名来源于KBs，同时还使用无监督的开放信息提取方法（Open IE），发现无需预定义本体的可能关系事实作为side information。</p>
+<h1 id="图卷积神经网络（GCN）"><a href="#图卷积神经网络（GCN）" class="headerlink" title="图卷积神经网络（GCN）"></a>图卷积神经网络（GCN）</h1><h2 id="GCN-on-labeled-Directed-Graph"><a href="#GCN-on-labeled-Directed-Graph" class="headerlink" title="GCN on labeled Directed Graph"></a>GCN on labeled Directed Graph</h2><p>对于有向图而言，$G =(V,\varepsilon)$，$V$和$\varepsilon$分别表示顶点的集合与边的集合，一条边从点$u$到点$v$带有标签$l<em>{uv}$被表示为$(u,v,l</em>{uv})$，然而在有向边信息并非一定沿着其方向传播，这里定义了一个更新边的集合$\varepsilon^{‘}$包含转置边$(v,u,l_{uv}^{-1})$与自环$(u,u,T)$，其中$T$是一个特殊符号标记自环。定义每个节点$v$的一个初始向量表示$x_v$，使用GCN，计算得到一个更新的d维度隐层表示$h_v$，这里仅仅考虑它的近邻，公式如下：</p>
+<script type="math/tex; mode=display">
+h_v= f(\sum_{u \in N(v)}(W_{l_{uv}}x_{u}+b_{l_{uv}}))</script><p>其中$N(v)$反映$v$近邻的集合基于$\varepsilon^{‘}$，$f$为任意非线性激活函数。为了捕获多跳邻域，可以叠加多个GCN层。故第k层GCN可表示为:</p>
+<script type="math/tex; mode=display">
+h_v^{k+1} = f(\sum_{u \in N(u)}(W_{l_{uv}}^kh_u^k+b_{l_{uv}}^k))</script><h2 id="Integrating-Edge-Importance"><a href="#Integrating-Edge-Importance" class="headerlink" title="Integrating Edge Importance"></a>Integrating Edge Importance</h2><p>在自动构造的图中，有些边可能是错误的因此需要丢弃。GCN中的edgewise gating有助于抑制噪声边。实现方法即为图中的每条边分配一个相关分数。在第k层边$(u,v,l_{uv})$的重要性(edgewise gating)计算公式如下：</p>
+<script type="math/tex; mode=display">
+g_{uv}^{k} = \sigma ( h_{u}^{k} \cdot \hat w_{l_{uv}}^{k}+\hat b_{l_{uv}}^{k})</script><p>使用edgewise gating，最终的GCN对节点$v$的编码公式为：(文章中非线性函数使用Relu)</p>
+<script type="math/tex; mode=display">
+h_v^{k+1} = f(\sum_{u \in N(v)}g_{uv}^{k}*(W_{l_{uv}}^kh_{u}^k+b_{l_{uv}}^k))</script><h1 id="RESIDE"><a href="#RESIDE" class="headerlink" title="RESIDE"></a>RESIDE</h1><p>由三个组件组成：</p>
+<ol>
+<li><strong>句法句子编码：</strong>使用Bi-GRU编码连续的位置与词嵌入，为了捕获长范围依赖，输入依赖树到GCN将编码结果附加到每个token表示中。最终，attention在token级别应用抑制不相关的tokens，得到一个全句的编码结果。</li>
+<li><strong>边界信息采集：</strong>使用额外的监督来自KB、利用Open IE方法得到相关边界信息。</li>
+<li><strong>示例集整合：</strong>句法句子编码器的句子表示与前一步得到的关系embeding相连接。之后，使用句子级attention，这样整个包可以得到一个表示。在输入softmax分类器之前将表示与实体类型表示连接。</li>
+</ol>
+<p><img src="/passages/2019-10-21-RESIDE/GCN.png" alt="GCN"></p>
+<h2 id="句法句子编码"><a href="#句法句子编码" class="headerlink" title="句法句子编码"></a>句法句子编码</h2><p>采用k-dimensional Glove embedding表示每个token。使用的是相对于目标实体的相对位置。使用Bi-GRU的原因在于在许多任务中编码上下文token十分有效。Bi-GRU虽然可以捕获long context，但是通过依赖边才有助于获得long-range依赖。文法依赖树的生成采用Stanford CoreNLP。因为依赖关系图有55个不同的边标签，将所有标签合并在一起可以显著地将模型参数化。因此使用了三种边标签基于边的方向：[forward($\longrightarrow$)，backward($\longleftarrow $)，self-loop($T$)]。所以边标签定义如下：</p>
+<p><img src="/passages/2019-10-21-RESIDE/edge-label.png" alt="edge-label"></p>
+<p>将GCN中的语法图编码连接到Bi-GRU输出即$h<em>i^{concat}=[h_i^{gru};h</em>{i^{k+1}}^{gcn}]$，得到最终的token表示。由于tokens在RE任务中并非等同相关的，所以采用注意力机制计算每个token的相关度，公式如下：</p>
+<script type="math/tex; mode=display">
+\alpha_i = \frac{exp(u_i)}{\sum_{j=1}^mexp(u_j)}</script><script type="math/tex; mode=display">
+u_i = h_i^{concat}\cdot r</script><p>$r$是一个随机查询向量。</p>
+<p><img src="/passages/2019-10-21-RESIDE/side-information.png" alt="side-information"></p>
+<p>RESIDE使用Open IE提取实体间的关系短语，用$P$表示。P可以扩展通过文法依赖路径包含token的一跳距离。从P中提取的短语与关系别名$R$之间的匹配程度可以提供有关该关系与句子相关性的重要线索。相似度计算采用余弦相似度，找到与句子最为匹配的关系别名，使用余弦相似度阈值过滤掉噪声别名。模型RESIDE定义一个匹配关系编码$h^{rel}$与句子表示输入$s$相连。对于句子满足条件$|P| \gt 1$，这种情况下我们可能会得到多个匹配关系，在这种情况下，我们取它们嵌入的平均值</p>
+<p><strong>Note：</strong>仅提供关系名称作为别名也有助于取得较好效果。</p>
+<p>对于实体类型边界信息，文章定义了一个$k_t$维编码叫做entity type embedding（$h^{type}$）。当一个实体在不同语境下有多个类型时，文章取每个类型的编码均值。这个结果是用于连接目标实体与输入到关系分类器的最终包级别表示，来实现效果提升。为了避免参数过多，没有使用细粒度的112个实体类型，使用了38粗粒度类型。</p>
+<p><strong>Note：</strong>关系别名连接句子，实体类型（主语与宾语，即两个实体）连接包结构，最后输入到softmax分类器中求解。</p>
+<h1 id="实验设置与结果"><a href="#实验设置与结果" class="headerlink" title="实验设置与结果"></a>实验设置与结果</h1><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><ol>
+<li><strong>NYT10：</strong>Riedel 在2010年对齐Freebase relations与NYT corpus，标准数据集最为常用，53分类，在此不做介绍。</li>
+<li><strong>GIDS：</strong>Jat等人创建Google Distant Supervision (GIDS)数据集通过扩展谷歌关系抽取数据集，即为每一个关系对添加额外的示例。该数据集保证至少一个假设在多示例学习中成立，这使得自动自动评估更可靠，无需人工验证，5个分类。</li>
+</ol>
+<h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><p><strong>传统方法：</strong>Mintz：多类逻辑回归模型； MultiR：多示例概率图模型； MIMLRE：联合多示例与多标签概率图模型；</p>
+<p><strong>神经网络方法：</strong>PCNN：基于卷积神经网络使用picewise最大池化处理句子表示；PCNN+ATT：就是在上个模型基础上加入句子级attention；BGWA：使用word-level与sentence-level的Bi-GRU关系抽取模型；</p>
+<h2 id="评估标准"><a href="#评估标准" class="headerlink" title="评估标准"></a>评估标准</h2><p>与以前的工作相同，采用held-out evaluation，模型性能评估采用Precision-Recall curve和top-N precision度量。</p>
+<h2 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h2><ol>
+<li>所有的非神经网络的baseline表现效果相对较差，因为它们使用的特征大多来自于NLP工具，特征可能是有错误的。</li>
+<li>合并辅助信息（side information）有助于提高模型效果。（在组件移除效果也能体现）</li>
+<li>Attention 在远程监督关系抽取任务有着不错的效果。</li>
+<li>GCN有效编码句法信息（RESIDE组件移除后P-R 曲线下面积）</li>
+</ol>
+<p><strong>关于Relation Alias这一边界信息</strong>：文章实验采用四种不同的设置：</p>
+<p><strong>None：</strong>关系别名没有提供；</p>
+<p><strong>One：</strong>关系名作为别名；</p>
+<p><strong>One+PPDB：</strong>关系名使用Paraphrase Database（PPDB）扩展；</p>
+<p><strong>All：</strong>手动映射到相应的wikidata属性获取关系别名，补充关系别名少有的信息；</p>
+<p>实验结果反映有限的关系别名也会提升性能，使用更多的别名信息有助于性能进一步提高。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>没有未来展望，就是GCN+side information在此不做总结了。</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>文献阅读</category>
+      </categories>
+      <tags>
+        <tag>Relation Extraction</tag>
+        <tag>EMNLP</tag>
+        <tag>GCN</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction</title>
     <url>/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/</url>
     <content><![CDATA[<h1 id="论文摘要"><a href="#论文摘要" class="headerlink" title="论文摘要"></a>论文摘要</h1><p>现阶段关系抽取方法采用多示例学习与提供的语义与语境信息有效的确定关系类别。这样模型会识别偏向于高精确率的关系，忽略那些关系长尾句子中（in the long tail），为了解决这个问题，利用预训练语言模型Open AI Generative Pre-trained Transformer（GPT），除了从词法句法的角度解决问题外，也更注重大量的常识知识（一些重要的特征识别更多元的关系），在高召回率情况下在NYT10数据集下实现较好的效果。</p>
@@ -1695,78 +1701,72 @@ L(D) = \lambda*L_1(D)+L_2(D)</script><p>标量$\lambda$反映微调期间语言�
       </tags>
   </entry>
   <entry>
-    <title>RESIDE:Improving Distantly-Supervised Neural Relation Extraction using Side Information</title>
-    <url>/passages/2019-10-21-RESIDE/</url>
-    <content><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>考虑到Knowledge Base（KB）包含其他side information（边界信息），例如关系别名（founded/co-founded -&gt; founderOfCompany）。RESIDE模型的提出为了充分利用来自知识库的边界信息提高关系抽取效果。模型使用实体类型与关系别名信息在预测关系过程施加软约束。RESIDE采用图卷积网络编码句法信息即使在有限的边界信息也可以取得不错的效果。<strong>代码开源</strong></p>
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>大规模知识库：Freebase  and Wikidata 应用于很多NLP任务中像问答、web搜索等。知识库本身是不全面的，关系抽取任务目标是抽取文本中实体对的语义关系填充知识库。关系对明确的条件下该任务可以被简单的建模为分类任务。</p>
-<p>multi-instance learning目的在于松弛远程监督的假设，以前的假设两个实体在知识库中，之后所有提到所有句子均表达同样的关系。</p>
-<p>在神经网络模型中，attention机制是用于缓解远程监督数据集的噪声。来自依赖文法的句法信息用于获取tokens之间的长期依赖。GCN方法编码文法依赖信息在2017年被提出。但是上述方法均依赖远程监督的有噪音示例。</p>
-<p>Relevant side information例如实体类型信息有助于纠正关系预测，这是因为每个关系约束了对应的目标实体类型。同理关系别名也是有价值的。RESIDE充分使用知识库中实体类型与关系别名规则信息，在预测关系时增加软约束。</p>
-<p>文章贡献：</p>
-<ol>
-<li><p>一个全新的神经网络方法，利用知识库中的附加信息采用规则方法提高远程监督关系抽取效果。</p>
-</li>
-<li><p>RESIDE使用图卷积对句法信息进行建模，并被证明即使在有限的边信息情况下也具有竞争力。</p>
-</li>
-<li>通过实验证实了RESIDE效果好于baseline，且代码开源链接如下：<a href="http://github.com/malllabiisc/RESIDE" target="_blank" rel="noopener">http://github.com/malllabiisc/RESIDE</a></li>
-</ol>
-<h1 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h1><p><strong>远程监督：</strong> 句子会被错误标注，为了缓解这个问题，2010年Riedel等人采用multi-instance single-label learning 缓解远程监督问题，随后为了处理实体间关系重叠问题，学者们提出了multi-instance multi-label learning.</p>
-<p><strong>神经网络关系抽取：</strong>传统方法强烈依赖手工工程特征的质量。2014年Zeng提出一个端到端CNN方法获取相关词汇与句子级特征。后通过picewise max-pooling以及attention机制从多个有效句子中学习。另一方面，依赖树特征对关系抽取任务有着影响。2018年He等人使用依赖树输入到一个recursive tree-GRU模型中来提升结果。本文之所以选用图卷积神经网络在于GCN在句法信息建模上有着不错的效果。</p>
-<p><strong>关系抽取边界信息：</strong>实体描述信息被充分利用（Ji et al., 2017），但是这样的信息并非对所有实体均可利用。实体类型信息被利用主要是通过联合学习实体类型与关系抽取模型来降低远程监督带来的噪声。像Freebase这种知识库可以直接得到可靠的实体类型信息。本文中使用了实体类型信息与关系别名来源于KBs，同时还使用无监督的开放信息提取方法（Open IE），发现无需预定义本体的可能关系事实作为side information。</p>
-<h1 id="图卷积神经网络（GCN）"><a href="#图卷积神经网络（GCN）" class="headerlink" title="图卷积神经网络（GCN）"></a>图卷积神经网络（GCN）</h1><h2 id="GCN-on-labeled-Directed-Graph"><a href="#GCN-on-labeled-Directed-Graph" class="headerlink" title="GCN on labeled Directed Graph"></a>GCN on labeled Directed Graph</h2><p>对于有向图而言，$G =(V,\varepsilon)$，$V$和$\varepsilon$分别表示顶点的集合与边的集合，一条边从点$u$到点$v$带有标签$l<em>{uv}$被表示为$(u,v,l</em>{uv})$，然而在有向边信息并非一定沿着其方向传播，这里定义了一个更新边的集合$\varepsilon^{‘}$包含转置边$(v,u,l_{uv}^{-1})$与自环$(u,u,T)$，其中$T$是一个特殊符号标记自环。定义每个节点$v$的一个初始向量表示$x_v$，使用GCN，计算得到一个更新的d维度隐层表示$h_v$，这里仅仅考虑它的近邻，公式如下：</p>
+    <title>EM算法专题</title>
+    <url>/passages/2019-08-02-EM%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="最大似然概率"><a href="#最大似然概率" class="headerlink" title="最大似然概率"></a>最大似然概率</h1><p>以测量校园里学生身高分布为例，分为男生和女生，分别抽取100个人。假设他们的身高是服从高斯分布的，但是这个分布的均值$\mu$和方差$\sigma^2$是未知的，我们要估计这两个参数，记作$\theta=[\mu,\sigma]^T$。</p>
+<p>我们独立地按照概率密度$p(x|\theta)$抽取100个身高，组成样本集X，我们想通过样本集X来估计出未知参数$\theta$。其中的未知参数是$\theta = [\mu,\sigma]^T$。抽到的样本集是$X={x_1,x_2,…,x_N}$，其中$x_i$表示抽到第i个人的身高，N为抽到样本个数。</p>
+<p>在$\theta$参数的情况下抽取得到样本集的概率，就是从分布是$p(x| \theta)$的总体样本中抽取到这100个样本的概率，也就是样本集X中各个样本的联合概率，用下式表示：</p>
 <script type="math/tex; mode=display">
-h_v= f(\sum_{u \in N(v)}(W_{l_{uv}}x_{u}+b_{l_{uv}}))</script><p>其中$N(v)$反映$v$近邻的集合基于$\varepsilon^{‘}$，$f$为任意非线性激活函数。为了捕获多跳邻域，可以叠加多个GCN层。故第k层GCN可表示为:</p>
+L(\theta) = L(x_1,..,x_n;\theta) = \prod_{i=1}^np(x_i;\theta),\theta \in \Theta</script><p>这里$L(\theta)$就是参数$\theta$相对于样本集的似然函数（likehood function）</p>
+<p>那么$\theta$的最大似然估计量，记为：$\hat\theta = argmaxl(\theta)$</p>
+<p>有时为了我便于分析与计算，定义对数似然函数，将连乘变成连加：</p>
 <script type="math/tex; mode=display">
-h_v^{k+1} = f(\sum_{u \in N(u)}(W_{l_{uv}}^kh_u^k+b_{l_{uv}}^k))</script><h2 id="Integrating-Edge-Importance"><a href="#Integrating-Edge-Importance" class="headerlink" title="Integrating Edge Importance"></a>Integrating Edge Importance</h2><p>在自动构造的图中，有些边可能是错误的因此需要丢弃。GCN中的edgewise gating有助于抑制噪声边。实现方法即为图中的每条边分配一个相关分数。在第k层边$(u,v,l_{uv})$的重要性(edgewise gating)计算公式如下：</p>
+H(\theta) = \ln L(\theta) = \ln\prod_{i=1}^{n}p(x_i;\theta) =\sum_{i=1}^n\ln p(x_i;\theta)</script><p>之后为求一个函数的最值，需要求导使得导数为0，那么解这个方程得到的$ \theta$就是了（前提是函数$L(\theta)$连续可微）；如果$\theta$包含多个参数的向量，则求$L(\theta)$对所有参数的偏导数，n个未知的参数，就有n个方程，方程组的解就是似然函数的极值点。</p>
+<h2 id="求解最大似然函数估计值的一般步骤"><a href="#求解最大似然函数估计值的一般步骤" class="headerlink" title="求解最大似然函数估计值的一般步骤"></a>求解最大似然函数估计值的一般步骤</h2><p>（1）写出似然函数；</p>
+<p>（2）对似然函数取对数，并整理；</p>
+<p>（3）求导数，令导数为0，得到似然方程；</p>
+<p>（4）解似然方程，得到的参数即为所求。</p>
+<p><strong>注意</strong>：参数只是对应了一个类别，也就是说男生，女生身高的问题，就是在已知这一群人都是男生的情况下，获得这个类别的参数，或者都是女生的情况下获得。如果两个类别混在一起，那么就是下面的EM估计了。</p>
+<h1 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h1><p><strong>EM出现的原因就是抽取的样本不知道是哪个分布抽取的</strong>。例如上例的最大似然，两种高斯分布的人（男生、女生）混在一块了，我们又不知道哪些人属于第一个高斯分布，哪些属于第二个，所以就没法估计这两个分布的参数。反过来，只有当我们对这两个分布的参数作出了准确的估计的时候，才能知道到底哪些人属于第一个分布，那些人属于第二个分布。所以这里就是说EM估计就是因为多了一个<strong>隐含变量（抽取得到的每个样本都不知道是从哪个分布抽取的）使得本来简单的可以求解的问题变复杂了。</strong></p>
+<p>简单的处理办法是先初始化隐含变量，然后估计出每个类别对应的分布参数。然后再根据这个分布参数去调整每个样本的隐含参数，依次迭代。其能迭代成功的原因在于<strong>我们可以证明似然函数是一个单调函数。</strong></p>
+<h2 id="EM算法的推导"><a href="#EM算法的推导" class="headerlink" title="EM算法的推导"></a>EM算法的推导</h2><p>给定的训练样本是${x^{(1)},…,x^{(m)}}$，样例间独立，我们想找到每个样例隐含的类别z，能使得$p(x,z)$最大。$p(x,z)$的最大似然估计如下：</p>
 <script type="math/tex; mode=display">
-g_{uv}^{k} = \sigma ( h_{u}^{k} \cdot \hat w_{l_{uv}}^{k}+\hat b_{l_{uv}}^{k})</script><p>使用edgewise gating，最终的GCN对节点$v$的编码公式为：(文章中非线性函数使用Relu)</p>
+l(\theta) = \sum_{i=1}^m \log p(x;\theta) = \sum_{i=1}^m\log\sum_zp(x,z;\theta)</script><p>第一步是对极大似然取对数，第二步是对每个样例的每个可能类别z求联合分布概率和。但是直接求$\theta$一般比较困难，因为有隐藏变量z存在，但是一般确定了z后，求解就容易了，也就是说我们的目标是找到合适的$\theta$和z让$L(\theta)$最大。</p>
+<p><strong>EM是一种解决存在隐含变量优化问题的有效方法。竟然不能直接最大化$l(\theta)$，我们可以不断地建立$l$的下界（E步），然后优化下界（M步）。</strong></p>
+<p>对于每一个样例i，让$Q_i$表示该样例隐含变量z的某种分布，$Q_i$满足的条件是$\sum_xQ_i(z) = 1, Q_i(z) \ge 0$。（如果z是连续性的，那么$Q_t$是概率密度函数，需要将求和符号换做积分符号）。比如要将班上学生聚类，假设隐藏变量z是身高，那么就是连续的高斯分布。如果按照隐藏变量是男女，那么就是伯努利分布了。</p>
+<p>则似然公式如下：</p>
 <script type="math/tex; mode=display">
-h_v^{k+1} = f(\sum_{u \in N(v)}g_{uv}^{k}*(W_{l_{uv}}^kh_{u}^k+b_{l_{uv}}^k))</script><h1 id="RESIDE"><a href="#RESIDE" class="headerlink" title="RESIDE"></a>RESIDE</h1><p>由三个组件组成：</p>
-<ol>
-<li><strong>句法句子编码：</strong>使用Bi-GRU编码连续的位置与词嵌入，为了捕获长范围依赖，输入依赖树到GCN将编码结果附加到每个token表示中。最终，attention在token级别应用抑制不相关的tokens，得到一个全句的编码结果。</li>
-<li><strong>边界信息采集：</strong>使用额外的监督来自KB、利用Open IE方法得到相关边界信息。</li>
-<li><strong>示例集整合：</strong>句法句子编码器的句子表示与前一步得到的关系embeding相连接。之后，使用句子级attention，这样整个包可以得到一个表示。在输入softmax分类器之前将表示与实体类型表示连接。</li>
-</ol>
-<p><img src="/passages/2019-10-21-RESIDE/GCN.png" alt="GCN"></p>
-<h2 id="句法句子编码"><a href="#句法句子编码" class="headerlink" title="句法句子编码"></a>句法句子编码</h2><p>采用k-dimensional Glove embedding表示每个token。使用的是相对于目标实体的相对位置。使用Bi-GRU的原因在于在许多任务中编码上下文token十分有效。Bi-GRU虽然可以捕获long context，但是通过依赖边才有助于获得long-range依赖。文法依赖树的生成采用Stanford CoreNLP。因为依赖关系图有55个不同的边标签，将所有标签合并在一起可以显著地将模型参数化。因此使用了三种边标签基于边的方向：[forward($\longrightarrow$)，backward($\longleftarrow $)，self-loop($T$)]。所以边标签定义如下：</p>
-<p><img src="/passages/2019-10-21-RESIDE/edge-label.png" alt="edge-label"></p>
-<p>将GCN中的语法图编码连接到Bi-GRU输出即$h<em>i^{concat}=[h_i^{gru};h</em>{i^{k+1}}^{gcn}]$，得到最终的token表示。由于tokens在RE任务中并非等同相关的，所以采用注意力机制计算每个token的相关度，公式如下：</p>
+\sum_i \log p(x^{(i)};\theta) = \sum_i\log p(x^{(i)},z^{(i)};\theta) ,(1)式\\
+= \sum_i \log \sum_{z^{(i)}}Q_i(z^{(i)})\frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})},(2)式\\
+\ge \sum_i\sum_{z^{(i)}}Q_i(z^{(i)})\log \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})},(3)式</script><p>看似最后只多了一个未知变量$Q_i(z^{(i)})$而已，实际上变到（3）式的时候公式由“和的对数”变为“对数的和”，这样求导就容易了。值得注意的是，（3）式变为了不等号，<strong>这就是Jensen不等式（就是对凹函数的公式: f(E[X]&gt;=E[f(X)])）的大显神威的地方。</strong></p>
+<p>（1）到（2）比较直接，就是分子分母同乘以一个相等的函数。（2）到（3）利用了Jensen不等式，考虑到$\log(x)$是凹函数（二阶导数小于0），而且$\sum_{z^{(i)}}Q_i(z^{(i)})[\frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})}]$就是$[p(x^{(i)},z^{(i)};\theta)/Q_i(z^{(i)})]$的期望。（依期望公式中的Lazy Statistician规则）</p>
+<h3 id="Lazy-Statistician规则"><a href="#Lazy-Statistician规则" class="headerlink" title="Lazy Statistician规则"></a>Lazy Statistician规则</h3><p>设Y是随机变量X的函数，$Y=g(X)$（g是连续函数），那么：</p>
+<p>（1） X是离散型随机变量，它的分布律为$P(X=x<em>k) = p_k,k=1,2,…$。若$\sum</em>{k=1}^{\infty}g(x<em>k)p_k$绝对收敛，则有$E(Y) =E[g(X)] = \sum</em>{k=1}^{\infty}g(x_k)p_k$</p>
+<p>（2） X是连续型随机变量，它的概率密度为$f(x)$，若$\displaystyle\int^{\infty}<em>{-\infty}{g(x)f(x)dx}$绝对收敛，则有$E(Y)= E[g(X)] =\displaystyle\int^{\infty}</em>{-\infty}{g(x)f(x)dx}$</p>
+<p>依据上述规则，上面的（2）式到（3）式的不等式可以写成：似然函数$L(\theta)&gt;=J(z,Q)$，那么我们可以通过不断的最大化这个下界J，来使得$L(\theta)$不断提高，最终达到它的最大值。</p>
+<p><img src="/passages/2019-08-02-EM算法专题/EM_iter.jpg" alt="EM_iter"></p>
+<p>见上图，我们固定$\theta$，调整Q(z)使得下界$J(z,Q)$上升至与$L(\theta)$在此点$\theta$处相等（绿色曲线到蓝色曲线），然后固定$Q(z)$，调整$\theta$使下界$J(z,Q)$达到最大值（$\theta^t$到$\theta^{t+1}$），然后再固定$\theta$，调整Q(z)…直到收敛到似然函数$L(\theta)$的最大值处的$\theta^{*}$。这里有两个问题：什么时候下界$J(z,Q)$与$L(\theta)$在此点$\theta$处相等？为什么一定会收敛？</p>
+<p>这个过程可以看作是对$l(\theta)$求了下界。对于$Q_i$的选择，有多种可能，<strong>哪种更好？</strong>假设$\theta$已经给定，那么$l(\theta)$的值就决定于$Q_i(z^{(i)})$和$p(x^{(i)},z^{(i)})$了。我们可以通过调整这两个概率使下界不断上升，以逼近$l(\theta)$的真实值，那么什么时候算是调整好了呢？当不等式变成等式时，说明我们调整后的概率能够等价于$l(\theta)$了。按照这个思路，我们要找到等式成立的条件。根据Jensen不等式，要想让等式成立，需要让随机变量变成常数值，这里得到：</p>
 <script type="math/tex; mode=display">
-\alpha_i = \frac{exp(u_i)}{\sum_{j=1}^mexp(u_j)}</script><script type="math/tex; mode=display">
-u_i = h_i^{concat}\cdot r</script><p>$r$是一个随机查询向量。</p>
-<p><img src="/passages/2019-10-21-RESIDE/side-information.png" alt="side-information"></p>
-<p>RESIDE使用Open IE提取实体间的关系短语，用$P$表示。P可以扩展通过文法依赖路径包含token的一跳距离。从P中提取的短语与关系别名$R$之间的匹配程度可以提供有关该关系与句子相关性的重要线索。相似度计算采用余弦相似度，找到与句子最为匹配的关系别名，使用余弦相似度阈值过滤掉噪声别名。模型RESIDE定义一个匹配关系编码$h^{rel}$与句子表示输入$s$相连。对于句子满足条件$|P| \gt 1$，这种情况下我们可能会得到多个匹配关系，在这种情况下，我们取它们嵌入的平均值</p>
-<p><strong>Note：</strong>仅提供关系名称作为别名也有助于取得较好效果。</p>
-<p>对于实体类型边界信息，文章定义了一个$k_t$维编码叫做entity type embedding（$h^{type}$）。当一个实体在不同语境下有多个类型时，文章取每个类型的编码均值。这个结果是用于连接目标实体与输入到关系分类器的最终包级别表示，来实现效果提升。为了避免参数过多，没有使用细粒度的112个实体类型，使用了38粗粒度类型。</p>
-<p><strong>Note：</strong>关系别名连接句子，实体类型（主语与宾语，即两个实体）连接包结构，最后输入到softmax分类器中求解。</p>
-<h1 id="实验设置与结果"><a href="#实验设置与结果" class="headerlink" title="实验设置与结果"></a>实验设置与结果</h1><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><ol>
-<li><strong>NYT10：</strong>Riedel 在2010年对齐Freebase relations与NYT corpus，标准数据集最为常用，53分类，在此不做介绍。</li>
-<li><strong>GIDS：</strong>Jat等人创建Google Distant Supervision (GIDS)数据集通过扩展谷歌关系抽取数据集，即为每一个关系对添加额外的示例。该数据集保证至少一个假设在多示例学习中成立，这使得自动自动评估更可靠，无需人工验证，5个分类。</li>
-</ol>
-<h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><p><strong>传统方法：</strong>Mintz：多类逻辑回归模型； MultiR：多示例概率图模型； MIMLRE：联合多示例与多标签概率图模型；</p>
-<p><strong>神经网络方法：</strong>PCNN：基于卷积神经网络使用picewise最大池化处理句子表示；PCNN+ATT：就是在上个模型基础上加入句子级attention；BGWA：使用word-level与sentence-level的Bi-GRU关系抽取模型；</p>
-<h2 id="评估标准"><a href="#评估标准" class="headerlink" title="评估标准"></a>评估标准</h2><p>与以前的工作相同，采用held-out evaluation，模型性能评估采用Precision-Recall curve和top-N precision度量。</p>
-<h2 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h2><ol>
-<li>所有的非神经网络的baseline表现效果相对较差，因为它们使用的特征大多来自于NLP工具，特征可能是有错误的。</li>
-<li>合并辅助信息（side information）有助于提高模型效果。（在组件移除效果也能体现）</li>
-<li>Attention 在远程监督关系抽取任务有着不错的效果。</li>
-<li>GCN有效编码句法信息（RESIDE组件移除后P-R 曲线下面积）</li>
-</ol>
-<p><strong>关于Relation Alias这一边界信息</strong>：文章实验采用四种不同的设置：</p>
-<p><strong>None：</strong>关系别名没有提供；</p>
-<p><strong>One：</strong>关系名作为别名；</p>
-<p><strong>One+PPDB：</strong>关系名使用Paraphrase Database（PPDB）扩展；</p>
-<p><strong>All：</strong>手动映射到相应的wikidata属性获取关系别名，补充关系别名少有的信息；</p>
-<p>实验结果反映有限的关系别名也会提升性能，使用更多的别名信息有助于性能进一步提高。</p>
-<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>没有未来展望，就是GCN+side information在此不做总结了。</p>
+\frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})} = c</script><p>c为常数，不依赖于$z^{(i)}$。对此式子做进一步推导，我们知道$\sum_zQ_i(z^{(i)})=1$，那么也就有$\sum_z p(x^{(i)},z^{(i)};\theta) =c$（多个等式分子分母相加不变，这个认为每个样例的两个概率比值都是c），那么有下式：</p>
+<script type="math/tex; mode=display">
+Q_i(z^{(i)}) = \frac{p(x^{(i)},z^{(i)};\theta)}{\sum_zp(x^{(i)},z;\theta)}\\
+= \frac{p(x^{(i)},z^{(i)};\theta)}{\sum_zp(x^{(i)};\theta)}\\
+= p(z^{(i)}|x^{(i)};\theta)</script><p>至此，我们推出了在固定其他参数$\theta$后，$Q_i(z^{(i)})$的计算公式就是后验概率，解决了$Q_i(z^{(i)})$如何选择的问题。这一步就是E步，建立$l(\theta)$的下界。接下来的M步，就是给定$Q_i(z^{(i)})$后，调整$\theta$，去极大化$l(\theta)$的下界（在固定$Q_i(z^{(i)})$后，下界还可以调整的更大）。那么一般的EM算法步骤如下：</p>
+<p>循环重复直到收敛{<br>            (E步)，对于每一个i，计算</p>
+<script type="math/tex; mode=display">
+Q_i(z^{(i)}) := p(z^{(i)}|x^{(i)};\theta)</script><p>​            (M步)，计算</p>
+<script type="math/tex; mode=display">
+\theta:= \arg\max_{\theta}\sum_i\sum_{z^{(i)}}Q_i(z^{(i)})\log \frac{p(x^{(i)},z^{(i)};\theta)}{Q_i(z^{(i)})}</script><p>}</p>
+<p>究竟怎么确保EM收敛？假定$\theta^{(t)}$和$\theta^{(t+1)}$是EM第t次和t+1次迭代后的结果。如果我们证明了$l(\theta^{(t)})\le l(\theta^{(t+1)})$，也就是说极大似然估计单调增加，那么最终我们会到达最大似然估计的最大值。</p>
+<p>感性的说，因为下界不断提高，所以极大似然估计单调增加，那么最终我们会到达最大似然估计的最大值。理性分析的话，就会得到下面的式子：</p>
+<script type="math/tex; mode=display">
+l(\theta^{(t+1)}) \ge \sum_i\sum_{z^{(i)}}Q_i^{(t)}(z^{(i)})\log \frac{p(x^{(i)},z^{(i)};\theta^{(t+1)})}{Q_i^{(t)}(z^{(i)})}\\
+\ge \sum_i\sum_{z^{(i)}}Q_i^{(t)}(z^{(i)})\log \frac{p(x^{(i)},z^{(i)};\theta^{(t)})}{Q_i^{(t)}(z^{(i)})}\\
+= l(\theta^{(t)})</script><h2 id="EM算法另一种理解"><a href="#EM算法另一种理解" class="headerlink" title="EM算法另一种理解"></a>EM算法另一种理解</h2><p>坐标上升法（Coordinate ascent）：</p>
+<p><img src="/passages/2019-08-02-EM算法专题/EM.jpg" alt="EM"></p>
+<p>图中的直线式迭代优化的路径，可以看到每一步都会向最优值前进一步，而且前进路线是平行于坐标轴的，因为<strong>每一步只优化一个变量</strong>。</p>
+<p>这类似在x-y坐标系中找一个曲线的极值，然而曲线函数不能直接求导，因此梯度下降的方法就不适用了。但固定一个变量后，另外一个可以通过求导得到，因此可以使用坐标上升法，一次固定一个变量，对另外的求极值，最后逐步逼近极值。对应到EM上，<strong>E步：</strong>固定$\theta$，优化Q；<strong>M步：</strong>固定Q，优化$\theta$；交替将极值推向最大。</p>
+<h2 id="EM的应用"><a href="#EM的应用" class="headerlink" title="EM的应用"></a>EM的应用</h2><p>EM算法有很多的应用，最广泛的就是GMM混合高斯模型、聚类、HMM等等。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://blog.csdn.net/fuqiuai/article/details/79484421" target="_blank" rel="noopener">数据挖掘领域十大经典算法之一EM算法</a></li>
+</ul>
 <script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
       <categories>
-        <category>文献阅读</category>
+        <category>机器学习</category>
       </categories>
       <tags>
-        <tag>Relation Extraction</tag>
-        <tag>EMNLP</tag>
-        <tag>GCN</tag>
+        <tag>聚类</tag>
       </tags>
   </entry>
   <entry>
@@ -1904,6 +1904,37 @@ c = \frac{1}{1+KL(a^m||a^s)}</script><p>$c$值越高，示例越可信。本文�
       </tags>
   </entry>
   <entry>
+    <title>Hexo与github搭建个人博客</title>
+    <url>/passages/hexo/</url>
+    <content><![CDATA[<p> <a href="https://github.com/hexojs/hexo" target="_blank" rel="noopener">GitHub</a>个人博客搭建主要有两种方法：一是基于Ruby的jekyll+github方法，二是基于Nodejs的Hexo+github方法。这是本人的第一篇个人博客，希望能够坚持写下去。下面我将介绍下Hexo+github方法的具体过程：</p>
+<h2 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h2><h3 id="Hexo安装"><a href="#Hexo安装" class="headerlink" title="Hexo安装"></a>Hexo安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<p>第一句是安装<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo</a>，第二句是安装Hexo部署到git page的deployer保证与github关联。</p>
+<h3 id="主题建站"><a href="#主题建站" class="headerlink" title="主题建站"></a>主题建站</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> your_blog_dir</span><br><span class="line">$ hexo init blog</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/dongyuanxin/theme-ad.git themes/ad</span><br></pre></td></tr></table></figure>
+<p>安装完成后，根据自己喜好建立目录。Hexo 将会在指定文件夹中新建所需要的文件。之后我们可以在<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo</a>官网上选取主题从Github上clone到本地的themes文件夹下。</p>
+<p>针对于不同的主题，blog下的_config.yml需进行如下操作更换主题、与Github关联：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">主题名</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:nijunssdut/nijunssdut.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+<p>在这里，我们配置Github的SSH密钥可以让本地git项目与远程的github建立联系，让我们在本地写了代码之后直接通过git操作就可以实现本地代码库与Github代码库同步。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/ .ssh</span><br><span class="line">$ ssh-keygen -t rsa -C <span class="string">"your_email@example.com"</span></span><br><span class="line"><span class="comment"># 这将按照你提供的邮箱地址，创建一对密钥</span></span><br><span class="line">$ pbcopy &lt; ~/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># 将公钥的内容复制到系统粘贴板</span></span><br></pre></td></tr></table></figure>
+<p>之后在Github的Account Settings-SSH Keys中粘贴添加密钥即可。</p>
+<p>更多信息详见: <a href="https://blog.csdn.net/grave2015/article/details/79961843" target="_blank" rel="noopener">参考博客</a></p>
+<h3 id="配置与测试"><a href="#配置与测试" class="headerlink" title="配置与测试"></a>配置与测试</h3><p>这部分主要介绍Hexo命令的使用。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo generate</span><br><span class="line">$ hexo server</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>hexo clean与hexo generate一般一起使用清理并生成编写内容，执行完hexo server后可在本地使用<a href="https://localhost:4000" target="_blank" rel="noopener">https://localhost:4000</a> 查看建站情况，hexo deploy会更新Github端个人博客的内容：<a href="https://nijunssdut.github.io">Jun的个人主页</a></p>
+<h3 id="Markdown写作"><a href="#Markdown写作" class="headerlink" title="Markdown写作"></a>Markdown写作</h3><p>本人使用Mac OS，推荐Typora软件进行Markdown编写。Typora是一款轻便简洁的Markdown编辑器，支持即时渲染技术。</p>
+<p>Typora语法相对简单，可参考<a href="https://www.jianshu.com/p/b7fd16a44508" target="_blank" rel="noopener">简书typora</a>、<a href="https://www.cnblogs.com/xupccc/p/9545687.html" target="_blank" rel="noopener">博客园typora</a>。</p>
+<h1 id="Hexo博客内容图片显示问题"><a href="#Hexo博客内容图片显示问题" class="headerlink" title="Hexo博客内容图片显示问题"></a>Hexo博客内容图片显示问题</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install eslint</span><br><span class="line">$ npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+<p>由于缺少eslint依赖直接安装Hexo图片插件会有警告。完成安装后用hexo新建文章的时候会发现_posts目录下面会多出一个和文章名字一样的文件夹。图片就可以放在文件夹下面。插入图片的方式采用Markdown语法即可。</p>
+<p><strong>Note:</strong>把主页配置文件<code>_config.yml</code> 里的<code>post_asset_folder:</code>这个选项设置为<code>true</code></p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>环境配置</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>Github</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Distant Supervision Relation Extraction with Intra-Bag and Inter-Bag Attentions</title>
     <url>/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/</url>
     <content><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>​        本文提出了一种神经网络关系抽取方法，用于处理远程监督产生的噪音训练数据。先前的研究主要通过设计具有包内注意力的神经网络，专注于句子级的降噪。本文同时考虑了包内注意力与包间注意力机制，以便分别处理语句级别和包级别的噪音。首先，通过使用包内注意力对句子嵌入进行加权来计算相关示例包的表示。在此，将每个可能的关系用作关注度计算的查询，而不是仅使用常规方法中的目标关系。此外，通过使用基于相似度的包间注意力模块对示例包表示加权来计算训练集中共享相同关系标签的一组示例包的表示。最后，在构建关系提取器时，将一个示例包组用作训练样本。New York Times数据集上的实验结果证明了提出的包间和包内注意力模块的有效性。与该数据集上最新方法相比，其方法具有更好的关系 抽取精度。</p>
@@ -1988,37 +2019,6 @@ J(\theta) = -\sum_{(g,k)\in T}logp(k|g;\theta)</script><p>其中，$T$是所有�
       <tags>
         <tag>Relation Extraction</tag>
         <tag>AAAI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo与github搭建个人博客</title>
-    <url>/passages/hexo/</url>
-    <content><![CDATA[<p> <a href="https://github.com/hexojs/hexo" target="_blank" rel="noopener">GitHub</a>个人博客搭建主要有两种方法：一是基于Ruby的jekyll+github方法，二是基于Nodejs的Hexo+github方法。这是本人的第一篇个人博客，希望能够坚持写下去。下面我将介绍下Hexo+github方法的具体过程：</p>
-<h2 id="搭建过程"><a href="#搭建过程" class="headerlink" title="搭建过程"></a>搭建过程</h2><h3 id="Hexo安装"><a href="#Hexo安装" class="headerlink" title="Hexo安装"></a>Hexo安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-<p>第一句是安装<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo</a>，第二句是安装Hexo部署到git page的deployer保证与github关联。</p>
-<h3 id="主题建站"><a href="#主题建站" class="headerlink" title="主题建站"></a>主题建站</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> your_blog_dir</span><br><span class="line">$ hexo init blog</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/dongyuanxin/theme-ad.git themes/ad</span><br></pre></td></tr></table></figure>
-<p>安装完成后，根据自己喜好建立目录。Hexo 将会在指定文件夹中新建所需要的文件。之后我们可以在<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo</a>官网上选取主题从Github上clone到本地的themes文件夹下。</p>
-<p>针对于不同的主题，blog下的_config.yml需进行如下操作更换主题、与Github关联：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">主题名</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:nijunssdut/nijunssdut.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
-<p>在这里，我们配置Github的SSH密钥可以让本地git项目与远程的github建立联系，让我们在本地写了代码之后直接通过git操作就可以实现本地代码库与Github代码库同步。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/ .ssh</span><br><span class="line">$ ssh-keygen -t rsa -C <span class="string">"your_email@example.com"</span></span><br><span class="line"><span class="comment"># 这将按照你提供的邮箱地址，创建一对密钥</span></span><br><span class="line">$ pbcopy &lt; ~/.ssh/id_rsa.pub</span><br><span class="line"><span class="comment"># 将公钥的内容复制到系统粘贴板</span></span><br></pre></td></tr></table></figure>
-<p>之后在Github的Account Settings-SSH Keys中粘贴添加密钥即可。</p>
-<p>更多信息详见: <a href="https://blog.csdn.net/grave2015/article/details/79961843" target="_blank" rel="noopener">参考博客</a></p>
-<h3 id="配置与测试"><a href="#配置与测试" class="headerlink" title="配置与测试"></a>配置与测试</h3><p>这部分主要介绍Hexo命令的使用。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo generate</span><br><span class="line">$ hexo server</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>hexo clean与hexo generate一般一起使用清理并生成编写内容，执行完hexo server后可在本地使用<a href="https://localhost:4000" target="_blank" rel="noopener">https://localhost:4000</a> 查看建站情况，hexo deploy会更新Github端个人博客的内容：<a href="https://nijunssdut.github.io">Jun的个人主页</a></p>
-<h3 id="Markdown写作"><a href="#Markdown写作" class="headerlink" title="Markdown写作"></a>Markdown写作</h3><p>本人使用Mac OS，推荐Typora软件进行Markdown编写。Typora是一款轻便简洁的Markdown编辑器，支持即时渲染技术。</p>
-<p>Typora语法相对简单，可参考<a href="https://www.jianshu.com/p/b7fd16a44508" target="_blank" rel="noopener">简书typora</a>、<a href="https://www.cnblogs.com/xupccc/p/9545687.html" target="_blank" rel="noopener">博客园typora</a>。</p>
-<h1 id="Hexo博客内容图片显示问题"><a href="#Hexo博客内容图片显示问题" class="headerlink" title="Hexo博客内容图片显示问题"></a>Hexo博客内容图片显示问题</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install eslint</span><br><span class="line">$ npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
-<p>由于缺少eslint依赖直接安装Hexo图片插件会有警告。完成安装后用hexo新建文章的时候会发现_posts目录下面会多出一个和文章名字一样的文件夹。图片就可以放在文件夹下面。插入图片的方式采用Markdown语法即可。</p>
-<p><strong>Note:</strong>把主页配置文件<code>_config.yml</code> 里的<code>post_asset_folder:</code>这个选项设置为<code>true</code></p>
-<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>环境配置</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>Github</tag>
       </tags>
   </entry>
   <entry>
