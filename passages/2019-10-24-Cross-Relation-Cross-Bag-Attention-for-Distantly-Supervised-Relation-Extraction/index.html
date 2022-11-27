@@ -485,18 +485,31 @@
 <p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/C2SA.png" alt="C2SA"></p>
 <p>通常，神经网络特征抽取器可以被看作是一个神经网络句子编码器，它可以将句子编码成低维、固定长度的向量。本文在介绍方法默认采用CNN网络结构。</p>
 <h2 id="输入表示"><a href="#输入表示" class="headerlink" title="输入表示"></a>输入表示</h2><p>encode in an entity-aware manner.预训练词向量，计算到两实体相对位置，位置有对应的位置编码表。位置编码表是随机初始化的并且在整个模型训练过程中进行更新。句子最大长度$m$有限，对于短句子，我们pad其他部分是0。</p>
-<h2 id="神经网络特征抽取器"><a href="#神经网络特征抽取器" class="headerlink" title="神经网络特征抽取器"></a>神经网络特征抽取器</h2><p>文章采用piecewise-CNN，由卷积层和分段最大池化层。卷积层，输出结果$c$计算方法如下：<br>$$<br>c_{i,j} = P_i \circ C_{j,j+l-1}<br>$$<br>其中$P_i$是第i层的卷积核，$l$是核宽，$C_{i,j}$是从词$w_i$到$w_j$的滑动窗口来自句子$C$，分段最大池化的使用是考虑了考虑了关系抽取任务具体的情境的，句子根据实体对分割成三部分，分别对每一部分采用最大池化处理，将三部分特征输出并连接，得到特征向量$x_i$，最后应用双曲正切函数处理输出的特征向量$x_i$。</p>
+<h2 id="神经网络特征抽取器"><a href="#神经网络特征抽取器" class="headerlink" title="神经网络特征抽取器"></a>神经网络特征抽取器</h2><p>文章采用piecewise-CNN，由卷积层和分段最大池化层。卷积层，输出结果$c$计算方法如下：</p>
+<script type="math/tex; mode=display">
+c_{i,j} = P_i \circ C_{j,j+l-1}</script><p>其中$P<em>i$是第i层的卷积核，$l$是核宽，$C</em>{i,j}$是从词$w_i$到$w_j$的滑动窗口来自句子$C$，分段最大池化的使用是考虑了考虑了关系抽取任务具体的情境的，句子根据实体对分割成三部分，分别对每一部分采用最大池化处理，将三部分特征输出并连接，得到特征向量$x_i$，最后应用双曲正切函数处理输出的特征向量$x_i$。</p>
 <p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/PCNN.png" alt="PCNN"></p>
-<h2 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h2><p>为计算每个关系的置信度，本文采用线性投影与softmax函数计算条件概率，另外本文采用droput策略防止过拟合。Dropout prevents co-adaptation of hidden units by randomly setting them to zero for a proportion $p$，故输出公式计算如下：<br>$$<br>o = W \cdot(f \bigodot h)<br>$$<br>其中，h是随机Bernoulli变量向量使得概率$p$为1。</p>
+<h2 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h2><p>为计算每个关系的置信度，本文采用线性投影与softmax函数计算条件概率，另外本文采用droput策略防止过拟合。Dropout prevents co-adaptation of hidden units by randomly setting them to zero for a proportion $p$，故输出公式计算如下：</p>
+<script type="math/tex; mode=display">
+o = W \cdot(f \bigodot h)</script><p>其中，h是随机Bernoulli变量向量使得概率$p$为1。</p>
 <h2 id="Cross-relation-Selective-Attention"><a href="#Cross-relation-Selective-Attention" class="headerlink" title="Cross-relation Selective Attention"></a>Cross-relation Selective Attention</h2><p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/cross-relation-attention.png" alt="cross-relation-attention"></p>
-<p>其目的旨在减少噪声或错误匹配句子的影响，计算选择注意力基于句子与关系间的相似性：<br>$$<br>S_{i,j,k} = \frac{x_{i,j}\cdot r_k}{||x_{i,j}||||r_k||}<br>$$<br>其中$r_k$是注意力参数对应于第k个关系。</p>
+<p>其目的旨在减少噪声或错误匹配句子的影响，计算选择注意力基于句子与关系间的相似性：</p>
+<script type="math/tex; mode=display">
+S_{i,j,k} = \frac{x_{i,j}\cdot r_k}{||x_{i,j}||||r_k||}</script><p>其中$r_k$是注意力参数对应于第k个关系。</p>
 <p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/similarity-correlation-matrix.png" alt="similarity-correlation-matrix"></p>
-<p>为了捕获关系之间的相关性，我们使用bayes规则计算期望注意权重：<br>$$<br>P(j_{th}sentence|k_{th}relation) = \frac{P(k_{th}relation|j_{th}sentence)}{\sum_{\hat j=1}^{n_b}P(k_{th}relation|\hat j_{th}sentence)P(\hat j_{th}sentence)}<br>$$<br>本文假设$P(j_{th}sentence)$是均匀分布，采用softmax函数计算$P(k_{th}relation|j_{th}sentence)$<br>$$<br>P(k_{th}relation|j_{th}sentence) = \frac{e^{S_{i,j,k}}}{\sum_{\hat k=1}^{n_r}e^{S_{i,j,k}}}<br>$$<br>简化概念，定义计算变量$P(k_{th}relation|j_{th}sentence)$简化为$\alpha_{j,k}$，变量$P(j_{th}sentence|k_{th}relation)$简化为$\beta_{j,k}$，因此属于第k个关系的包特征$B_i$可以计算为：<br>$$<br>b_{i,k} = \sum_{\hat j=1}^{n_b}\beta_{\hat j,k}x_{i,\hat j}<br>$$<br>cross-relation selective attention不仅仅依赖于目标关系句子的相似性，也依赖于其他关系。例如在下图中$x_2$和$x_4$与$r_1$有相似的相似度，但是$x_4$更倾向于表示$r_3$关系。因此模型倾向于使用$x_2$特征生成bag特征并用此预测$r_1$关系。</p>
+<p>为了捕获关系之间的相关性，我们使用bayes规则计算期望注意权重：</p>
+<script type="math/tex; mode=display">
+P(j_{th}sentence|k_{th}relation) = \frac{P(k_{th}relation|j_{th}sentence)}{\sum_{\hat j=1}^{n_b}P(k_{th}relation|\hat j_{th}sentence)P(\hat j_{th}sentence)}</script><p>本文假设$P(j<em>{th}sentence)$是均匀分布，采用softmax函数计算$P(k</em>{th}relation|j_{th}sentence)$</p>
+<script type="math/tex; mode=display">
+P(k_{th}relation|j_{th}sentence) = \frac{e^{S_{i,j,k}}}{\sum_{\hat k=1}^{n_r}e^{S_{i,j,k}}}</script><p>简化概念，定义计算变量$P(k<em>{th}relation|j</em>{th}sentence)$简化为$\alpha<em>{j,k}$，变量$P(j</em>{th}sentence|k<em>{th}relation)$简化为$\beta</em>{j,k}$，因此属于第k个关系的包特征$B_i$可以计算为：</p>
+<script type="math/tex; mode=display">
+b_{i,k} = \sum_{\hat j=1}^{n_b}\beta_{\hat j,k}x_{i,\hat j}</script><p>cross-relation selective attention不仅仅依赖于目标关系句子的相似性，也依赖于其他关系。例如在下图中$x_2$和$x_4$与$r_1$有相似的相似度，但是$x_4$更倾向于表示$r_3$关系。因此模型倾向于使用$x_2$特征生成bag特征并用此预测$r_1$关系。</p>
 <h2 id="Cross-bag-Selective-Attention"><a href="#Cross-bag-Selective-Attention" class="headerlink" title="Cross-bag Selective Attention"></a>Cross-bag Selective Attention</h2><p>句子级注意力机制假设在包中至少一句话表达实体对的某种关系，远程监督在句子包级别存在噪音。可能大量关系对不能发现知识库中给定的表达。这种实体对会导致句子级关系抽取存在不匹配或噪声训练示例。</p>
 <p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/cross-bag-attention.png" alt="cross-bag-attention"></p>
-<p>处理办法：本文结合几个包含相同关系类型的句子包，将注意力集中到更高质量的部分，定义superbag为$B=\lbrace B_1,B_2,…,B_{n_s}\rbrace$，其中$n_s$是超级包的大小，所有的$B_i$都由第k个关系类型表示。采用attention layer结合包，公式如下：<br>$$<br>f = \sum_{i=1}^{n_s}\gamma_i \cdot b_{i,k}<br>$$</p>
-<p>$$<br>\gamma_i = \frac{e^{S(r_k,b_{i,k})}}{\sum_{j=1}^{n_s}e^{S(r_k,b_{j,k})}}<br>$$</p>
-<p>$S(r_k,b_{i,k})$即上文提到的余弦相似度计算，$r_k$表示注意力参数对应于第j个关系，$b_{i,k}$是包的表示对应于$B_i$的第k种关系。</p>
+<p>处理办法：本文结合几个包含相同关系类型的句子包，将注意力集中到更高质量的部分，定义superbag为$B=\lbrace B<em>1,B_2,…,B</em>{n_s}\rbrace$，其中$n_s$是超级包的大小，所有的$B_i$都由第k个关系类型表示。采用attention layer结合包，公式如下：</p>
+<script type="math/tex; mode=display">
+f = \sum_{i=1}^{n_s}\gamma_i \cdot b_{i,k}</script><script type="math/tex; mode=display">
+\gamma_i = \frac{e^{S(r_k,b_{i,k})}}{\sum_{j=1}^{n_s}e^{S(r_k,b_{j,k})}}</script><p>$S(r<em>k,b</em>{i,k})$即上文提到的余弦相似度计算，$r<em>k$表示注意力参数对应于第j个关系，$b</em>{i,k}$是包的表示对应于$B_i$的第k种关系。</p>
 <p>最终模型目标函数训练采用负对数似然实现。</p>
 <h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><p>因为$C^2SA$与模型有关，只用于学习阶段，因此本文使用两种类型的神经关系提取器进行实验。使用人工标注的测试库在句子级关系抽取任务上进行实验取得了state-of-the-art结果。进一步采用case study与ablation实验，验证cross-sentence 与cross-bag选择注意力机制的有效性。</p>
 <h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>训练集于之前一致使用NYT10作为训练集，53个分类，数据集包含522611个句子，281270实体对与18252知识库事实。</p>
@@ -526,7 +539,7 @@
 <h3 id="Effectiveness-of-Cross-bag-Selective-Attention"><a href="#Effectiveness-of-Cross-bag-Selective-Attention" class="headerlink" title="Effectiveness of Cross-bag Selective Attention"></a>Effectiveness of Cross-bag Selective Attention</h3><p>下图显示一个表示关系类型lived_in的superbag，它两个句子包。经过观察发现仅有一个句子正确的标注在第一个句子包中，二第二个句子包所有句子均不匹配知识库反应的关系事实。cross-bag选择注意力允许模型关注更多句子包从而获得更高的质量。</p>
 <p><img src="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/case-study.png" alt="case-study"></p>
 <h1 id="结论与展望"><a href="#结论与展望" class="headerlink" title="结论与展望"></a>结论与展望</h1><p>本文提出cross-relation cross-bag 选择注意力，建立一个实体关系模型有效地学习真实表达关系的特征从包含噪声的远程监督数据中。实验证明所提出的模型能更好的学习高质量的bag feature对比于现存文献。跨包注意力选择机制有助于进一步提升性能通过使用高质量的bag features。</p>
-
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -610,6 +623,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/passages/2019-10-28-ARNOR/" rel="prev" title="ARNOR：Attention Regularization based Noise Reduction for Distant Supervision Relation Classification">
+                ARNOR：Attention Regularization based Noise Reduction for Distant Supervision Relation Classification <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -677,7 +694,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -821,7 +838,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -906,7 +925,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

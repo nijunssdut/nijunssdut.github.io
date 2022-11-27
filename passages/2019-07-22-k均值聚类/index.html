@@ -94,18 +94,18 @@
 
 
 
-  <meta name="description" content="K均值的基本思想k均值是最基础和最常用的聚类算法。它的基本思想是通过迭代方式寻找K个簇（cluster）的一种划分方案，使得聚类结果对应的代价函数最小。代价函数可以定义为各个样本距离所属簇中心点的误差平方和：$$J(c,\mu) = \sum_{i=1}^{M}||x_i-\mu_{c_i}||^2$$其中$x_i$代表第i个样本，$c_i$是$x_i$所属于的簇，$\mu_{c_i}$代表簇对应">
+  <meta name="description" content="K均值的基本思想k均值是最基础和最常用的聚类算法。它的基本思想是通过迭代方式寻找K个簇（cluster）的一种划分方案，使得聚类结果对应的代价函数最小。代价函数可以定义为各个样本距离所属簇中心点的误差平方和：  J(c,\mu) = \sum_{i=1}^{M}||x_i-\mu_{c_i}||^2其中$xi$代表第i个样本，$c_i$是$x_i$所属于的簇，$\mu{c_i}$代表簇对应的中心点">
 <meta name="keywords" content="笔试面试,无监督学习,聚类">
 <meta property="og:type" content="article">
 <meta property="og:title" content="K均值聚类">
 <meta property="og:url" content="http://nijunssdut.github.io/passages/2019-07-22-k均值聚类/index.html">
 <meta property="og:site_name" content="Jun的个人随笔">
-<meta property="og:description" content="K均值的基本思想k均值是最基础和最常用的聚类算法。它的基本思想是通过迭代方式寻找K个簇（cluster）的一种划分方案，使得聚类结果对应的代价函数最小。代价函数可以定义为各个样本距离所属簇中心点的误差平方和：$$J(c,\mu) = \sum_{i=1}^{M}||x_i-\mu_{c_i}||^2$$其中$x_i$代表第i个样本，$c_i$是$x_i$所属于的簇，$\mu_{c_i}$代表簇对应">
+<meta property="og:description" content="K均值的基本思想k均值是最基础和最常用的聚类算法。它的基本思想是通过迭代方式寻找K个簇（cluster）的一种划分方案，使得聚类结果对应的代价函数最小。代价函数可以定义为各个样本距离所属簇中心点的误差平方和：  J(c,\mu) = \sum_{i=1}^{M}||x_i-\mu_{c_i}||^2其中$xi$代表第i个样本，$c_i$是$x_i$所属于的簇，$\mu{c_i}$代表簇对应的中心点">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-07-22T07:56:34.146Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="K均值聚类">
-<meta name="twitter:description" content="K均值的基本思想k均值是最基础和最常用的聚类算法。它的基本思想是通过迭代方式寻找K个簇（cluster）的一种划分方案，使得聚类结果对应的代价函数最小。代价函数可以定义为各个样本距离所属簇中心点的误差平方和：$$J(c,\mu) = \sum_{i=1}^{M}||x_i-\mu_{c_i}||^2$$其中$x_i$代表第i个样本，$c_i$是$x_i$所属于的簇，$\mu_{c_i}$代表簇对应">
+<meta name="twitter:description" content="K均值的基本思想k均值是最基础和最常用的聚类算法。它的基本思想是通过迭代方式寻找K个簇（cluster）的一种划分方案，使得聚类结果对应的代价函数最小。代价函数可以定义为各个样本距离所属簇中心点的误差平方和：  J(c,\mu) = \sum_{i=1}^{M}||x_i-\mu_{c_i}||^2其中$xi$代表第i个样本，$c_i$是$x_i$所属于的簇，$\mu{c_i}$代表簇对应的中心点">
 
 
 
@@ -447,7 +447,9 @@
       
 
       
-        <h1 id="K均值的基本思想"><a href="#K均值的基本思想" class="headerlink" title="K均值的基本思想"></a>K均值的基本思想</h1><p>k均值是最基础和最常用的聚类算法。它的基本思想是通过迭代方式寻找K个簇（cluster）的一种划分方案，使得聚类结果对应的代价函数最小。代价函数可以定义为各个样本距离所属簇中心点的误差平方和：<br>$$<br>J(c,\mu) = \sum_{i=1}^{M}||x_i-\mu_{c_i}||^2<br>$$<br>其中$x_i$代表第i个样本，$c_i$是$x_i$所属于的簇，$\mu_{c_i}$代表簇对应的中心点，$M$是样本总数。</p>
+        <h1 id="K均值的基本思想"><a href="#K均值的基本思想" class="headerlink" title="K均值的基本思想"></a>K均值的基本思想</h1><p>k均值是最基础和最常用的聚类算法。它的基本思想是通过迭代方式寻找K个簇（cluster）的一种划分方案，使得聚类结果对应的代价函数最小。代价函数可以定义为各个样本距离所属簇中心点的误差平方和：</p>
+<script type="math/tex; mode=display">
+J(c,\mu) = \sum_{i=1}^{M}||x_i-\mu_{c_i}||^2</script><p>其中$x<em>i$代表第i个样本，$c_i$是$x_i$所属于的簇，$\mu</em>{c_i}$代表簇对应的中心点，$M$是样本总数。</p>
 <h1 id="K均值算法的优缺点是什么？如何对其进行调优？"><a href="#K均值算法的优缺点是什么？如何对其进行调优？" class="headerlink" title="K均值算法的优缺点是什么？如何对其进行调优？"></a>K均值算法的优缺点是什么？如何对其进行调优？</h1><p>k均值算法有一些缺点，例如受初值和离群点的影响每次的结果不稳定、结果通常不是全局最优而是局部最优解、无法很好地解决数据簇分布差别比较大的情况（比如一类是另一类样本数量的100倍）、不太适用于离散分类等。但是瑕不掩瑜，k均值聚类的优点也很明显：主要体现在：对于大数据集，K均值聚类算法相对是可伸缩和高效的，它的计算复杂度是O(NKt)近乎线性，其中N是数据对象的数目，K是聚类的簇数。尽管算法经常以局部最优结束，但一般情况下达到的局部最优已经可以满足聚类的需求。</p>
 <p><strong>K均值算法的调优一般可以从以下几个角度出发。</strong></p>
 <p>（1）数据归一化和离群点处理</p>
@@ -474,11 +476,15 @@
 <p>如果希望样本不划分到单一的类中，可以使用模糊C均值或者高斯混合模型。</p>
 <h1 id="最大期望算法（EM算法）"><a href="#最大期望算法（EM算法）" class="headerlink" title="最大期望算法（EM算法）"></a>最大期望算法（EM算法）</h1><p>K均值聚类的迭代算法实际上是一种最大期望算法。简称EM算法。EM算法解决的是在概率模型中含有无法观测的隐含变量情况下的参数估计问题。由于隐变量是未知的，无法直接通过最大似然估计求解参数，这时需要利用EM算法来求解。</p>
 <p>EM算法框架总结如下，由以下两个步骤交替进行直到收敛：</p>
-<p>（1）E步骤：计算隐变量的期望<br>$$<br>Q_i(z^{(i)}) = P(z^{(i)}|x^{(i)},\theta)<br>$$<br>（2） M步骤：最大化，目的是通过最大化这个下界可以使得待优化函数向更好的方向改进。<br>$$<br>\theta = argmax\sum_{i=1}^{m}\sum_{z^{(i)}}Q_i(z^{(i)})\log\frac{P(x^{(i)},z^{(i)}| \theta)}{Q_i(z^{(i)})}<br>$$<br>K均值算法等价于用EM算法求解含隐变量的最大似然问题。</p>
+<p>（1）E步骤：计算隐变量的期望</p>
+<script type="math/tex; mode=display">
+Q_i(z^{(i)}) = P(z^{(i)}|x^{(i)},\theta)</script><p>（2） M步骤：最大化，目的是通过最大化这个下界可以使得待优化函数向更好的方向改进。</p>
+<script type="math/tex; mode=display">
+\theta = argmax\sum_{i=1}^{m}\sum_{z^{(i)}}Q_i(z^{(i)})\log\frac{P(x^{(i)},z^{(i)}| \theta)}{Q_i(z^{(i)})}</script><p>K均值算法等价于用EM算法求解含隐变量的最大似然问题。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li>《百面机器学习》</li>
 </ul>
-
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -635,7 +641,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -779,7 +785,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -864,7 +872,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

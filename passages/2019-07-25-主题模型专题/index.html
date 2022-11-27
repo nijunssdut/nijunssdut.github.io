@@ -458,13 +458,25 @@
 <p>假设有K个主题，M篇文章；对语料库中的任意文章d，假设该文章有N个词，则对于其中的每一个词，我们首先选择一个主题z，然后在当前主题的基础上生成一个词w。</p>
 <p>（1）D代表文档，Z代表主题（隐含类别），W代表单词；$P(d_i)$表示文档$d_i$的出现概率，$P(z_k|d_i)$表示文档$d_i$中主题$z_k$的出现概率，$P(w_j|z_k)$表示给定主题$z_k$出现单词$w_j$的概率。</p>
 <p>（2）每个主题在所有词项上服从多项分布，每个文档在所有主题上服从多项分布。</p>
-<p>（3）给定文章d，生成词w的概率可以表示为：<br>$$<br>p(w|d) = \sum_zp(w|z,d)p(z|d)<br>$$<br>这里我们做一个简化，假设给定主题z的条件下，生成词w的概率是与特定的文章无关的，则公式可以简化为：<br>$$<br>p(w|d) =\sum_zp(w|z)p(z|d)<br>$$<br>（4）整个语料库中的文本生成概率可以用似然函数表示为：<br>$$<br>L=\prod_m^M\prod_m^Mp(d_w,w_n)^{c(d_m,w_n)}<br>$$<br>其中$p(d_m,w_n)$是在第m篇文章$d_m$中，出现单词$w_n$的概率，<strong>即联合概率分布</strong>；$c(d_m,w_m)$是在第m篇文章$d_m$中，单词$w_n$出现的次数。<strong>利用对数似然简化计算得：</strong><br>$$<br>L = \sum_m^M\sum_m^Mc(d_m,w_m)\log(d_m,w_n)\<br>= \sum_m^M\sum_n^Mc(d_m,w_n)\log\sum_k^Kp(d_m)p(z_k|d_m)p(w_n|z_k)<br>$$<br>在上面的公式中，定义在文章上的主题分布$p(z_k|d_m)$和定义在主题上的词分布$p(w_n|z_k)$是待估计的参数。<strong>由于参数中包含的$z_k$是隐含变量（即无法直接观测到的变量），因此无法利用最大似然估计直接求解，可以利用最大期望算法（EM）来解决。</strong></p>
+<p>（3）给定文章d，生成词w的概率可以表示为：</p>
+<script type="math/tex; mode=display">
+p(w|d) = \sum_zp(w|z,d)p(z|d)</script><p>这里我们做一个简化，假设给定主题z的条件下，生成词w的概率是与特定的文章无关的，则公式可以简化为：</p>
+<script type="math/tex; mode=display">
+p(w|d) =\sum_zp(w|z)p(z|d)</script><p>（4）整个语料库中的文本生成概率可以用似然函数表示为：</p>
+<script type="math/tex; mode=display">
+L=\prod_m^M\prod_m^Mp(d_w,w_n)^{c(d_m,w_n)}</script><p>其中$p(d_m,w_n)$是在第m篇文章$d_m$中，出现单词$w_n$的概率，<strong>即联合概率分布</strong>；$c(d_m,w_m)$是在第m篇文章$d_m$中，单词$w_n$出现的次数。<strong>利用对数似然简化计算得：</strong></p>
+<script type="math/tex; mode=display">
+L = \sum_m^M\sum_m^Mc(d_m,w_m)\log(d_m,w_n)\\
+= \sum_m^M\sum_n^Mc(d_m,w_n)\log\sum_k^Kp(d_m)p(z_k|d_m)p(w_n|z_k)</script><p>在上面的公式中，定义在文章上的主题分布$p(z_k|d_m)$和定义在主题上的词分布$p(w_n|z_k)$是待估计的参数。<strong>由于参数中包含的$z_k$是隐含变量（即无法直接观测到的变量），因此无法利用最大似然估计直接求解，可以利用最大期望算法（EM）来解决。</strong></p>
 <p>（5）EM算法的求解过程</p>
 <p>需要求解隐变量$z_k$的后验概率，目标函数建立将约束问题求解使用Lagrange乘子法处理。</p>
 <p>关于EM算法迭代如下：</p>
-<p><strong>M-step：</strong><br>$$<br>p(w_j|z_k) = \frac{\sum_{i}n(d_i,w_j)p(z_k|d_i,w_j)}{\sum_{m=1}^M\sum_in(d_i,w_j)p(z_k|d_i,w_j)}<br>$$</p>
-<p>$$<br>p(z_k|d_i) = \frac{\sum_{j}n(d_i,w_j)p(z_k|d_i,w_j)}{\sum_{k=1}^K\sum_jn(d_i,w_j)p(z_k|d_i,w_j)}<br>$$</p>
-<p><strong>E-step：</strong><br>$$<br>p(z_k|d_i,w_j) = \frac{p(w_j|z_k)p(z_k|d_i)}{\sum_{i=1}^Kp(w_j|z_i)p(z_i|d_i)}<br>$$<br>（6）pLSA总结</p>
+<p><strong>M-step：</strong></p>
+<script type="math/tex; mode=display">
+p(w_j|z_k) = \frac{\sum_{i}n(d_i,w_j)p(z_k|d_i,w_j)}{\sum_{m=1}^M\sum_in(d_i,w_j)p(z_k|d_i,w_j)}</script><script type="math/tex; mode=display">
+p(z_k|d_i) = \frac{\sum_{j}n(d_i,w_j)p(z_k|d_i,w_j)}{\sum_{k=1}^K\sum_jn(d_i,w_j)p(z_k|d_i,w_j)}</script><p><strong>E-step：</strong></p>
+<script type="math/tex; mode=display">
+p(z_k|d_i,w_j) = \frac{p(w_j|z_k)p(z_k|d_i)}{\sum_{i=1}^Kp(w_j|z_i)p(z_i|d_i)}</script><p>（6）pLSA总结</p>
 <ul>
 <li>pLSA应用于信息检索、过滤、自然语言处理等领域，pLSA考虑到词分布和主题分布，使用EM算法来学习参数。</li>
 <li>虽然推导略显复杂，但最终公式简洁清晰，很符合直观理解，需用心琢磨；此外，推导过程使用了EM算法，也是学习EM算法的重要素材。</li>
@@ -476,20 +488,22 @@
 <p>（1）从超参数为$\alpha$的狄利克雷分布中抽样生成文档$d_i$的主题分布$\theta_i$。</p>
 <p>（2）对文档$d_i$中的每一个词进行以下3个操作。</p>
 <ul>
-<li>从代表主题的多项式分布$\theta_i$中抽样生成它所对应的主题$z_{i,j}$。</li>
-<li>从超参数为$\beta$的狄利克雷分布中抽样生成主题$z_{i,j}$对应的词分布$\psi_{z_{i,j}}$。</li>
-<li>从代表词的多项式分布$\psi_{z_{i,j}}$中抽样生成词$w_{i,j}$。</li>
+<li>从代表主题的多项式分布$\theta<em>i$中抽样生成它所对应的主题$z</em>{i,j}$。</li>
+<li>从超参数为$\beta$的狄利克雷分布中抽样生成主题$z<em>{i,j}$对应的词分布$\psi</em>{z_{i,j}}$。</li>
+<li>从代表词的多项式分布$\psi<em>{z</em>{i,j}}$中抽样生成词$w_{i,j}$。</li>
 </ul>
-<p>求解主题分布$\theta_i$以及词分布$\psi_{z_{i,j}}$的期望，可以用吉布斯采样(Gibbs Sampling)的方式实现。</p>
+<p>求解主题分布$\theta<em>i$以及词分布$\psi</em>{z_{i,j}}$的期望，可以用吉布斯采样(Gibbs Sampling)的方式实现。</p>
 <p>首先随机给定每个单词的主题，然后在其他变量固定的情况下，根据转移概率抽样生成每个单词的新主题。对于每个单词来说，<strong>转移概率可以理解为：给定文章中的所有单词以及除自身以外其他所有单词的主题，在此条件下该单词对应为各个新主题的概率。</strong>最后，经过反复迭代，我们可以根据收敛后的采样结果计算主题分布和词分布的期望。</p>
 <h3 id="如何确定LDA模型中的主题个数"><a href="#如何确定LDA模型中的主题个数" class="headerlink" title="如何确定LDA模型中的主题个数"></a>如何确定LDA模型中的主题个数</h3><p>在LDA中，主题的个数K是一个预先指定的超参数。对于模型超参数的选择，实践中的做法一般是将全部数据集分为训练集、验证集和测试集三个部分，然后利用验证集对超参数进行选择。</p>
-<p>为了衡量LDA模型在验证集和测试集上的效果，需要寻找一个合适的评估指标。一个常用的评估指标是困惑度（perplexity）。在文档集合D上，模型的困惑度被定义为：<br>$$<br>perplexity(D) = exp{-\frac{\sum_{d=1}^Mlogp(w_d)}{\sum_{d=1}^MN_d}}<br>$$<br>其中M为文档的总数，$w_d$为文档d中单词所组成的词袋向量，$p(w_d)$为模型所预测的文档d的生成概率，$N_d$为文档d中单词的总数。</p>
+<p>为了衡量LDA模型在验证集和测试集上的效果，需要寻找一个合适的评估指标。一个常用的评估指标是困惑度（perplexity）。在文档集合D上，模型的困惑度被定义为：</p>
+<script type="math/tex; mode=display">
+perplexity(D) = exp\{-\frac{\sum_{d=1}^Mlogp(w_d)}{\sum_{d=1}^MN_d}\}</script><p>其中M为文档的总数，$w_d$为文档d中单词所组成的词袋向量，$p(w_d)$为模型所预测的文档d的生成概率，$N_d$为文档d中单词的总数。</p>
 <p>一开始，随着主题数的增多，模型在训练集和验证集的困惑度呈下降趋势，但当主题数目足够大的时候，会出现过拟合，导致困惑度指标在训练集上继续下降但在验证集上反而增长。这时可以取验证集的困惑度极小值点可能出现在主题数目非常大的时候，然而实际应用并不能承受如此大的主题数目，这时需要在实际应用中合理的主题数目范围内进行选择，比如选择合理范围内困惑度的下降明显变慢（拐点）的时候。</p>
 <p>另一种方法是在LDA基础上融入分层狄利克雷过程（Hierarchical Dirichlet Process,HDP），构成一种非参数主题模型HDP-LDA。非参数主题模型的好处是不需要预先指定主题的个数，模型可以随着文档数目的变化而自动对主题个数进行调整；它的缺点是在LDA基础上融入HDP之后使得整个概率图模型更加复杂，训练速度也更加缓慢，因此在实际应用中还是经常采用第一种方法确定合适的主题数目。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a href="https://www.cnblogs.com/softzrp/p/6964951.html" target="_blank" rel="noopener">主题模型（概率潜语义分析PLSA、隐含狄利克雷分布LDA）</a></li>
 </ul>
-
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -646,7 +660,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -790,7 +804,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -875,7 +891,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

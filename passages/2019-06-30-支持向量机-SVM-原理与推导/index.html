@@ -465,12 +465,59 @@
 </ol>
 <h1 id="2-SVM推导"><a href="#2-SVM推导" class="headerlink" title="2. SVM推导"></a>2. SVM推导</h1><p>线性分类器是最简单的有效分类器形式，SVM则在线性分类器基础上演化而成。</p>
 <p>所谓线性函数，在一维空间中就是一个点，在二维空间中就是一条直线，三维空间就是一个平面，随着维度不断增加，线性函数也不断改变，被叫做超平面。</p>
-<p>SVM的目标就是找到图中的超平面，在任意维空间中，超平面可以表示为函数：<br>$$<br>G(x)=W^TX+b<br>$$<br>一个样本点到$P(X_i,Y_i)$超平面的几何距离为：<br>$$<br>\frac{\left|W^TX_i+b\right|}{\left|{W}\right|}<br>$$<br><strong>Note:</strong>这里的几何距离是距离而非间隔。</p>
-<p>对于正样本$Y_i=1$，意味着该点在超平面正样本一侧：<br>$$<br>W^TX_i+b&gt;0<br>$$<br>对于负样本$Y_i =-1$，意味着该点在超平面负样本一侧：<br>$$<br>W^TX_i+b&lt;0<br>$$<br>所以可用下述公式表示点到超平面的几何距离：<br>$$<br>\frac{Y_i(W^TX_i+b)}{\left|W\right|}<br>$$<br>其中，分子部分表示函数间隔。</p>
-<p>几何间隔可以表示点到超平面的距离，在进行分类过程中使分类更加准确，需要优化所有样本中到分类超平面几何间隔最小点的间隔值更大，所以对于SVM公式的求解转换为了一个最优化问题：<br>$$<br>\max_{W,b}[\min_{X_i}\frac{Y_i(W^TX_i+b)}{\left|W\right|}]<br>$$<br>即求解出最优的$W,b$使得到超平面最近的样本几何间隔最大。</p>
-<p>对于一个超平面，如果等比例缩放$W,b$的值其公式表示的超平面不变，我们可以假设到超平面距离最小的样本点到超平面的函数间隔都大于1（通过缩放可$W,b$以实现）：<br>$$<br>Y_i(W^TX_i+b)\ge1<br>$$<br>由此可以将原最优化问题进行改变为带约束条件的最优化问题，优化目标为：<br>$$<br>\max_{W,b}\frac{1}{\left|W\right|}<br>$$<br>约束条件为：<br>$$<br>Y_i(W^TX_i+b)\ge1，i=1,2,3…k<br>$$<br>为了便于求解，目标函数等价于：<br>$$<br>\min_{W,b}\frac{1}{2}\left|w\right|^2<br>$$<br>下面便对该式子进行求解。对于没有约束的最优化问题，我们可以采用求导的方式求解出最优解。针对带约束最优化问题，一个比较好的方法是将其转化为没有约束条件的最优化问题，我们将带约束最优化问题泛化为：<br>$$<br>\min_xf(x)\\s.t.\\g(x)\le0,i=1,2,3…k\\h(x)=0,i=1,2,3…l<br>$$<br>泛化问题可以等价于求：<br>$$<br>\min_{x}\max_{\alpha,\beta}f(x)+\sum_{i=1}^k\alpha g_i(x)+\sum_{j=1}^l\beta h_j(x)<br>$$<br>其中$\alpha$大于零，$\beta$不等于零。若$g(x)$大于零，而$\alpha$也大于零，对于可变$\alpha$项则不存在极大值，关于$\beta$同理，其可正可负不为0，若$h(x)$不能满足等于零，在该项上也不存在极大值，通过max求极值实现了对原有约束条件的保留。</p>
-<p>基于此SVM最优化方程转化为：<br>$$<br>\min_{W,b}\max_{\alpha}\frac{1}{2}\left|w\right|^2+\sum_{i=1}^k\alpha_{i}(1-Y_i(W^TX_i+b))\\<br>s.t.\\<br>\alpha_i\gt0,i=1,2,3…k<br>$$<br>在满足KTT条件的情况下满足拉格朗日对偶性，其等价于优化方程：<br>$$<br>\max_{\alpha}\min_{W,b}\frac{1}{2}\left|w\right|^2+\sum_{i=1}^k\alpha_{i}(1-Y_i(W^TX_i+b))\\<br>s.t.\\<br>\alpha_i\gt0,i=1,2,3…k\\<br>1-Y_i(W^TX_i+b)\le0,i=1,2,3…k\\<br>\alpha_{i}(1-Y_i(W^TX_i+b))=0,i=1,2,3…k<br>$$<br>对于该最优化的方程内部进行求导：<br>$$<br>\frac{\partial L}{\partial W} =W-\sum_{i=1}^k\alpha_{i}Y_iX_i\\<br>\frac{\partial L}{\partial b} =-\sum_{i=1}^k\alpha_{i}Y_i<br>$$<br>在偏导数为0时取得极值。<br>$$<br>W= \sum_{i=1}^k\alpha_{i}Y_iX_i\\<br>\sum_{i=1}^k\alpha_{i}Y_i=0<br>$$<br>将求导后的等式带入原方程可以得到最终关于$\alpha$的最优化方程：<br>$$<br>\max_{\alpha}\sum_{i=1}^k\alpha_i-\frac{1}{2}\sum_{i=1}^k\alpha_{i}Y_iX_i^T\sum_{j=1}^k\alpha_jY_jX_j\\<br>s.t.\\<br>\alpha_i\gt0,i=1,2,3…k\\<br>1-Y_i(W^TX_i+b)\le0,i=1,2,3…k\\<br>\alpha_{i}(1-Y_i(W^TX_i+b))=0,i=1,2,3…k\\<br>\sum_{i=1}^k\alpha_iY_i=0<br>$$<br>求出该式子中各个$\alpha$的值，由于$W,b$与$\alpha$均有等价关系，便可以得到SVM模型的$W,b$参数。上面式子显然无法通过求导得到最优的$\alpha$值，可以使用Sequential Minimal Optimization(SMO)方法去进行求解。</p>
-
+<p>SVM的目标就是找到图中的超平面，在任意维空间中，超平面可以表示为函数：</p>
+<script type="math/tex; mode=display">
+G(x)=W^TX+b</script><p>一个样本点到$P(X_i,Y_i)$超平面的几何距离为：</p>
+<script type="math/tex; mode=display">
+\frac{\left|W^TX_i+b\right|}{\left\|{W}\right\|}</script><p><strong>Note:</strong>这里的几何距离是距离而非间隔。</p>
+<p>对于正样本$Y_i=1$，意味着该点在超平面正样本一侧：</p>
+<script type="math/tex; mode=display">
+W^TX_i+b>0</script><p>对于负样本$Y_i =-1$，意味着该点在超平面负样本一侧：</p>
+<script type="math/tex; mode=display">
+W^TX_i+b<0</script><p>所以可用下述公式表示点到超平面的几何距离：</p>
+<script type="math/tex; mode=display">
+\frac{Y_i(W^TX_i+b)}{\left\|W\right\|}</script><p>其中，分子部分表示函数间隔。</p>
+<p>几何间隔可以表示点到超平面的距离，在进行分类过程中使分类更加准确，需要优化所有样本中到分类超平面几何间隔最小点的间隔值更大，所以对于SVM公式的求解转换为了一个最优化问题：</p>
+<script type="math/tex; mode=display">
+\max_{W,b}[\min_{X_i}\frac{Y_i(W^TX_i+b)}{\left\|W\right\|}]</script><p>即求解出最优的$W,b$使得到超平面最近的样本几何间隔最大。</p>
+<p>对于一个超平面，如果等比例缩放$W,b$的值其公式表示的超平面不变，我们可以假设到超平面距离最小的样本点到超平面的函数间隔都大于1（通过缩放可$W,b$以实现）：</p>
+<script type="math/tex; mode=display">
+Y_i(W^TX_i+b)\ge1</script><p>由此可以将原最优化问题进行改变为带约束条件的最优化问题，优化目标为：</p>
+<script type="math/tex; mode=display">
+\max_{W,b}\frac{1}{\left\|W\right\|}</script><p>约束条件为：</p>
+<script type="math/tex; mode=display">
+Y_i(W^TX_i+b)\ge1，i=1,2,3...k</script><p>为了便于求解，目标函数等价于：</p>
+<script type="math/tex; mode=display">
+\min_{W,b}\frac{1}{2}\left\|w\right\|^2</script><p>下面便对该式子进行求解。对于没有约束的最优化问题，我们可以采用求导的方式求解出最优解。针对带约束最优化问题，一个比较好的方法是将其转化为没有约束条件的最优化问题，我们将带约束最优化问题泛化为：</p>
+<script type="math/tex; mode=display">
+\min_xf(x)\\\\s.t.\\\\g(x)\le0,i=1,2,3...k\\\\h(x)=0,i=1,2,3...l</script><p>泛化问题可以等价于求：</p>
+<script type="math/tex; mode=display">
+\min_{x}\max_{\alpha,\beta}f(x)+\sum_{i=1}^k\alpha g_i(x)+\sum_{j=1}^l\beta h_j(x)</script><p>其中$\alpha$大于零，$\beta$不等于零。若$g(x)$大于零，而$\alpha$也大于零，对于可变$\alpha$项则不存在极大值，关于$\beta$同理，其可正可负不为0，若$h(x)$不能满足等于零，在该项上也不存在极大值，通过max求极值实现了对原有约束条件的保留。</p>
+<p>基于此SVM最优化方程转化为：</p>
+<script type="math/tex; mode=display">
+\min_{W,b}\max_{\alpha}\frac{1}{2}\left\|w\right\|^2+\sum_{i=1}^k\alpha_{i}(1-Y_i(W^TX_i+b))\\\\
+s.t.\\\\
+\alpha_i\gt0,i=1,2,3...k</script><p>在满足KTT条件的情况下满足拉格朗日对偶性，其等价于优化方程：</p>
+<script type="math/tex; mode=display">
+\max_{\alpha}\min_{W,b}\frac{1}{2}\left\|w\right\|^2+\sum_{i=1}^k\alpha_{i}(1-Y_i(W^TX_i+b))\\\\
+s.t.\\\\
+\alpha_i\gt0,i=1,2,3...k\\\\
+1-Y_i(W^TX_i+b)\le0,i=1,2,3...k\\\\
+\alpha_{i}(1-Y_i(W^TX_i+b))=0,i=1,2,3...k</script><p>对于该最优化的方程内部进行求导：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L}{\partial W} =W-\sum_{i=1}^k\alpha_{i}Y_iX_i\\\\
+\frac{\partial L}{\partial b} =-\sum_{i=1}^k\alpha_{i}Y_i</script><p>在偏导数为0时取得极值。</p>
+<script type="math/tex; mode=display">
+W= \sum_{i=1}^k\alpha_{i}Y_iX_i\\\\
+\sum_{i=1}^k\alpha_{i}Y_i=0</script><p>将求导后的等式带入原方程可以得到最终关于$\alpha$的最优化方程：</p>
+<script type="math/tex; mode=display">
+\max_{\alpha}\sum_{i=1}^k\alpha_i-\frac{1}{2}\sum_{i=1}^k\alpha_{i}Y_iX_i^T\sum_{j=1}^k\alpha_jY_jX_j\\\\
+s.t.\\\\
+\alpha_i\gt0,i=1,2,3...k\\\\
+1-Y_i(W^TX_i+b)\le0,i=1,2,3...k\\\\
+\alpha_{i}(1-Y_i(W^TX_i+b))=0,i=1,2,3...k\\\\
+\sum_{i=1}^k\alpha_iY_i=0</script><p>求出该式子中各个$\alpha$的值，由于$W,b$与$\alpha$均有等价关系，便可以得到SVM模型的$W,b$参数。上面式子显然无法通过求导得到最优的$\alpha$值，可以使用Sequential Minimal Optimization(SMO)方法去进行求解。</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -625,7 +672,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -769,7 +816,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -854,7 +903,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

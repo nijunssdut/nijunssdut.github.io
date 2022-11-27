@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="摘要（Distant supervision）远程监督的问题在于引入了大量噪声标签，即句子并不能表达标注关系。本文提出ARNOR，一种先进的基于注意力正则化的远程监督关系分类降噪框架。ARNOR假设一个可信关系标注是可被神经网络注意力模型解释的。本文首先引入注意力正则化强迫关注那些可解释关系标签的模式。之后，如果学到的模型能够清晰地定位到训练集中侯选对示例的关系模式，这样我们选择该示例作为可信示例">
+<meta name="keywords" content="Relation Extraction,ACL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ARNOR：Attention Regularization based Noise Reduction for Distant Supervision Relation Classification">
+<meta property="og:url" content="http://nijunssdut.github.io/passages/2019-10-28-ARNOR/index.html">
+<meta property="og:site_name" content="Jun的个人随笔">
+<meta property="og:description" content="摘要（Distant supervision）远程监督的问题在于引入了大量噪声标签，即句子并不能表达标注关系。本文提出ARNOR，一种先进的基于注意力正则化的远程监督关系分类降噪框架。ARNOR假设一个可信关系标注是可被神经网络注意力模型解释的。本文首先引入注意力正则化强迫关注那些可解释关系标签的模式。之后，如果学到的模型能够清晰地定位到训练集中侯选对示例的关系模式，这样我们选择该示例作为可信示例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-29T13:16:02.602Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ARNOR：Attention Regularization based Noise Reduction for Distant Supervision Relation Classification">
+<meta name="twitter:description" content="摘要（Distant supervision）远程监督的问题在于引入了大量噪声标签，即句子并不能表达标注关系。本文提出ARNOR，一种先进的基于注意力正则化的远程监督关系分类降噪框架。ARNOR假设一个可信关系标注是可被神经网络注意力模型解释的。本文首先引入注意力正则化强迫关注那些可解释关系标签的模式。之后，如果学到的模型能够清晰地定位到训练集中侯选对示例的关系模式，这样我们选择该示例作为可信示例">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nijunssdut.github.io/passages/2019-10-28-ARNOR/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>ARNOR：Attention Regularization based Noise Reduction for Distant Supervision Relation Classification | Jun的个人随笔</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jun的个人随笔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2019-10-28-ARNOR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="NI,JUN">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jun的个人随笔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ARNOR：Attention Regularization based Noise Reduction for Distant Supervision Relation Classification
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-28 13:55:39" itemprop="dateCreated datePublished" datetime="2019-10-28T13:55:39+08:00">2019-10-28</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-29 21:16:02" itemprop="dateModified" datetime="2019-10-29T21:16:02+08:00">2019-10-29</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/文献阅读/" itemprop="url" rel="index"><span itemprop="name">文献阅读</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>（Distant supervision）远程监督的问题在于引入了大量噪声标签，即句子并不能表达标注关系。本文提出ARNOR，一种先进的基于注意力正则化的远程监督关系分类降噪框架。ARNOR假设一个可信关系标注是可被神经网络注意力模型解释的。本文首先引入注意力正则化强迫关注那些可解释关系标签的模式。之后，如果学到的模型能够清晰地定位到训练集中侯选对示例的关系模式，这样我们选择该示例作为可信示例用于下一步的训练。在NYT10上的实验结果，反映ARNOR这个框架在关系分类与去噪两个方面都有很好的效果。</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Relation Classification（RC）属于自然语言处理中的基础任务，对于知识库的构建特别重要。RC的目标是识别给定实体对在句子中的关系类型。通常一个关系应该会被一些线索词表达，例如：“was born in” ，<strong>这样的指示词被称为模式patterns。</strong></p>
+<p>远程监督带来大量噪声可能很降低RC模型的效果，这可能是因为没有明确的关系模式来识别关系。在2009年Mintz等人说明了远程监督导致超过30%噪声示例。另一方面，由下图所示基于噪声数据，基于注意力机制的神经网络模型经常关注于实体词而忽略了模式。</p>
+<p>目前有三种方法处理噪声问题。（1）multi-instance learning，假设同样实体对提及的包中句子至少有一句表达对应标注的关系，在bag-level上效果不错但是sentence-level表现不佳。（2）为了减少句子级预测的噪音，采用强化学习或者对抗生成训练选择可信数据，这一研究路线通过将学习模型的预测标签与远程监督生成的标签相匹配选择置信关系关系标签。但是模型就是从远程监督数据学习的，当模型预测与远程监督生成标签都是错误的情况下模型失效。（3）relation patterns，这种方式在信息抽取中有着广泛的应用，其中典型代表Data programming融合基于远程监督标签与手工标记模式减少噪音。</p>
+<p>ARNOR减少噪声基于假设：模型对实力中关系解释得越清楚，示例就越可信。本文首先采用注意力正则化神经网络模型关注关系模式。如果被学习的模型能够从候选示例中发现patterns，本文挑选这些候选作为正确标注数据用于下一步训练，这样两部分相互作用，即模型可解释性越强，选择的训练数据越好，反之亦然。</p>
+<p>以前的方法测试集是从训练集中分出来的，因此也是包含噪音的。而本文使用2017年Ren等人提出的测试集做评估，这个数据集也有对应的问题，故本文提出了一个更大更精准的版本。</p>
+<p>本文贡献如下：</p>
+<ol>
+<li>提出了先进的attention regularization方法减少远程监督噪音。</li>
+<li>ARNOR框架在去噪与RC表现上效果不错。</li>
+<li>发布了一个更好的手工标注的句子级评估关系分类的测试集，包含1024个句子和4543个关系对。</li>
+</ol>
+<h1 id="ARNOR-Framework"><a href="#ARNOR-Framework" class="headerlink" title="ARNOR Framework"></a>ARNOR Framework</h1><p>ARNOR框架由两部分组成：注意力正则化训练与示例选择。attention regularization的目的是希望模型有定位关系模式的能力，因此被应用于训练模型，迫使模型关注给出的模式词，之后选择示例检查是否模型能够给出远程监督标注的关系一个合理的解释，这两步不断重复 in a booststrap procedure。方法框架如下图所示。</p>
+<p>为了捕获识别关系的关键特征词，本文在BILSTM Encoder基础上应用一个注意力机制。输入embeddings包含三个部分：word embedding，position embedding，entity type embedding。本文引入实体类型信息通过实体类型embedding matrix。</p>
+<p>后面接一般的注意力机制帮助捕获分类任务重要特征。然而远程监督生成的噪声数据大多关注实体信息而忽略关系分类任务中更有价值的关系模式。</p>
+<h2 id="Attention-Regularization"><a href="#Attention-Regularization" class="headerlink" title="Attention Regularization"></a>Attention Regularization</h2><p>给定一个T个词的句子$s = \lbrace x<em>i \rbrace </em>{i=1}^T$，句子中的实体对$(e_1,e_2)$，relation label $y$，relation patterns $m$用来解释$e_1$和$e_2$的关系$y$。我们可以在输入$m$的情况下根据模式提及显著性函数$q(z|s,e_1,e_2,m)$，计算attention guidance value $a^m$。这里$z$表示句子中的模式词，本文希望分类器能够近似注意力分布$a^s=p(z|s)$为$a^m$，其中$p$表示分类器网络。故直观地，本文应用KL散度作为优化函数，描述分布的不同：</p>
+<script type="math/tex; mode=display">
+KL（a^m||a^s）= \sum a^m \log \frac{a^m}{a^s}</script><p>由于$a^m$含有固定值，所以注意力正则化损失可以表示为：</p>
+<script type="math/tex; mode=display">
+loss_a = -\sum a^m \log a^s</script><p>本文最终的损失考虑将注意力正则损失加入分类器损失中学习，最终的损失如下：</p>
+<script type="math/tex; mode=display">
+loss = loss_c+\beta loss_a</script><p>$\beta$是$loss_a$的权重，通常在实验里被设置为1。在本文中采用了一个简单的函数生成$a^m$</p>
+<script type="math/tex; mode=display">
+b_i =\begin{cases} 
+1 & x_i \in \lbrace e1,e2,m\rbrace \\
+0 & else
+\end{cases}</script><script type="math/tex; mode=display">
+a^m =\lbrace \frac{b_k}{\sum_{i=1}^T b_i} \rbrace_{k=1}^T</script><p>$b$表示$x_i$是否属于实体词以及关系模式词。</p>
+<h2 id="Instance-Selection-with-Attention"><a href="#Instance-Selection-with-Attention" class="headerlink" title="Instance Selection with Attention"></a>Instance Selection with Attention</h2><p>对于一个训练示例，如果模式关注的关系模式词不能匹配解释关系类型的模式$m$，那么这个示例可能是错误被标记成了正样本。文章仍使用KL散度去度量示例是否是false positive的概率。给定RC模型的注意力权重$a^s$以及计算的模式$a^m$，一个示例的置信度分数$c$归一化得：</p>
+<script type="math/tex; mode=display">
+c = \frac{1}{1+KL(a^m||a^s)}</script><p>$c$值越高，示例越可信。本文计算训练集中的所有示例并选择示例超过一个阈值$c^t$，其中$c^t$是一个超参数。</p>
+<h2 id="Bootstrap-learning-Procedure"><a href="#Bootstrap-learning-Procedure" class="headerlink" title="Bootstrap learning Procedure"></a>Bootstrap learning Procedure</h2><p>在ARNOR框架中，一个重要的问题是怎么获取训练模型中的关系模式$m$以及示例选择步数。在示例选择步骤中，为了选择更可信的数据以及发现更可信的关系模式，需要给定更多种类模式。在模型训练中，给定一个模式抽取器$e$，它可以从示例中抽取一个关系模式；定义一个初始的可信任模式集$m$（它可以用$e$从原始训练数据集$d$计数或是手工收集），本文重复bootstrap procedure操作直到F1分数在验证集上不再增加。bootstrap procedure详细如下：</p>
+<h2 id="Relation-Pattern-Extraction"><a href="#Relation-Pattern-Extraction" class="headerlink" title="Relation Pattern Extraction"></a>Relation Pattern Extraction</h2><p>另外一个问题是怎样构建一个关系模式抽取器$E$抽取一个示例中的一个模式。这并非十分重要。即使使用十分简单的模型也能够得到很大的提升。当然复杂且表现良好的抽取器带来了额外的提升。这是本文未来的工作。这里的模式抽取器$E$抽取两实体之间的词。而初始模式集$M$的构建，本文从原始数据集中的所有实例中提取关系模式并进行统计。$M$最初是通过选择初始出现的模式构建的，本文保留每个关系类型的前10%（最大20）模式。</p>
+<p>在模式集$M$构建后，数据集$D$将使用这些模式重新分布。所有正示例不匹配那些模式将被放入负样本集，并将他们的关系标签改为”None”。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><h2 id="数据集与评估"><a href="#数据集与评估" class="headerlink" title="数据集与评估"></a>数据集与评估</h2><p>NYT是一个新闻数据集来自294k 1989-2007年纽约时报新闻文章最早于2010年Riedel等人提出的。通过和Freebase对齐的方法虽然没有人工代价但是只能提供大概的估量由于远程监督存在噪声数据。相比之下，Ren等人在2017年发布一个手工标注测试集包含2011年Hoffmann等人提出的395个句子。这个测试集标记一个实体对一句话。测试集仅包含一半的训练集的关系类型。</p>
+<p>为了解决这些问题以及评估ARNOR框架更准确，本文标注并发布一个新的句子级测试集在Ren等人工作基础上，也包含标注的命名实体类型。首先，本文修改了最初395个测试句子中错误标注的实例。然后，从原始训练集中抽取约600个句子并删除。之后仔细检查了它们的标签并将它们合并到测试集中。另外，本文还移除了一些重叠和不明确的关系类型，或是太过噪声而无法获得非噪声测试样本的关系类型。</p>
+<p>为了评估，本文在句子级及示例级评估模型，句子级预测有助于理解句子任务，例如问答以及语义分析。与常用的bag level评估不同，句子级别评估直接针对数据集中的所有单个实例计算精度（prec.）、召回（rec.）和f1度量。本文认为这样的评估更直观，更适合实际应用。</p>
+<h2 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h2><h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>本文提出ARNOR，一个基于注意力正则化的远程监督关系分类的降噪框架。本文发现关系模式是一个重要的特征极少被以往的模型在噪声数据方面考虑进去。因此，本文设计注意力正则化帮助模型学习关系模式的定位。对于一个更易于解释的模型，我们通过评估模型对实例关系的解释程度来进行降噪。bootstrap learning procedure构建用于迭代改善模型，训练数据与可信模式集。使用一个非常简单的模式提取器，本文模型的性能优于几个基于RL-based baselines，在关系分类与噪声抑制方面都取得了显著的改进。此外，本文发布了一个更好的手工标注测试集用于句子级评估。</p>
+<p>在未来，本文希望通过使用更好的基于模型的模式抽取器，并借助隐变量模型对实例选择器进行联合建模来改进工作。此外，还希望验证方法在更多任务上的有效性，包括开放信息抽取和事件抽取，以及重叠关系抽取模型。</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechat.png" alt="NI,JUN 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="NI,JUN 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Relation-Extraction/" rel="tag"># Relation Extraction</a>
+          
+            <a href="/tags/ACL/" rel="tag"># ACL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/passages/2019-10-24-Cross-Relation-Cross-Bag-Attention-for-Distantly-Supervised-Relation-Extraction/" rel="next" title="Cross-Relation Cross-Bag Attention for Distantly-Supervised Relation Extraction">
+                <i class="fa fa-chevron-left"></i> Cross-Relation Cross-Bag Attention for Distantly-Supervised Relation Extraction
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/" rel="prev" title="Distant Supervision Relation Extraction with Intra-Bag and Inter-Bag Attentions">
+                Distant Supervision Relation Extraction with Intra-Bag and Inter-Bag Attentions <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">NI,JUN</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">50</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/nijunssdut" title="GitHub &rarr; https://github.com/nijunssdut" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:nijun@mail.dlut.edu.com" title="E-Mail &rarr; mailto:nijun@mail.dlut.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARNOR-Framework"><span class="nav-number">3.</span> <span class="nav-text">ARNOR Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Attention-Regularization"><span class="nav-number">3.1.</span> <span class="nav-text">Attention Regularization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instance-Selection-with-Attention"><span class="nav-number">3.2.</span> <span class="nav-text">Instance Selection with Attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootstrap-learning-Procedure"><span class="nav-number">3.3.</span> <span class="nav-text">Bootstrap learning Procedure</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Relation-Pattern-Extraction"><span class="nav-number">3.4.</span> <span class="nav-text">Relation Pattern Extraction</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验"><span class="nav-number">4.</span> <span class="nav-text">实验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据集与评估"><span class="nav-number">4.1.</span> <span class="nav-text">数据集与评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Baselines"><span class="nav-number">4.2.</span> <span class="nav-text">Baselines</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结论"><span class="nav-number">5.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">NI,JUN</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.8" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+  <script id="ribbon" size="300" alpha="0.1" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

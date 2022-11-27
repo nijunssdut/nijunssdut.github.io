@@ -461,7 +461,7 @@
 <p>“门”结构通过一个 sigmoid 的神经层和一个逐点相乘的操作来实现信息选择通过。LSTM通过三个这样的门结构来实现信息的保护和控制。这三个门分别输入门（input gate）、遗忘门（forget gate）和输出门（output gate）。</p>
 <h2 id="2-1-遗忘门"><a href="#2-1-遗忘门" class="headerlink" title="2.1 遗忘门"></a>2.1 遗忘门</h2><p>LSTM 中的第一步是决定我们会从细胞状态中丢弃什么信息，这一过程由遗忘门来完成，其过程如下图所示。</p>
 <p><img src="/passages/2019-06-29-Long-and-Short-Term-Memory（LSTM）的理解/LSTM-forget-gate.png" alt="LSTM-forget-gate"></p>
-<p>遗忘门会读取$h_{t-1}$和$x_t$，输出一个在 0到 1之间的数值给每个在细胞状态$C_{t-1}$中的数字。1表示“完全保留”，0 表示“完全舍弃”。</p>
+<p>遗忘门会读取$h<em>{t-1}$和$x_t$，输出一个在 0到 1之间的数值给每个在细胞状态$C</em>{t-1}$中的数字。1表示“完全保留”，0 表示“完全舍弃”。</p>
 <p>对于语言模型，若已知先前的词汇预测下一词汇，当前一刻细胞状态包括当前主语的性别，这信息需要保留下来帮助我们使用正确的代词。但当我们看到一个新的主语时，我们需要忘记先前的主语。</p>
 <h2 id="2-2-输入门"><a href="#2-2-输入门" class="headerlink" title="2.2 输入门"></a>2.2 输入门</h2><p>下一步是决定让多少新的信息加入到细胞状态中来。实现这个需要包括两个步骤：</p>
 <ul>
@@ -481,7 +481,7 @@
 <li><a href="https://machinelearningmastery.com/stacked-long-short-term-memory-networks/" target="_blank" rel="noopener">Stacked Long Short-Term Memory Networks</a></li>
 <li><a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/" target="_blank" rel="noopener">Understanding LSTM Networks</a></li>
 </ol>
-
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -638,7 +638,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -782,7 +782,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -867,7 +869,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

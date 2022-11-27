@@ -467,11 +467,24 @@
 <h1 id="决策树的原理"><a href="#决策树的原理" class="headerlink" title="决策树的原理"></a>决策树的原理</h1><p>决策树是一类常见的机器学习方法，它是基于树的结构进行决策的，决策过程通常会进行一系列的判断或者子决策。</p>
 <p>每次做决策时根据哪一个属性呢，即如何选择最优划分属性，一般而言，随着划分过程不断进行，我们希望决策树的分支节点所包含的样本尽可能属于同一个类别，即节点的“纯度（purity）”越来越高。</p>
 <p>决策树学习算法包含特征选择、决策树的生成与剪枝过程。决策树的学习算法通常是递归地选择最优特征，并用最优特征对数据集进行分割。开始时，构建根节点，选择最优特征，该特征有几种值就分割为几个子集，每个子集分别调用此方法，返回结点，返回的结点就是上一层的子结点。直到所有特征都已经用完，或者数据集只有一维特征为止。</p>
-<h2 id="信息熵"><a href="#信息熵" class="headerlink" title="信息熵"></a>信息熵</h2><p>假设当前样本集合D中有n类样本${x_1,x_2,……,x_n}$，第i类样本在样本集合D中所占的比例为$p(x_i)$，则熵定义为信息的期望值，$x_i$的信息定义为：<br>$$<br>l(x_i)= -\log_2p(x_i)<br>$$<br>而样本集合D的信息熵定义为：<br>$$<br>Ent(D) = -\sum_{i=1}^np(x_i)\log_2p(x_i)<br>$$<br>$Ent(D)$的值越小，则D的纯度越高。</p>
-<h2 id="信息增益"><a href="#信息增益" class="headerlink" title="信息增益"></a>信息增益</h2><p>假定离散属性a有k个可能的取值{a1,a2,……,ak}，若使用a来对样本集D进行划分，则会产生k个分支节点，其中第i个分支节点包含了D中所有在属性a上取值ai的样本，记为$D_i$，我们可根据公式求得第i个分支节点的信息熵记为$Ent(D_i)$，第i个分支节点样本集$D_i$占样本集合D总的样本比例记为$p(D_i) = D_i/D$，父节点的信息熵记为$Ent(D)$，则用属性a对样本D进行划分所获得的“信息增益”为：<br>$$<br>Gain(D,a)= Ent(D)-\sum_{i=1}^kp(D_i)Ent(D_i)<br>$$<br>一般而言，信息增益越大，表现使用属性a来进行划分所获得的“纯度提升”越大。</p>
+<h2 id="信息熵"><a href="#信息熵" class="headerlink" title="信息熵"></a>信息熵</h2><p>假设当前样本集合D中有n类样本${x_1,x_2,……,x_n}$，第i类样本在样本集合D中所占的比例为$p(x_i)$，则熵定义为信息的期望值，$x_i$的信息定义为：</p>
+<script type="math/tex; mode=display">
+l(x_i)= -\log_2p(x_i)</script><p>而样本集合D的信息熵定义为：</p>
+<script type="math/tex; mode=display">
+Ent(D) = -\sum_{i=1}^np(x_i)\log_2p(x_i)</script><p>$Ent(D)$的值越小，则D的纯度越高。</p>
+<h2 id="信息增益"><a href="#信息增益" class="headerlink" title="信息增益"></a>信息增益</h2><p>假定离散属性a有k个可能的取值{a1,a2,……,ak}，若使用a来对样本集D进行划分，则会产生k个分支节点，其中第i个分支节点包含了D中所有在属性a上取值ai的样本，记为$D_i$，我们可根据公式求得第i个分支节点的信息熵记为$Ent(D_i)$，第i个分支节点样本集$D_i$占样本集合D总的样本比例记为$p(D_i) = D_i/D$，父节点的信息熵记为$Ent(D)$，则用属性a对样本D进行划分所获得的“信息增益”为：</p>
+<script type="math/tex; mode=display">
+Gain(D,a)= Ent(D)-\sum_{i=1}^kp(D_i)Ent(D_i)</script><p>一般而言，信息增益越大，表现使用属性a来进行划分所获得的“纯度提升”越大。</p>
 <h2 id="信息增益率"><a href="#信息增益率" class="headerlink" title="信息增益率"></a>信息增益率</h2><p>如果使用信息增益去对决策树进行划分，可能出现每个分支节点只包含一个样本，这些分支节点的纯度已经达到最大，但是，这样的决策树显然不具备泛化能力，无法对新样本进行有效的预测。</p>
-<p>实际上，信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，因此提出了信息增益率的概念：<br>$$<br>Gain_ration(D,a) = Gain(D,a)/IV(a)\<br>IV(a) = -\sum_{i =1}^kp(D_i)\log_2(D_i)<br>$$<br>属性$a$的可能取值数目越多，则IV(a)的值通常会越大。</p>
-<h2 id="基尼指数"><a href="#基尼指数" class="headerlink" title="基尼指数"></a>基尼指数</h2><p>基尼指数定义：<br>$$<br>Gini(D) = \sum_{k=1}^Kp_k(1-p_k)<br>$$<br>基尼指数反映了从数据集D中随机抽取两个样本，其类别标记不一致的概率，因此Gini(D)越小，则数据集D的纯度越高，属性a的基尼指数定义为：<br>$$<br>Gini_index(D,a) = \sum_{i=1}^kp(D_i)Gini(D_i)<br>$$<br>于是在候选集合中，选择那个使得划分后基尼指数最小的属性作为最优划分属性。</p>
+<p>实际上，信息增益准则对可取值数目较多的属性有所偏好，为减少这种偏好可能带来的不利影响，因此提出了信息增益率的概念：</p>
+<script type="math/tex; mode=display">
+Gain\_ration(D,a) = Gain(D,a)/IV(a)\\
+IV(a) = -\sum_{i =1}^kp(D_i)\log_2(D_i)</script><p>属性$a$的可能取值数目越多，则IV(a)的值通常会越大。</p>
+<h2 id="基尼指数"><a href="#基尼指数" class="headerlink" title="基尼指数"></a>基尼指数</h2><p>基尼指数定义：</p>
+<script type="math/tex; mode=display">
+Gini(D) = \sum_{k=1}^Kp_k(1-p_k)</script><p>基尼指数反映了从数据集D中随机抽取两个样本，其类别标记不一致的概率，因此Gini(D)越小，则数据集D的纯度越高，属性a的基尼指数定义为：</p>
+<script type="math/tex; mode=display">
+Gini_index(D,a) = \sum_{i=1}^kp(D_i)Gini(D_i)</script><p>于是在候选集合中，选择那个使得划分后基尼指数最小的属性作为最优划分属性。</p>
 <h1 id="常用的决策树算法"><a href="#常用的决策树算法" class="headerlink" title="常用的决策树算法"></a>常用的决策树算法</h1><p>常用的决策树算法有ID3，C4.5和CART。</p>
 <p><strong>ID3：</strong>以信息增益为准则来选择划分属性，<strong>多叉树</strong>。</p>
 <p><strong>C4.5：</strong>使用信息增益率来进行属性的选择，<strong>多叉树</strong>。</p>
@@ -568,7 +581,7 @@
 <li><strong>填充缺失值</strong>，例如给缺失属性a的样本赋予属性a一个均值或者最常用的值或者根据其他未知的属性想办法把这些样本缺失的属性补全。</li>
 <li><strong>计算信息增益或者信息增益率时根据缺失属性样本个数所占的比率对增益/增益率进行相应的“打折”</strong>，例如我们对10个样本进行分类，一个样本数据在a属性具有缺失值，我们使用其中九个完全样本计算a属性的信息增益，并将其乘以0.9作为最终信息增益。</li>
 </ul>
-<ol start="2">
+<ol>
 <li>一个属性已被选择，那么在决定分支的时候如果有些样本缺失了该属性如何处理？</li>
 </ol>
 <ul>
@@ -578,7 +591,7 @@
 <li>把属性缺失样本分配给所有的子集，也就是说每个子集都有这些属性缺失样本。</li>
 <li>单独为属性缺失的样本划分一个分支子集。</li>
 </ul>
-<ol start="3">
+<ol>
 <li>当决策树已经生成，但待分类的样本缺失了某些属性，这些属性该如何处理？</li>
 </ol>
 <ul>
@@ -587,7 +600,7 @@
 <li>根据其他属性为该待分类样本填充一个属性a值，然后进行分支处理。</li>
 <li>待分类样本在到达属性a节点时就终止分类，然后根据此时a节点所覆盖的叶子节点类别状况为其分配一个发生概率最高的类。</li>
 </ul>
-
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -746,7 +759,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -890,7 +903,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -975,7 +990,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="摘要​        本文提出了一种神经网络关系抽取方法，用于处理远程监督产生的噪音训练数据。先前的研究主要通过设计具有包内注意力的神经网络，专注于句子级的降噪。本文同时考虑了包内注意力与包间注意力机制，以便分别处理语句级别和包级别的噪音。首先，通过使用包内注意力对句子嵌入进行加权来计算相关示例包的表示。在此，将每个可能的关系用作关注度计算的查询，而不是仅使用常规方法中的目标关系。此外，通过使用基">
+<meta name="keywords" content="Relation Extraction,AAAI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Distant Supervision Relation Extraction with Intra-Bag and Inter-Bag Attentions">
+<meta property="og:url" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/index.html">
+<meta property="og:site_name" content="Jun的个人随笔">
+<meta property="og:description" content="摘要​        本文提出了一种神经网络关系抽取方法，用于处理远程监督产生的噪音训练数据。先前的研究主要通过设计具有包内注意力的神经网络，专注于句子级的降噪。本文同时考虑了包内注意力与包间注意力机制，以便分别处理语句级别和包级别的噪音。首先，通过使用包内注意力对句子嵌入进行加权来计算相关示例包的表示。在此，将每个可能的关系用作关注度计算的查询，而不是仅使用常规方法中的目标关系。此外，通过使用基">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/examples-table1.png">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Fig1.jpg">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table2.jpg">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Fig2-Fig3.jpg">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table3.jpg">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Fig4.jpg">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table5.jpg">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table4.jpg">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table7.jpg">
+<meta property="og:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table6.jpg">
+<meta property="og:updated_time" content="2020-04-03T02:00:17.753Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Distant Supervision Relation Extraction with Intra-Bag and Inter-Bag Attentions">
+<meta name="twitter:description" content="摘要​        本文提出了一种神经网络关系抽取方法，用于处理远程监督产生的噪音训练数据。先前的研究主要通过设计具有包内注意力的神经网络，专注于句子级的降噪。本文同时考虑了包内注意力与包间注意力机制，以便分别处理语句级别和包级别的噪音。首先，通过使用包内注意力对句子嵌入进行加权来计算相关示例包的表示。在此，将每个可能的关系用作关注度计算的查询，而不是仅使用常规方法中的目标关系。此外，通过使用基">
+<meta name="twitter:image" content="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/examples-table1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Distant Supervision Relation Extraction with Intra-Bag and Inter-Bag Attentions | Jun的个人随笔</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jun的个人随笔</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://nijunssdut.github.io/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="NI,JUN">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jun的个人随笔">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Distant Supervision Relation Extraction with Intra-Bag and Inter-Bag Attentions
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-24 19:07:28" itemprop="dateCreated datePublished" datetime="2020-03-24T19:07:28+08:00">2020-03-24</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-04-03 10:00:17" itemprop="dateModified" datetime="2020-04-03T10:00:17+08:00">2020-04-03</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/文献阅读/" itemprop="url" rel="index"><span itemprop="name">文献阅读</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>​        本文提出了一种神经网络关系抽取方法，用于处理远程监督产生的噪音训练数据。先前的研究主要通过设计具有包内注意力的神经网络，专注于句子级的降噪。本文同时考虑了包内注意力与包间注意力机制，以便分别处理语句级别和包级别的噪音。首先，通过使用包内注意力对句子嵌入进行加权来计算相关示例包的表示。在此，将每个可能的关系用作关注度计算的查询，而不是仅使用常规方法中的目标关系。此外，通过使用基于相似度的包间注意力模块对示例包表示加权来计算训练集中共享相同关系标签的一组示例包的表示。最后，在构建关系提取器时，将一个示例包组用作训练样本。New York Times数据集上的实验结果证明了提出的包间和包内注意力模块的有效性。与该数据集上最新方法相比，其方法具有更好的关系 抽取精度。</p>
+<p>​        其开源代码网址为<a href="https://github.com/ZhixiuYe/Intra-Bag-and-Inter-Bag-Attentions，经本人验证略作改动可在CPU环境下复现使用，运行时长约20小时左右。" target="_blank" rel="noopener">https://github.com/ZhixiuYe/Intra-Bag-and-Inter-Bag-Attentions，经本人验证略作改动可在CPU环境下复现使用，运行时长约20小时左右。</a></p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>​        关系抽取是自然语言处理（NLP）中的一项基本任务，其目的是提取实体之间的语义关系。例如，句子“<strong>[Barack Obama]</strong> was born in <strong>[Hawaii]</strong>表示实体对<strong>Barack Obama</strong>和<strong>Hawaii</strong>之间的<strong>bornin</strong>关系。</p>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/examples-table1.png" alt="Table1" style="zoom:75%;"></p>
+<p>​        常规的关系抽取方法，例如(Zelenko et al., 2002; Culotta and Sorensen, 2004; Mooney and Bunescu, 2006)，都采用监督训练，并且缺乏大规模的手工标记数据。为了解决这个问题，提出了一种远程监督方法（MIntz等，2009），该方法可以自动生成训练关系抽取模型的数据。远程监督假设，如果两个实体参与关系，则提及这两个实体的所有句子都表示该关系。不可避免地，在远程监督标记的数据中会存在噪音。例如，对齐New York Times与Freebase的关系精度只有大约70%。</p>
+<p>​        因此，Riedel等人提出的额关系抽取方法认为，远程监督假设额过于强大，因此将其放宽为at-least-once假设。此假设表明，如果两个实体参与关系，则至少一个提及这两个实体的句子可能表示该关系。表1中句子S1和S2显示了一个示例。此关系抽取方法首先将远程监督提供的训练数据划分为多个包，其中每个包是一组包含相同实体对的句子，然后，通过对每个包中的句子进行加权得出包表示。期望减少带有不正确标签语句的权重，并且主要使用带有正确标签的语句来计算包表示。最后，将示例包用作训练关系抽取模型的样本，而非单个语句。</p>
+<p>​        近年来，已经提出了许多使用具有注意力机制的神经网络关系抽取方法，以减轻at-least-once假设下的噪音训练数据的影响。然而，这些方法仍然存在两个缺陷。首先，在训练阶段，仅使用每个示例包的目标关系来计算注意力权重，以从句子嵌入中得出多示例包表示。在这里，本论文认为，应当以一种关系感知的方式来计算包的表示形式。例如，表1中的示例包B1中包含两个句子S1和S2。当此包被分类为BornIn关系时，句子S1的权重应高于S2，但当分类关系为关系PresidentOf时，S2的权重应更高。其次，at-least-once假设忽略了嘈杂的包问题，这意味着一个包内所有语句都被错误地标记，表1中的袋子B2显示了这样的一个示例。</p>
+<p>​        为解决现有方法的两个不足，本文提出了一种多层次注意力的神经网络用于远程监督关系抽取。在实例/句子级别，即包内层次，所有可能的关系都被用作查询来计算关系感知的包表示，而不是使用每个包的目标关系。为了解决嘈杂的示例包问题，采用多示例包组作为训练样本，而不是单个包。在这里，一个多示例包组由训练集中共享相同关系标签的包组成。使用基于相似度的包间注意力模块通过对包表示的加权来计算多示例包组的表示。</p>
+<p>​        本文的贡献包含三部分。首先，提出了一种改进的包内注意力机制，以导出用于关系抽取的关系感知的包表示。其次，引入包间注意力模块来处理嘈杂的包问题，该问题被at-least-once假设所忽略。第三，本文提出的方法比相同数据集上的最新模型具有更高的抽取精度。</p>
+<h1 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h1><p>​        先前的一些工作将关系提取视为一种有监督的学习任务，并设计了手工制作的特征来训练基于内核的模型。由于缺乏大规模的人工标注数据用于监督训练，提出了远程监督方法，该方法将原始文本自动对齐到知识库中，生成实体对的关系标签。然而，这种方法受到了标签噪音问题的困扰。因此，随后的一些研究将远程监督关系抽取看作是一个多示例学习问题，从一个句子集中提取关系，而不是从单个句子中提取关系。</p>
+<p>​        随着深度学习技术的额发展，已经开发了许多基于神经网络的远程监督关系抽取模型。Zeng等人提出了分段卷积神经网络来建模句子表示，并选择最可靠的语句作为包表示。Lin等人采用PCNN作为句子编码，提出了一种包内注意力机制，通过包内所有语句表示的加权和计算包表示。Ji等人采用相似的注意力策略，并结合实体描述来计算权重。Liu等人提出一种软标签方法来减少嘈杂实例的影响。所有这些方法都用一个加权的语句嵌入总和表示一个示例包，并在训练阶段使用相同的包表示计算包被分类到每个关系中的概率。在本论文提出的方法中，包内注意是以一种关系感知的方式计算的，这意味着不同的包表示被用来计算不同关系类型的概率。此外，这些现有的方法主要集中在包内注意，忽略了嘈杂的多示例包问题。</p>
+<p>​        还有一些鲁棒的远程监督关系抽取数据过滤策略被提出。Feng等人与Qin等人均采用强化学习训练实例选择器，并过滤出标签错误的样本。他们分别根据关系分类器的预测概率和性能变化来计算模型的奖惩。Qin等人设计了一个对抗性学习过程，通过基于策略梯度的强化学习来构建句子级生成器。这些方法都是在句子级过滤掉有噪声的数据，也不能很好地处理有噪声的多示例包问题。</p>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>​        在本小节中，本论文介绍了一个带有包内和包间注意力机制的神经网络用于远程监督关系抽取。让$g=\lbrace b^1,b^2,…,b^n\rbrace$代表一组具有远程监督给出的额相同关系标签的包，以及$n$组内包的个数。让$b^i=\lbrace x^i<em>1,x^i_2,…,x^i</em>{m<em>i}\rbrace$代表示例包$b^i$内所有句子，并且$m_i$表示$b^i$包内句子数。让$x^i_j=\lbrace w^i</em>{j1},w^i<em>{j2},…w^i</em>{jl<em>{ij}}\rbrace$表示在第$i$个包内第$j$个句子，并且$l</em>{ij}$是它的长度（即，词的数量）。模型框架如图1中所示，共有三个主要模块。</p>
+<ul>
+<li>句子编码器：给定一个句子$x^i_j$和在这个句子中两个实体的位置，采用CNN或PCNN推导句子表征$s^i_j$。</li>
+<li>包内注意力机制：给定在$b^i$包内所有句子的句子表示和一个关系嵌入矩阵$R$，注意力权重向量$\alpha^i_k$与包表示$b^i_k$由所有关系计算得到，其中$k$是关系索引。</li>
+<li>包间注意力机制：在给定g组的所有包的表示的情况下，通过基于相似度的注意机制进一步计算权重矩阵$\beta$，得到包组的表示。</li>
+</ul>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Fig1.jpg" alt="Fig1" style="zoom:75%;"></p>
+<h2 id="句子编码器"><a href="#句子编码器" class="headerlink" title="句子编码器"></a>句子编码器</h2><h3 id="单词表示"><a href="#单词表示" class="headerlink" title="单词表示"></a>单词表示</h3><p>​        在句子$x^i<em>j$中每个单词$w^i</em>{jk}$首先映射到一个$d<em>w$维度的单词嵌入。为了描述两个实体的位置信息，本文还采用了Zeng等人提出的位置特征（PFs）。对于每个单词，PFs描述当前词和两个实体之间的相对距离，并进一步映射到两个$d_p$维度向量$p^i</em>{jk}$和$q^i<em>{jk}$。最终，这些三个向量被连接得到$d_w+2d_p$维度的词向量$w</em>{jk}^i=[e<em>{jk}^i;p</em>{jk}^i;q_{jk}^i]$。</p>
+<h3 id="分段卷积"><a href="#分段卷积" class="headerlink" title="分段卷积"></a>分段卷积</h3><p>​        对于句子$x^i<em>j$，单词表示矩阵$W^i_j \in R^{l</em>{ij}\times(d_w+2d_p)}$首先使用$d_c$维度的过滤器输入到CNN中。之后，使用分段最大池化从CNN输出的三个部分中提取特征，并且分段边界由两个实体的位置信息决定。最终句子表示$s^i_j \in R^{3d_c}$可获得。</p>
+<h2 id="包内注意力机制"><a href="#包内注意力机制" class="headerlink" title="包内注意力机制"></a>包内注意力机制</h2><p>让$S^i \in R^{m_i\times 3d_c}$表示$b^i$包内所有的句子表示，并且$R \in R^{h \times 3d_c}$代表一个关系嵌入矩阵，其中$h$是关系的数量。</p>
+<p>与传统方法不同的是，本论文的方法为关系分类导出了统一的包表示，本论文的方法计算包表示$b^i_k$为包$b^i$在所有可能关系的条件下为：</p>
+<script type="math/tex; mode=display">
+b^k_i=\sum_{j=1}^{m_i}\alpha^i_{kj}s^i_j</script><p>其中$k\in \lbrace 1,2,…,h \rbrace$是关系索引并且$a^i<em>{kj}$是$b^i$包内第$k$个关系与第$j$个句子之间的注意力权重。$\alpha^i</em>{kj}$能够进一步定义为：</p>
+<script type="math/tex; mode=display">
+\alpha^i_{kj} = \frac {exp(e^i_{kj})}{ \sum^{m_i}_{ j^{'}=1 } exp(e^i_{ kj^{'} })}</script><p>​        </p>
+<p>其中$e^i_{kj}$是包$b^i$中第$k$个关系查询和第$j$个句子之间的匹配度。在本论文的实现中，采用向量之间的简单点积来计算匹配度为：</p>
+<script type="math/tex; mode=display">
+e^i_{kj}=r_ks^{i^T}_j</script><p>其中$r_k$是关系嵌入矩阵$R^2$的第k行。</p>
+<p>​        最终，包$b^i$的表示组成图1中的矩阵$B^i \in R^{h\times 3d_c}$，其中每一行对应这个多示例包的一个可能的关系类型。</p>
+<h2 id="包间注意力机制"><a href="#包间注意力机制" class="headerlink" title="包间注意力机制"></a>包间注意力机制</h2><p>​        为了解决含噪示例包问题，设计了一个基于相似度的包内注意力模块，动态降低带有噪音包的权重。直观上，如果两个包$b^{i1}$和$b^{i2}$都标记为关系k，他们的表示$b^{i_1}_k$与$b^{i_2}_k$应当相互接近。给定一组具有相同关系标签的包，论文将更高的权重分配给与该组中其他示例包相近的包，因此，包组$g$的表示形式可以公式化为：</p>
+<script type="math/tex; mode=display">
+g_k= \sum_{i=1}^n \beta_{ik}b^i_{k}</script><p>​        其中$g<em>k$是图1中矩阵$G \in R^{h \times3d_c}$的第k行，$k$是关系索引，并且$\beta</em>{ik}$组成了注意力权重矩阵$\beta \in R^{n\times h}$，每一个$B_{ik}$被定义为：</p>
+<script type="math/tex; mode=display">
+\beta_{ik}=\frac{exp(\gamma_{ik})}{\sum^{n}_{i=1}exp(\gamma_{ik})}</script><p>其中，$\gamma_{ik}$描述了标注示例包$b^i$带有第$k$个关系的置信度。</p>
+<p>​        受自注意力算法的启发，该算法使用向量本身计算一组向量的注意权重，本论文根据它们自身的表示来计算行李的权重。数学上，$\gamma_{ik}$被定义为</p>
+<script type="math/tex; mode=display">
+\gamma_{ik} = \sum_{i^{'}=1,..,n,i^{'} \not=i}similarity(b^i_k,b^{i^{'}}_k)</script><p>在他们的实现中，函数相似性是一个简单的点积。</p>
+<script type="math/tex; mode=display">
+similarity(b^i_k,b^{i^{'}}_k)=b^i_k,b^{i^{'}T}_k</script><p>而且，为了防止向量长度的影响，所有包表示$b^i_k$标准化为单位长度$\overline{b^i_k}=b^i_k/||b^i_k||_2$在计算包间注意力前。</p>
+<p>​        之后，将包组$g$分类为关系$k$的得分$o<em>{k}$通过$g</em>{k}$和关系嵌入$r_{k}$计算为</p>
+<script type="math/tex; mode=display">
+o_{k}=r_{k}g_{k}^T+d_k</script><p>其中$d_k$是一个偏倚项。最后，使用softmax函数来获得包组$g$被归类为第$k$个关系：</p>
+<script type="math/tex; mode=display">
+p(k|g) =\frac{exp(o_{k})}{\sum^{h}_{k^{'}=1}exp(o_{k^{'}})}</script><p>需要注意的是，公式的计算使用了相同的关系嵌入矩阵$R$。类似于Lin等人，dropout策略被应用于包表示$B^{i}$以防止过拟合。</p>
+<h2 id="实现详情"><a href="#实现详情" class="headerlink" title="实现详情"></a>实现详情</h2><h3 id="数据打包"><a href="#数据打包" class="headerlink" title="数据打包"></a>数据打包</h3><p>首先，训练集中包含相同两个实体的所有句子都被累积到一个包中。然后，将共享相同关系标签的每$n$个包捆绑在一起。应当注意的是，在该论文的方法中，包组是一个训练样本。因此，也可以通过将多个包打包成一个批量，以小批量的方式训练模型。</p>
+<h3 id="目标函数与优化"><a href="#目标函数与优化" class="headerlink" title="目标函数与优化"></a>目标函数与优化</h3><p>在论文的实现中，目标函数被定义为：</p>
+<script type="math/tex; mode=display">
+J(\theta) = -\sum_{(g,k)\in T}logp(k|g;\theta)</script><p>其中，$T$是所有训练样本的集合，$\theta$是模型参数的集合，包括词嵌入矩阵，位置特征嵌入矩阵，CNN权重矩阵和关系嵌入矩阵。通过小批量随机梯度下降（SGD）最小化目标函数$J(\theta)$来估算模型参数。</p>
+<h3 id="训练与测试"><a href="#训练与测试" class="headerlink" title="训练与测试"></a>训练与测试</h3><p>如上所述，在本文提出的方法的训练阶段，将具有相同关系标签的n个包累积到一个包组中，并计算包表示的加权总和已获得包组的表示$G$。由于每个包的标签在测试阶段都是未知的，因此在处理测试集时将每个单个包视为一个包组（即，$n=1$）</p>
+<p>而且，类似于Qin等人的方法，该论文仅将包间注意应用于阳性样本，即关系标签不是NA的包。原因是么没有关系的示例包的表示总是多种多样的，很难为它们计算合适的权重。</p>
+<h3 id="预训练策略"><a href="#预训练策略" class="headerlink" title="预训练策略"></a>预训练策略</h3><p>在方法的实施中，采用了与训练策略。该论文首先只训练包内注意力模型，直到收敛为止。然后，添加包间注意模块，并进一步更新模型参数，直到再次收敛。初步的实验结果表明，与从一开始就考虑包间注意相比，这种策略可以带来更好的模型性能。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><h2 id="数据集与评估指标"><a href="#数据集与评估指标" class="headerlink" title="数据集与评估指标"></a>数据集与评估指标</h2><p>实验采用了NYT数据集。该数据集由Riedel等人首次发布，并已广泛用于之前的远程监督关系抽取研究中。这个数据集是通过将Freebase与NYT的语料库自动对其生成的，共有52个实际关系和一个特殊关系NA，表明两个实体之间没有关系。</p>
+<p>在先前的研究之后，本论文在held out数据集测试集上评估模型。在他们的实验中，采用了精确率-召回率曲线，曲线下的面积值（AUC）与Precision@N值作为评估指标。他们的实验给出的所有数值结果都是10次重复训练的平均值，并且从重复中随机选择P-R曲线，因为它们之间没有明显的视觉差异。</p>
+<h2 id="训练细节与超参数"><a href="#训练细节与超参数" class="headerlink" title="训练细节与超参数"></a>训练细节与超参数</h2><p>表2列出了实验中使用的所有超参数。其中，大多数遵循Lin等人的参数设置。初始化也采用了由Lin等人发布的50维单词嵌入。这些词汇包含了New York Times语料库中出现过100多次的词汇。</p>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table2.jpg" alt="Table2" style="zoom:75%;"></p>
+<p>两种不同批次大小$N<em>p$和$N_t$分别用于预训练和训练。在该论文的实验中，使用训练集进行网格搜索，以确定$n$,$N</em>{p}$和$N<em>t$在范围$n \in \lbrace 3,4,…,10\rbrace$，$N_p \in \lbrace 10,20,50,100,200 \rbrace$和$N</em>{t} \in \lbrace 5,10,20,50 \rbrace$。请注意，增加包组大小$n$可能会增强包间注意的效果，但会减少训练样本的数量。当$n=1$时，将失去包内注意的影响。为了进行优化，该论文采用了初始学习率为0.1的小批量SGD。学习速度每100000步下降到十分之一。在实验中，仅具有包内注意的预训练模型收敛在300000步以内。因此，用于训练袋间注意的模型的初始学习率设置为0.001。</p>
+<h2 id="整体表现"><a href="#整体表现" class="headerlink" title="整体表现"></a>整体表现</h2><p>实现了8个模型进行比较。表3列出了这些模型的名称，其中CNN和PCNN分别表示在句子编码器中使用CNN或分段CNN，ATT-BL表示Lin等人提出的基线包内注意方法，ATT-RA表示本论文提出的基于关系的包内注意方法，BAG-ATT表示本论文提出的包间注意方法。在ATT-BL方法的训练阶段，用于注意权重计算的关系查询向量被固定为与每个包的远程监督标签关联的嵌入向量。在测试阶段，应用所有关系查询向量分别计算关系的后验概率，并选择概率最高的关系作为分类结果。这些模型的整个P-R曲线给出的AUC值的平均值和标准差如表3中所示，以进行定量比较。随后，本论文还在图2和图3中绘制了这些模型的P-R曲线，其召回率小于0.5以进行可视化比较。</p>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Fig2-Fig3.jpg" alt="Fig2-Fig3" style="zoom:75%;"></p>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table3.jpg" alt="Table3" style="zoom:75%;"></p>
+<p>从表3，图2和图3，本论文有以下观察结论：（1）与先前的Zeng等人研究成果相似，PCNN作为句子编码器比CNN更好。（2）使用CNN或PCNN句子编码器时，ATT-RA的性能均优于ATT-BL。这可以归因于ATT-BL方法在训练时推导包表示时只考虑了目标关系，而ATT-RA方法则使用所有关系嵌入作为查询来计算包内注意权重，从而提高了包表示的灵活性。（3）对于句子编码和两种包内注意方法，使用BAG-ATT的模型总是比不使用BAG-ATT的模型有更好的性能，这一结果验证了本论文提出的包间注意方法在远程监督关系提取中的有效性。（4）将PCNN句子编码器于本文提出的包内和包间注意相结合，可以获得最佳的AUC性能。</p>
+<h2 id="与以往工作的比较"><a href="#与以往工作的比较" class="headerlink" title="与以往工作的比较"></a>与以往工作的比较</h2><h3 id="P-R曲线"><a href="#P-R曲线" class="headerlink" title="P-R曲线"></a>P-R曲线</h3><p>图4比较了先前工作中的几种模型和本论文的最佳模型PCNN+ATT-RA+BAG-ATT的P-R曲线，其中MIntz、MultiR和MIMLRE是常规基于特征的方法，以及Lin等人和Liu等人是基于PCNN的方法。为了与Lin等人和Liu等人进行公平比较，该论文还绘制了仅具有前2000个点的曲线。可以看到，本论文的模型取得了比所有其他模型都具有更好的P-R性能。</p>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Fig4.jpg" alt="Fig4" style="zoom:75%;"></p>
+<h3 id="AUC值"><a href="#AUC值" class="headerlink" title="AUC值"></a>AUC值</h3><p>ATT-BL+DSGAN（QIn等人）和ATT-BL+RL（QIn等人）是近年来两个基于强化学习的数据过滤远程监督关系抽取的研究，报告了由前2000个点组成的P-R曲线的AUC值。表5比较了这两篇论文中报告的AUC值和本论文提出的模型的结果。可以看到，将所提出的ATT-RA和BAG-ATT方法引入到基线模型中比使用所提出的方法取得了更大的改进。</p>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table5.jpg" alt="Table5" style="zoom:75%;"></p>
+<h2 id="包内注意力的影响"><a href="#包内注意力的影响" class="headerlink" title="包内注意力的影响"></a>包内注意力的影响</h2><p>继Lin等人之后，该论文同样使用一个以上的训练句子来评估实体对模型。随机抽取每个测试实体对的1，2和所有句子，构建3个新的测试集。表2列出了这三个测试集上该论文提出的模型给出P@100、P@200、P@300值及其平均值，以及Lin等人和Liu等人的最佳结果。这里P@N是指关系分类结果的精度，在测试集中，前N个最高概率值。</p>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table4.jpg" alt="Table4" style="zoom:75%;"></p>
+<p>可以看到该论文提出的方法比以前的工作获得了更高的P@N值。此外，无论采用PCNN还是BAG-ATT或是ATT-RA方法在每个实体对只有一个句子的测试集上的表现均优于ATT-BL方法。注意，当包中只有一个句子时，ATT-BL和ATT-RA的解码过程是等价的。因此，从ATT-BL到ATT-RA的改进可以归因于ATT-RA在训练阶段以关系感知的方式计算了包内注意力权重。</p>
+<h2 id="包间注意的权重分布"><a href="#包间注意的权重分布" class="headerlink" title="包间注意的权重分布"></a>包间注意的权重分布</h2><p>本论文根据每个包内的句子数将训练集分成5部分。对于每个包，记录由PCNN+ATT-RA+BAG-ATT模型给出的包间注意力权重。然后，计算训练集各部分的注意权重平均值和标准差，如表7所示。从这个表中我们可以看出，训练句子数较少的包通常被分配较低的包间注意权重。这一结果与Qin等人的发现一致，即训练句子较少的实体对更具有可能具有不正确的关系标签。</p>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table7.jpg" alt="Table7" style="zoom:75%;"></p>
+<h2 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h2><p>关系“/location/location/contains”的一个测试集示例如表6所示。包组中包括3个多示例包，分别由2句子、1句子和2句子组成。本论文使用PCNN+ATT-RA+BAG-ATT模型计算了该包组的包内和包间注意，目标关系的权重也显示在表6中。</p>
+<p><img src="/passages/2020-03-24-Distant-Supervision-Relation-Extraction-with-Intra-Bag-and-Inter-Bag-Attentions/Table6.jpg" alt="Table6" style="zoom:75%;"></p>
+<p>在本例中，第二个包是一个嘈杂的包，因为该包中的唯一一句话没有表示两个实体<strong>Naugatuck</strong>和<strong>Connecticut</strong>之间的“/location/location/contains”关系。在传统的训练方法中，这三个包被同等对待。引入包间注意机制后，如表6最后一列所示，该噪声包的权重显著降低。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>​        在本文中，提出了一种具有包间和包内注意力的神经网络，以解决远程监管关系提取中的嘈杂句子和嘈杂包问题。 首先，通过句子嵌入的加权总和来计算关系感知包表示，其中嘈杂的句子预期具有较小的权重。 此外，包间注意模块被设计为通过在模型训练期间动态计算示例包级注意权重来处理嘈杂的袋问题。 New York Times数据集上的实验结果表明，与仅使用常规包内注意力的模型相比，他们的模型取得了显著且一致的改进。 处理关系抽取的多标签问题并将外部知识集成到模型中将是他们未来工作的任务。</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div></div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechat.png" alt="NI,JUN 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.png" alt="NI,JUN 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Relation-Extraction/" rel="tag"># Relation Extraction</a>
+          
+            <a href="/tags/AAAI/" rel="tag"># AAAI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/passages/2019-10-28-ARNOR/" rel="next" title="ARNOR：Attention Regularization based Noise Reduction for Distant Supervision Relation Classification">
+                <i class="fa fa-chevron-left"></i> ARNOR：Attention Regularization based Noise Reduction for Distant Supervision Relation Classification
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/passages/算法之路/" rel="prev" title="算法之路">
+                算法之路 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">NI,JUN</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">50</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/nijunssdut" title="GitHub &rarr; https://github.com/nijunssdut" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:nijun@mail.dlut.edu.com" title="E-Mail &rarr; mailto:nijun@mail.dlut.edu.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关工作"><span class="nav-number">3.</span> <span class="nav-text">相关工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方法"><span class="nav-number">4.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#句子编码器"><span class="nav-number">4.1.</span> <span class="nav-text">句子编码器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单词表示"><span class="nav-number">4.1.1.</span> <span class="nav-text">单词表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分段卷积"><span class="nav-number">4.1.2.</span> <span class="nav-text">分段卷积</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包内注意力机制"><span class="nav-number">4.2.</span> <span class="nav-text">包内注意力机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包间注意力机制"><span class="nav-number">4.3.</span> <span class="nav-text">包间注意力机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现详情"><span class="nav-number">4.4.</span> <span class="nav-text">实现详情</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据打包"><span class="nav-number">4.4.1.</span> <span class="nav-text">数据打包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目标函数与优化"><span class="nav-number">4.4.2.</span> <span class="nav-text">目标函数与优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练与测试"><span class="nav-number">4.4.3.</span> <span class="nav-text">训练与测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预训练策略"><span class="nav-number">4.4.4.</span> <span class="nav-text">预训练策略</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实验"><span class="nav-number">5.</span> <span class="nav-text">实验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据集与评估指标"><span class="nav-number">5.1.</span> <span class="nav-text">数据集与评估指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练细节与超参数"><span class="nav-number">5.2.</span> <span class="nav-text">训练细节与超参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整体表现"><span class="nav-number">5.3.</span> <span class="nav-text">整体表现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与以往工作的比较"><span class="nav-number">5.4.</span> <span class="nav-text">与以往工作的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#P-R曲线"><span class="nav-number">5.4.1.</span> <span class="nav-text">P-R曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AUC值"><span class="nav-number">5.4.2.</span> <span class="nav-text">AUC值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包内注意力的影响"><span class="nav-number">5.5.</span> <span class="nav-text">包内注意力的影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包间注意的权重分布"><span class="nav-number">5.6.</span> <span class="nav-text">包间注意的权重分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例分析"><span class="nav-number">5.7.</span> <span class="nav-text">案例分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结论"><span class="nav-number">6.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">NI,JUN</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.8" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+  <script id="ribbon" size="300" alpha="0.1" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

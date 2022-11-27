@@ -448,9 +448,10 @@
 
       
         <h1 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h1><p>高斯混合模型（Gaussian Mixed Model，GMM）是一种常见的聚类算法，与K均值算法类似，同样使用了EM算法进行迭代计算。高斯混合模型假设每个簇的数据都符合高斯分布（又叫正态分布）。</p>
-<h1 id="高斯混合模型的核心思想"><a href="#高斯混合模型的核心思想" class="headerlink" title="高斯混合模型的核心思想"></a>高斯混合模型的核心思想</h1><p>高斯混合模型的核心思想是，假设数据可以看作多个高斯分布中生成出来的。在该假设下，每个单独的分模型都是标准高斯模型，其均值$\mu_i$和方差$\sum_i$是待估计的参数。此外，每个分模型都还有一个参数$\pi_i$，可以理解为权重或生成数据的概率。高斯混合模型的公式为：<br>$$<br>p(x) = \sum_{i=1}^K\pi_iN(x|\mu_i,\sum_i)<br>$$</p>
-<h1 id="高斯混合模型与K均值算法的异同"><a href="#高斯混合模型与K均值算法的异同" class="headerlink" title="高斯混合模型与K均值算法的异同"></a>高斯混合模型与K均值算法的异同</h1><p>高斯混合模型与K均值算法的相同点是，它们都是可用于聚类算法；都需要指定K值；都是使用EM算法来求解；都往往只能收敛于局部最优。<strong>而它相比于K均值算法的优点是，</strong>可以给出一个样本属于某类的概率是多少；不仅仅可以用于聚类，还可以用于概率密度的估计；并且可以用于生成新的样本点。</p>
-
+<h1 id="高斯混合模型的核心思想"><a href="#高斯混合模型的核心思想" class="headerlink" title="高斯混合模型的核心思想"></a>高斯混合模型的核心思想</h1><p>高斯混合模型的核心思想是，假设数据可以看作多个高斯分布中生成出来的。在该假设下，每个单独的分模型都是标准高斯模型，其均值$\mu_i$和方差$\sum_i$是待估计的参数。此外，每个分模型都还有一个参数$\pi_i$，可以理解为权重或生成数据的概率。高斯混合模型的公式为：</p>
+<script type="math/tex; mode=display">
+p(x) = \sum_{i=1}^K\pi_iN(x|\mu_i,\sum_i)</script><h1 id="高斯混合模型与K均值算法的异同"><a href="#高斯混合模型与K均值算法的异同" class="headerlink" title="高斯混合模型与K均值算法的异同"></a>高斯混合模型与K均值算法的异同</h1><p>高斯混合模型与K均值算法的相同点是，它们都是可用于聚类算法；都需要指定K值；都是使用EM算法来求解；都往往只能收敛于局部最优。<strong>而它相比于K均值算法的优点是，</strong>可以给出一个样本属于某类的概率是多少；不仅仅可以用于聚类，还可以用于概率密度的估计；并且可以用于生成新的样本点。</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -605,7 +606,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -749,7 +750,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -834,7 +837,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

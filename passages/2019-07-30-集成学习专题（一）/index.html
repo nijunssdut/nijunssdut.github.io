@@ -468,8 +468,8 @@
 <li>用调整后的样本，训练下一个基学习器；</li>
 <li>重复上述过程T次，将T个学习器加权结合。</li>
 </ol>
-<p>$$<br>f(x) = w_0 + \sum_{m = 1}^Mw_m\Psi_m(x)<br>$$</p>
-<p>其中w是权重，$\Psi$是弱分类器的集合，可以看出最终就是基函数的线形组合。</p>
+<script type="math/tex; mode=display">
+f(x) = w_0 + \sum_{m = 1}^Mw_m\Psi_m(x)</script><p>其中w是权重，$\Psi$是弱分类器的集合，可以看出最终就是基函数的线形组合。</p>
 <p><strong>常用boosting算法：</strong>Adaboost，GBDT，XGBoost</p>
 <h2 id="stacking的使用"><a href="#stacking的使用" class="headerlink" title="stacking的使用"></a>stacking的使用</h2><p>stacking常见的使用方式：由KNN、随机森林和朴素贝叶斯基础分类器组成，它的预测结果由作为元分类器的Logistic回归组合。</p>
 <h1 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h1><p>随机森林是Bagging算法的代表，它的核心思想就是将多个不同的决策树进行组合，利用这种组合降低单一决策树有可能带来的片面性和判断不准确性。</p>
@@ -505,27 +505,27 @@
 <li>n_estimators 随机森林建立子树的数量。</li>
 </ol>
 <p>较多的子树一般可以让模型有更好的性能，但同时让你的代码变慢。需要选择最佳的随机森林子树数量。</p>
-<ol start="2">
+<ol>
 <li>max_feature随机森林允许单个决策树使用特征的最大数量。</li>
 </ol>
 <p>增加max_features一般能提高模型的性能，因为在每个节点上，我们有更多的选择可以考虑。然而，这未必完全是对的，因为它降低了单个树的多样性，而这正是随机森林独特的优点。但是，可以肯定，<strong>通过增加max_features会降低算法的速度。</strong>因此，你需要适当的平衡和选择最佳max_features。</p>
-<ol start="3">
+<ol>
 <li>max_depth 决策树最大深度</li>
 </ol>
 <p>默认决策树在建立子树的时候不会限制子树的深度。</p>
-<ol start="4">
+<ol>
 <li>min_samples_split 内部节点再划分所需最小样本数</li>
 </ol>
 <p>内部节点再划分所需最小样本数，如果某节点的样本数少于min_samples_split，则不会继续再尝试选择最优特征来进行划分。</p>
-<ol start="5">
+<ol>
 <li>min_samples_leaf 叶子节点最少样本数</li>
 </ol>
 <p>这个值限制了叶子节点最少的样本数，如果某叶子节点数目小于样本数，则会和兄弟节点一起被剪枝。</p>
-<ol start="6">
+<ol>
 <li>max_leaf_nodes 最大叶子节点数</li>
 </ol>
 <p>通过限制最大叶子节点数，可以防止过拟合，默认是“None”，即不限制最大的叶子节点数。如果加了限制，算法会建立在最大叶子节点数内最优的决策树。</p>
-<ol start="7">
+<ol>
 <li>min_impurity_split 节点划分最小不纯度</li>
 </ol>
 <p>这个值限制了决策树的增长，如果某节点的不纯度（基于基尼系数，均方差）小于这个阈值，则该节点不再生成子节点。即为叶子节点。一般不推荐改动默认值1e-7。</p>
@@ -544,15 +544,18 @@
 <h2 id="AdaBoost算法流程"><a href="#AdaBoost算法流程" class="headerlink" title="AdaBoost算法流程"></a>AdaBoost算法流程</h2><p>Adaboost算法流程如下：</p>
 <p>（1） 给数据中的每一个样本一个权重，权重的起始值是相同的，若有n个训练样本，其权重均为1/n；</p>
 <p>（2）训练数据中的每一个样本，得到第一个分类器；</p>
-<p>（3）计算该分类器的错误率，根据错误率计算要给分类器分配的权重<strong>（这里是分类器的权重，不是样本的权重）</strong><br>$$<br>错误率\varepsilon = \sum_{i \in 错分类样本}W_i, W_i为样本权重<br>$$</p>
-<p>$$<br>分类器权重\alpha = \frac{1}{2}In(\frac{1-\varepsilon}{\varepsilon})<br>$$</p>
-<p>（4）将第一个分类器分错误的样本权重增加，分对的样本权重减小<strong>（这里是样本的权重，不是分类器的权重）</strong><br>$$<br>错误样本权重更新公式D_i^{t+1} = \frac{D_i^te^{\alpha}}{sum(D_i^t)}<br>$$</p>
-<p>$$<br>正确样本权重更新公式D_i^{t+1} = \frac{D_i^te^{-\alpha}}{sum(D_i^t)}<br>$$</p>
-<p>t指当前分类器，i指第i个样本</p>
+<p>（3）计算该分类器的错误率，根据错误率计算要给分类器分配的权重<strong>（这里是分类器的权重，不是样本的权重）</strong></p>
+<script type="math/tex; mode=display">
+错误率\varepsilon = \sum_{i \in 错分类样本}W_i, W_i为样本权重</script><script type="math/tex; mode=display">
+分类器权重\alpha = \frac{1}{2}In(\frac{1-\varepsilon}{\varepsilon})</script><p>（4）将第一个分类器分错误的样本权重增加，分对的样本权重减小<strong>（这里是样本的权重，不是分类器的权重）</strong></p>
+<script type="math/tex; mode=display">
+错误样本权重更新公式D_i^{t+1} = \frac{D_i^te^{\alpha}}{sum(D_i^t)}</script><script type="math/tex; mode=display">
+正确样本权重更新公式D_i^{t+1} = \frac{D_i^te^{-\alpha}}{sum(D_i^t)}</script><p>t指当前分类器，i指第i个样本</p>
 <p>（5）然后再用新的样本权重训练数据，得到新的分类器，到步骤3</p>
 <p>（6）直到步骤3中分类器错误率为0或者整体弱分类器为0，或者到达迭代次数</p>
-<p>（7）将所有弱分类器加权求和，得到分类结果（注意是分类器权重），错误率低的分类器获得更高的决定系数，从而在对数据进行预测时起关键作用。<br>$$<br>f(x) = \sum\alpha h_i(x),h_i(x)为各个弱分类器<br>$$</p>
-<h2 id="AdaBoost优缺点"><a href="#AdaBoost优缺点" class="headerlink" title="AdaBoost优缺点"></a>AdaBoost优缺点</h2><p><strong>优点：</strong></p>
+<p>（7）将所有弱分类器加权求和，得到分类结果（注意是分类器权重），错误率低的分类器获得更高的决定系数，从而在对数据进行预测时起关键作用。</p>
+<script type="math/tex; mode=display">
+f(x) = \sum\alpha h_i(x),h_i(x)为各个弱分类器</script><h2 id="AdaBoost优缺点"><a href="#AdaBoost优缺点" class="headerlink" title="AdaBoost优缺点"></a>AdaBoost优缺点</h2><p><strong>优点：</strong></p>
 <ol>
 <li><p>Adaboost提供一种框架，在框架内可以使用各种方法构建子分类器。可以使用简单的弱分类器，不用对特征进行筛选，也不存在过拟合的现象。</p>
 </li>
@@ -581,7 +584,7 @@
 <li>随机森林在训练每一棵树的时候，随机挑选了部分特征作为拆分特征，而不是所有的特征都去作为拆分特征。</li>
 <li>在观测新数据时，adaboost中所有的树加权投票来决定因变量的预测值，每棵树的权重和错误率有关；随机森林按照所有树中少数服从多数树的分类值来决定因变量的预测值（或者求取树预测的平均值）。</li>
 </ol>
-
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -738,7 +741,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -882,7 +885,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -967,7 +972,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

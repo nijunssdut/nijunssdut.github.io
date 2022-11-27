@@ -501,7 +501,9 @@
 <ol>
 <li><p>高斯模型主要处理包含连续型变量的数据，使用高斯分布概率密度来计算类的条件概率密度；</p>
 </li>
-<li><p>多项式模型：<br>$$<br>P(x_i|y_k) = \frac{N_{y_kx_i}+\alpha}{N_{y_k}+\alpha n}<br>$$<br>其中$\alpha$是拉普拉斯平滑，加和的是属性出现的总次数，也防止了零概率问题。在文本分类问题中，反映一个词出现的词频，类似投骰子问题n次出现m次这个点数的场景。</p>
+<li><p>多项式模型：</p>
+<script type="math/tex; mode=display">
+P(x_i|y_k) = \frac{N_{y_kx_i}+\alpha}{N_{y_k}+\alpha n}</script><p>其中$\alpha$是拉普拉斯平滑，加和的是属性出现的总次数，也防止了零概率问题。在文本分类问题中，反映一个词出现的词频，类似投骰子问题n次出现m次这个点数的场景。</p>
 </li>
 <li><p>伯努利模型：</p>
 <p>伯努利模型特征的取值为布尔型，即出现为true，没有出现为false，在文本分类中，就是一个单词有没有在一个文档中出现。</p>
@@ -512,8 +514,8 @@
 <p>拉普拉斯修正的含义是，在训练集中总共的分类数，用 N 表示；di 属性可能的取值数用 $N_i$ 表示，因此，</p>
 <p>原来的先验概率$P(c)$的计算公式由：$P(c) = \frac{D_c}{D}$</p>
 <p>被拉普拉斯修正为：$P(c) = \frac{D_c+1}{D+N}$</p>
-<p>类的条件概率$P(x|c)$的计算公式由：$P(x_i|c) = \frac{D_{c,st}}{D_c}$</p>
-<p>被拉普拉斯修正为：$P(x_i|c) = \frac{D_{c,st}+1}{D_c+N_i}$</p>
+<p>类的条件概率$P(x|c)$的计算公式由：$P(x<em>i|c) = \frac{D</em>{c,st}}{D_c}$</p>
+<p>被拉普拉斯修正为：$P(x<em>i|c) = \frac{D</em>{c,st}+1}{D_c+N_i}$</p>
 <h3 id="使用拉普拉斯平滑，拉普拉斯因子的大小如何确定？"><a href="#使用拉普拉斯平滑，拉普拉斯因子的大小如何确定？" class="headerlink" title="使用拉普拉斯平滑，拉普拉斯因子的大小如何确定？"></a>使用拉普拉斯平滑，拉普拉斯因子的大小如何确定？</h3><p>朴素贝叶斯中的拉普拉斯因子$\alpha$无法通过公式求出最优大小，需要根据程序员的经验去设置，使用交叉验证的方式求取最优大小。</p>
 <h2 id="下溢问题"><a href="#下溢问题" class="headerlink" title="下溢问题"></a>下溢问题</h2><p><strong>问题描述：</strong>在计算过程中，需要对特定分类中各个特征出现的概率进行连乘，小数相乘，越乘越小，造成下溢出，计算结果变成0。</p>
 <p><strong>解决方案：</strong>通过log运算增大概率的绝对值。log运算不会影响函数的趋势和极值只是扩大值得范围。将小数的乘法操作转化为取对数后的加法操作，规避了变为零的风险同时并不影响分类结果。</p>
@@ -524,7 +526,9 @@
 <p><strong>原因：</strong>朴素贝叶斯算法能够处理缺失的数据，<strong>在算法的建模时和预测时数据的属性都是单独处理的</strong>。因此如果一个数据实例缺失了一个属性的数值，在建模时将被忽略，不影响类条件概率的计算，在预测时，计算数据实例是否属于某类的概率时也将忽略缺失属性，不影响最终结果。</p>
 <h2 id="数据的属性是连续型变量的情况"><a href="#数据的属性是连续型变量的情况" class="headerlink" title="数据的属性是连续型变量的情况"></a>数据的属性是连续型变量的情况</h2><p>当朴素贝叶斯算法数据的属性为连续型变量时，有<strong>两种方法</strong>可以计算属性的类条件概率。</p>
 <p>第一种方法是把一个<strong>连续的属性离散化</strong>，然后用相应的离散区间替换连续属性值，之后用频率去表示类条件概率。<strong>但这种方法不好控制离散区间划分的粒度。</strong>如果粒度太细，就会因为每个区间内训练记录太少而不能对做出可靠估计，如果粒度太粗，那么有些区间就会有来自不同类的记录，因此失去了正确的决策边界。</p>
-<p>第二种方法是假设连续变量服从某种概率分布，然后<strong>使用训练数据估计分布的参数</strong>，例如可以使用高斯分布来表示连续属性的类条件概率分布。<br>$$<br>P(X_i = x_i|Y=y_i) =\frac{1}{\sqrt{2\pi\sigma_{i,j}}}e^{-\frac{(x_i-\mu_{i,j})^2}{2\sigma_{i,j}^2}}<br>$$<br>其中$\mu_{i,j}$为类$y_j$的所有训练记录关于$X_i$的样本均值估计，$\sigma_{i,j}^2$为类$y_i$的所有训练记录关于$X_i$的样本方差估计。通过高斯分布估计出类条件概率。</p>
+<p>第二种方法是假设连续变量服从某种概率分布，然后<strong>使用训练数据估计分布的参数</strong>，例如可以使用高斯分布来表示连续属性的类条件概率分布。</p>
+<script type="math/tex; mode=display">
+P(X_i = x_i|Y=y_i) =\frac{1}{\sqrt{2\pi\sigma_{i,j}}}e^{-\frac{(x_i-\mu_{i,j})^2}{2\sigma_{i,j}^2}}</script><p>其中$\mu<em>{i,j}$为类$y_j$的所有训练记录关于$X_i$的样本均值估计，$\sigma</em>{i,j}^2$为类$y_i$的所有训练记录关于$X_i$的样本方差估计。通过高斯分布估计出类条件概率。</p>
 <h2 id="高度相关的特征对朴素贝叶斯的影响"><a href="#高度相关的特征对朴素贝叶斯的影响" class="headerlink" title="高度相关的特征对朴素贝叶斯的影响"></a>高度相关的特征对朴素贝叶斯的影响</h2><p>假设有两个特征高度相关，相当于该特征在模型中发挥了两次作用（计算两次条件概率），使得朴素贝叶斯获得的结果向该特征所希望的方向进行了偏移，影响了最终结果的准确性，所以朴素贝叶斯算法应先处理特征，把相关特征去掉。</p>
 <h2 id="朴素贝叶斯的增量计算"><a href="#朴素贝叶斯的增量计算" class="headerlink" title="朴素贝叶斯的增量计算"></a>朴素贝叶斯的增量计算</h2><p>传统的贝叶斯方法在有新的训练样本加入时，需要重新学习已经学习过的样本，耗费大量时间。增量计算就是在原有分类器的基础之上，自主选择学习新的文本来修正分类器。因为<strong>朴素贝叶斯在训练过程中实际只需要计算出各个类别的概率（先验）和各个特征的类条件概率</strong>，这些概率值可以快速的根据增量数据进行更新，无需重新全量训练，所以其十分适合增量计算，该特性可以使用在超出内存的大量数据计算和随时间等（流数据）获取数据的计算中。</p>
 <h1 id="朴素贝叶斯总结"><a href="#朴素贝叶斯总结" class="headerlink" title="朴素贝叶斯总结"></a>朴素贝叶斯总结</h1><h2 id="朴素贝叶斯是高偏差低方差"><a href="#朴素贝叶斯是高偏差低方差" class="headerlink" title="朴素贝叶斯是高偏差低方差"></a>朴素贝叶斯是高偏差低方差</h2><p>在统计学习框架下，大家刻画模型复杂度的时候，有这么个观点，认为Error = Bias+Variance。这里的Error大概可以理解为模型的预测错误率，是有两部分组成的，一部分是由于模型太简单而带来的估计不准确的部分（Bias），另一部分是由于模型太复杂而带来的更大的变化空间和不确定性（Variance）。</p>
@@ -546,7 +550,7 @@
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a href="https://blog.csdn.net/weixin_44915167/article/details/89363034" target="_blank" rel="noopener">机器学习面试题之NB——朴素贝叶斯</a></li>
 </ul>
-
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -701,7 +705,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -845,7 +849,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -930,7 +936,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

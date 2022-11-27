@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/input_for_fine-tuning.png">
 <meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/P-R_curves.png">
 <meta property="og:image" content="http://nijunssdut.github.io/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/variety_relations.png">
-<meta property="og:updated_time" content="2019-10-25T13:09:38.420Z">
+<meta property="og:updated_time" content="2019-10-28T10:54:43.688Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Fine-tuning Pre-Trained Transformer Language Models to Distantly Supervised Relation Extraction">
 <meta name="twitter:description" content="论文摘要现阶段关系抽取方法采用多示例学习与提供的语义与语境信息有效的确定关系类别。这样模型会识别偏向于高精确率的关系，忽略那些关系长尾句子中（in the long tail），为了解决这个问题，利用预训练语言模型Open AI Generative Pre-trained Transformer（GPT），除了从词法句法的角度解决问题外，也更注重大量的常识知识（一些重要的特征识别更多元的关系），">
@@ -410,7 +410,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-10-25 21:09:38" itemprop="dateModified" datetime="2019-10-25T21:09:38+08:00">2019-10-25</time>
+                <time title="修改时间：2019-10-28 18:54:43" itemprop="dateModified" datetime="2019-10-28T18:54:43+08:00">2019-10-28</time>
               </span>
             
           
@@ -475,17 +475,27 @@
 </li>
 <li><p>手动评估跟踪结果，证明模型预测了一组更加多样化的关系，并在高召回率下表现良好。</p>
 </li>
-<li><p>开源贡献：<a href="https://github.com/DFKI-NLP/DISTRE" target="_blank" rel="noopener">https://github.com/DFKI-NLP/DISTRE</a></p>
-</li>
+<li>开源贡献：<a href="https://github.com/DFKI-NLP/DISTRE" target="_blank" rel="noopener">https://github.com/DFKI-NLP/DISTRE</a></li>
 </ol>
-<h1 id="模型方法"><a href="#模型方法" class="headerlink" title="模型方法"></a>模型方法</h1><h2 id="Transformer-Decoder模型"><a href="#Transformer-Decoder模型" class="headerlink" title="Transformer-Decoder模型"></a>Transformer-Decoder模型</h2><p>Transformer-Decoder在多个层上重复编码给定的输入表示（Transformer 块），包含掩码多头注意力机制接一个position-wise feedforward operation.，不同于原始的Transformer，鉴于没有编码器，模型不同于原始模型，不含任何形式的无掩码自注意力机制。<br>$$<br>h_0 = TW_e+W_p<br>$$<br>$$<br>h_l =tf_block(h_{l-1}), l \in [1,L]<br>$$</p>
-<p>$T$ 是一个句子中词索引的one-hot 行向量矩阵 ，$W_e$是词向量矩阵，$W_p$是位置向量矩阵，$L$是Transformer块数，$h_t$表示$l$层的state。之所以加入词位置向量在于Transformer模型本身不含隐性的位置信息，自注意结构有效的解决长距离依赖。</p>
+<h1 id="模型方法"><a href="#模型方法" class="headerlink" title="模型方法"></a>模型方法</h1><h2 id="Transformer-Decoder模型"><a href="#Transformer-Decoder模型" class="headerlink" title="Transformer-Decoder模型"></a>Transformer-Decoder模型</h2><p>Transformer-Decoder在多个层上重复编码给定的输入表示（Transformer 块），包含掩码多头注意力机制接一个position-wise feedforward operation.，不同于原始的Transformer，鉴于没有编码器，模型不同于原始模型，不含任何形式的无掩码自注意力机制。</p>
+<script type="math/tex; mode=display">
+h_0 = TW_e+W_p</script><script type="math/tex; mode=display">
+h_l =tf_block(h_{l-1}), l \in [1,L]</script><p>$T$ 是一个句子中词索引的one-hot 行向量矩阵 ，$W_e$是词向量矩阵，$W_p$是位置向量矩阵，$L$是Transformer块数，$h_t$表示$l$层的state。之所以加入词位置向量在于Transformer模型本身不含隐性的位置信息，自注意结构有效的解决长距离依赖。</p>
 <p><img src="/passages/2019-10-17-Fine-tuning-Pre-Trained-Transformer-Language-Models-to-Distantly-Supervised-Relation-Extraction/Transformer-Block_architecture.png" alt="Transformer-Block_architecture"></p>
-<h2 id="contextualized-representations语言模型学习方法"><a href="#contextualized-representations语言模型学习方法" class="headerlink" title="contextualized representations语言模型学习方法"></a>contextualized representations语言模型学习方法</h2><p>$$<br>L_1(C) = \sum_i \log P(c_i|c_{i-1},…,c_{i-k};\theta)<br>$$</p>
-<p>无监督预训练语言表示模型采用最大似然估计作为损失函数，其中$k$表示上下文窗口数，通过条件概率$P$预测下一个词$c_i$ （貌似只是单向的），Transformer模型目标函数：<br>$$<br>P(c) = softmax(h_LW_e^T)<br>$$<br>整个优化过程采用随机梯度下降，该结果是对于每一个词的概率分布用于下游任务的输入序列。</p>
-<h2 id="Transformer多示例学习"><a href="#Transformer多示例学习" class="headerlink" title="Transformer多示例学习"></a>Transformer多示例学习</h2><p>实现包级别多示例学习在Transformer结构基础上，文章假设一个标记的数据可以表示为$D =\lbrace(x_i,head_i,tail_i,r_i)\rbrace_{i=1}^N$，其中$head_i$与$tail_i$是相对于头尾实体的相对位置，$x_i$是每个例子包含的输入词序列（句子表示）$x_i = [x^1,…x^m]$。对于包中句子$S=\lbrace x_1,x_2,…,x_n\rbrace$每一个词序列（句子）通过预训练模型使用最后一个状态表示$h_L$的最后一个状态$h_L^m$对应于$x_i$的每一个表示$s_i$，使用$s$用于分类，公式如下：<br>$$<br>s=\sum_i \alpha_is_i<br>$$<br>选择注意力可以学习认清那些带有明显特征表示某个关系的句子同时不重视那些包含噪音的句子，权重计算公式如下：<br>$$<br>\alpha_i = \frac{exp(s_ir)}{\sum_{j=1}^n exp(s_jr)}<br>$$<br>最终优化目标如下：<br>$$<br>p(l|S,\theta) = softmax(W_{r}s+b)<br>$$</p>
-<p>$$<br>L_2(D) = \sum_{i=1}^{|S|}logP(l_i|S_i,\theta)<br>$$</p>
-<p>由于引入语言模型在微调过程中有助于改善泛化能力实现快速收敛，故：<br>$$<br>L(D) = \lambda*L_1(D)+L_2(D)<br>$$<br>标量$\lambda$反映微调期间语言模型的权重值。</p>
+<h2 id="contextualized-representations语言模型学习方法"><a href="#contextualized-representations语言模型学习方法" class="headerlink" title="contextualized representations语言模型学习方法"></a>contextualized representations语言模型学习方法</h2><script type="math/tex; mode=display">
+L_1(C) = \sum_i \log P(c_i|c_{i-1},...,c_{i-k};\theta)</script><p>无监督预训练语言表示模型采用最大似然估计作为损失函数，其中$k$表示上下文窗口数，通过条件概率$P$预测下一个词$c_i$ （貌似只是单向的），Transformer模型目标函数：</p>
+<script type="math/tex; mode=display">
+P(c) = softmax(h_LW_e^T)</script><p>整个优化过程采用随机梯度下降，该结果是对于每一个词的概率分布用于下游任务的输入序列。</p>
+<h2 id="Transformer多示例学习"><a href="#Transformer多示例学习" class="headerlink" title="Transformer多示例学习"></a>Transformer多示例学习</h2><p>实现包级别多示例学习在Transformer结构基础上，文章假设一个标记的数据可以表示为$D =\lbrace(x<em>i,head_i,tail_i,r_i)\rbrace</em>{i=1}^N$，其中$head_i$与$tail_i$是相对于头尾实体的相对位置，$x_i$是每个例子包含的输入词序列（句子表示）$x_i = [x^1,…x^m]$。对于包中句子$S=\lbrace x_1,x_2,…,x_n\rbrace$每一个词序列（句子）通过预训练模型使用最后一个状态表示$h_L$的最后一个状态$h_L^m$对应于$x_i$的每一个表示$s_i$，使用$s$用于分类，公式如下：</p>
+<script type="math/tex; mode=display">
+s=\sum_i \alpha_is_i</script><p>选择注意力可以学习认清那些带有明显特征表示某个关系的句子同时不重视那些包含噪音的句子，权重计算公式如下：</p>
+<script type="math/tex; mode=display">
+\alpha_i = \frac{exp(s_ir)}{\sum_{j=1}^n exp(s_jr)}</script><p>最终优化目标如下：</p>
+<script type="math/tex; mode=display">
+p(l|S,\theta) = softmax(W_{r}s+b)</script><script type="math/tex; mode=display">
+L_2(D) = \sum_{i=1}^{|S|}logP(l_i|S_i,\theta)</script><p>由于引入语言模型在微调过程中有助于改善泛化能力实现快速收敛，故：</p>
+<script type="math/tex; mode=display">
+L(D) = \lambda*L_1(D)+L_2(D)</script><p>标量$\lambda$反映微调期间语言模型的权重值。</p>
 <h3 id="模型输入的特殊性-BPE编码算法"><a href="#模型输入的特殊性-BPE编码算法" class="headerlink" title="模型输入的特殊性-BPE编码算法"></a>模型输入的特殊性-BPE编码算法</h3><p>充分利用分词信息，使用byte pair encoding（BPE）对输入文本分词。BPE是用来解决未登录词问题的一种方法。在做NLP的时候，我们通常会对语料做一个预处理，生成语料的一个字典。为了不让字典太大，我们通常只会把出现频次大于某个阈值的词丢到字典里边，剩下所有的词都统一编码成#UNK。这是很经典很朴素的做法，这种方法不能解决未登录词的问题。<strong>未登录词是指在验证集或测试集出现了但训练集从来没见到过的单词。</strong>这种未登录词对分词、NLP其他任务性能有很大影响。常见的解决方法有：给低频词设置一个back-off表，当出现低频词的时候就去查表；或者不做word-level的东西，转做char-level的东西，因为不管什么词肯定是由若干个字母组成的。</p>
 <p>两种方法各有优劣。第一种方法，简单直接，若干back-off做的很好会对低频词处理有很大提升（机器翻译）；但这种方法依赖于back-off表的质量，而且也没法处理非登录词问题。第二种方法，从源头解决未登录词的问题，但是模型粒度太细，一般出来的效果不是特别好。我认为可能非串级别导致词信息损失过多。</p>
 <p>2016年《Neural Machine Translation of Rare Words with Subword Units》提出了基于subword来生成词典的方法。他的核心思想是综合word-level and char-level的优势，从语料中学习到所有词里边频次高的字符串子串。然后把这些频次高的字符串子串收集起来形成一个字典。这个字典里边，既存在char-level级别字符也存在word-level级别的子串。然后把这个字典用于模型的训练。论文在寻找频次高的子串时，使用了BPE算法，就是把子串encoding：每次合并在语料中同一个词里面的、相邻的、出现频率最高的两个子串。decoding的时候，根据生成的voc.txt做相应的替换。</p>
@@ -514,8 +524,8 @@
 <li>previously methods</li>
 </ol>
 <p><strong>语言表示与Transfer Learning：</strong></p>
-<p>2018年Peters等人提出embedings from language models（ELMo），在各种自然语言处理任务使用语境化词表征代替静态预训练词向量提高性能。通过无监督语言建模学习语言表示，显著提高文本分类性能，防止过度拟合，提高了样本效率。通用域的预训练与具体任务的微调有助于实现state-of-the-art的结果。2019年Radford等人发现增加语言模型的大小能更好的归纳下游任务，但是仍然欠拟合大规模文本集。</p>
-
+<p>2018年Peters等人提出embeddings from language models（ELMo），在各种自然语言处理任务使用语境化词表征代替静态预训练词向量提高性能。通过无监督语言建模学习语言表示，显著提高文本分类性能，防止过度拟合，提高了样本效率。通用域的预训练与具体任务的微调有助于实现state-of-the-art的结果。2019年Radford等人发现增加语言模型的大小能更好的归纳下游任务，但是仍然欠拟合大规模文本集。</p>
+<script type="text&#x2F;javascript" src="https://unpkg.com/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://unpkg.com/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://unpkg.com/hexo-simple-mindmap@0.8.0/dist/mindmap.min.css">
       
     </div>
 
@@ -670,7 +680,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-count">33</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -814,7 +824,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">49</span>
+                      
+                    
+                    <span class="site-state-item-count">50</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -899,7 +911,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
